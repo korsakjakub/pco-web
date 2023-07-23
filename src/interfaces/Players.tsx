@@ -1,0 +1,3 @@
+interface Players {
+    players: Player[];
+}

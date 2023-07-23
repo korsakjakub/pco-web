@@ -4,5 +4,5 @@ interface Context {
   roomId: string;
   roomName: string;
   roomToken: string | null;
-  queueId: string | null
+  queueId: string | null;
 }

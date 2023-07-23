@@ -1,40 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import NewGame from "./NewGame";
+import Join from "./Join";
 
 interface Props {
-  hostUrl: string;
   onReturnFromHome: (r: GameState) => void;
 }
 
-const Home = ({ hostUrl, onReturnFromHome }: Props) => {
+const Home = ({ onReturnFromHome }: Props) => {
   const navigate = useNavigate();
 
   const handleError = (responseBody: string) => {
     throw new Error(responseBody);
   };
 
-  const handleSuccess = (gameState: GameState) => {
+  const handleNewGameSuccess = (gameState: GameState) => {
     onReturnFromHome(gameState);
     navigate("game/" + gameState.room.id);
+  };
+
+  const handleJoinSuccess = (gameState: GameState) => {
+    onReturnFromHome(gameState);
+    navigate("queue/" + gameState.room.queueId);
   };
 
   return (
     <>
       <h1>pco</h1>
       <h2>create a new room</h2>
-      <NewGame
-        hostUrl={hostUrl}
-        onError={handleError}
-        onSuccess={handleSuccess}
-      />
-      {/*
+      <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
       <h2>or join an existing room</h2>
-      <NewPlayer
-        url={hostUrl + '/api/v1/player/create'}
-        onError={handleError}
-        onSuccess={handleSuccess}
-        />
-  */}
+      <Join onError={handleError} onSuccess={handleJoinSuccess} />
     </>
   );
 };

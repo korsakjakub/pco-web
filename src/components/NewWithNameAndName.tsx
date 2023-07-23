@@ -2,17 +2,24 @@ import { useState } from "react";
 import NameNameForm from "./NameNameForm";
 
 interface Props {
-    url: string;
-    nameFirst: string;
-    nameSecond: string;
-    button: string
-    reqName: string;
-    onSuccess: (responseBody: string) => void;
-    onError: (responseBody: string) => void;
+  url: string;
+  nameFirst: string;
+  nameSecond: string;
+  button: string;
+  reqName: string;
+  onSuccess: (responseBody: string) => void;
+  onError: (responseBody: string) => void;
 }
 
-const NewWithNameAndName = ({ url, nameFirst, nameSecond, button, reqName, onSuccess, onError }: Props) => {
-
+const NewWithNameAndName = ({
+  url,
+  nameFirst,
+  nameSecond,
+  button,
+  reqName,
+  onSuccess,
+  onError,
+}: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const requestNew = async (event: any) => {
@@ -45,7 +52,13 @@ const NewWithNameAndName = ({ url, nameFirst, nameSecond, button, reqName, onSuc
   };
 
   return (
-    <NameNameForm isLoading={isLoading} nameFirst={nameFirst} nameSecond={nameSecond} button={button} onSubmit={requestNew} />
+    <NameNameForm
+      isLoading={isLoading}
+      nameFirst={nameFirst}
+      nameSecond={nameSecond}
+      button={button}
+      onSubmit={requestNew}
+    />
   );
 };
 

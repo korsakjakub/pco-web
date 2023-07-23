@@ -1,4 +1,9 @@
-const GetPlayer = async (hostUrl: string, roomId: string, playerId: string, playerToken: string) => {
+const GetPlayer = async (
+  hostUrl: string,
+  roomId: string,
+  playerId: string,
+  playerToken: string
+) => {
   const playerResponse = await fetch(
     hostUrl + "/api/v1/player/" + playerId + "?roomId=" + roomId,
     {

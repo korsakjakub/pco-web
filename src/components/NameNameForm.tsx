@@ -8,7 +8,13 @@ interface Props {
   onSubmit: (event: any) => void;
 }
 
-function NameNameForm({ nameFirst, nameSecond, button, isLoading, onSubmit }: Props) {
+function NameNameForm({
+  nameFirst,
+  nameSecond,
+  button,
+  isLoading,
+  onSubmit,
+}: Props) {
   return (
     <form onSubmit={onSubmit} className="input-group mb-3">
       <input

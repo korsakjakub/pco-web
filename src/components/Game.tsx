@@ -13,10 +13,12 @@ const Game = () => {
     id: "",
     name: "",
     stakedChips: 0,
-    token: ""
+    token: "",
   });
 
   const ctx = getContext();
+
+  const isAdmin = () => ctx.roomToken !== "";
 
   const onError = () => {
     return <h1>Error</h1>;
@@ -25,18 +27,22 @@ const Game = () => {
   useEffect(() => {
     const fetchPlayer = async () => {
       try {
-        const playerData = await GetPlayer(getHostUrl(), ctx.roomId, ctx.playerId, ctx.playerToken);
-        if(playerData === null)
-          return;
+        const playerData = await GetPlayer(
+          getHostUrl(),
+          ctx.roomId,
+          ctx.playerId,
+          ctx.playerToken
+        );
+        if (playerData === null) return;
         setPlayer(playerData);
-      } catch(error) {
+      } catch (error) {
         return onError();
       }
-    }
+    };
     fetchPlayer();
   });
 
-  const {roomId} = useParams();
+  const { roomId } = useParams();
 
   return (
     <>
@@ -44,8 +50,8 @@ const Game = () => {
       <p>Game State: {JSON.stringify(player)}</p>
       <p>Context: {JSON.stringify(ctx)}</p>
       <PlayersList roomId={ctx.roomId} />
-      <QueueList queueId={ctx.queueId} />
-      <ShareUrlAlert url={getHostUrl()} queueId={ctx.queueId}/>
+      <QueueList isAdmin={isAdmin()} queueId={ctx.queueId} />
+      <ShareUrlAlert url={getHostUrl()} queueId={ctx.queueId} />
     </>
   );
 };

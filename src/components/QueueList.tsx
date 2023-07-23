@@ -5,10 +5,11 @@ import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
 
 interface Props {
   queueId: string;
+  isAdmin: boolean;
 }
 
-const QueueList = ({ queueId }: Props) => {
-const ctx = getContext();
+const QueueList = ({ queueId, isAdmin }: Props) => {
+  const ctx = getContext();
   const [players, setPlayers] = useState<Players>({
     players: [],
   });
@@ -24,7 +25,11 @@ const ctx = getContext();
 
   const acceptPlayer = async (playerId: string) => {
     try {
-      const playerData = await AcceptPlayerInQueue(ctx.roomId, playerId, ctx.roomToken);
+      const playerData = await AcceptPlayerInQueue(
+        ctx.roomId,
+        playerId,
+        ctx.roomToken
+      );
       if (playerData === null) return;
     } catch (error) {
       return error;
@@ -40,7 +45,7 @@ const ctx = getContext();
 
   const handleAddToRoom = (playerId: string) => {
     acceptPlayer(playerId);
-  }
+  };
 
   return (
     <>
@@ -53,7 +58,14 @@ const ctx = getContext();
           <li className="list-group-item" key={player.id}>
             <p>Name: {player.name}</p>
             <p>Id: {player.id}</p>
-            <button onClick={() => handleAddToRoom(player.id)} className="btn btn-primary">Add</button>
+            {isAdmin && (
+              <button
+                onClick={() => handleAddToRoom(player.id)}
+                className="btn btn-primary"
+              >
+                Add
+              </button>
+            )}
           </li>
         ))}
       </ul>

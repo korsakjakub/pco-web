@@ -1,4 +1,4 @@
 interface GameState {
-    player: Player;
-    room: Room;
+  player: Player;
+  room: Room;
 }

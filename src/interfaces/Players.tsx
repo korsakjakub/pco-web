@@ -1,3 +1,3 @@
 interface Players {
-    players: Player[];
+  players: Player[];
 }

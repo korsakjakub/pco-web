@@ -1,15 +1,14 @@
 import { useState } from "react";
 import NameNameForm from "./NameNameForm";
+import getHostUrl from "../utils/getHostUrl";
 
 interface Props {
-  hostUrl: string;
   onSuccess: (gameState: GameState) => void;
   onError: (response: string) => void;
 }
 
-const NewGame = ({ hostUrl, onSuccess, onError }: Props) => {
+const NewGame = ({ onSuccess, onError }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const reqName = "roomName";
 
   const newGame = async (event: any) => {
     setIsLoading(true);
@@ -21,24 +20,24 @@ const NewGame = ({ hostUrl, onSuccess, onError }: Props) => {
         id: "",
         name: "",
         stakedChips: 0,
-        token: ""
+        token: "",
       },
       room: {
         id: "",
         name: "",
         queueId: "",
-        token: ""
-      }
+        token: "",
+      },
     };
     const formData = new FormData(event.target);
 
     try {
-      const roomResponse = await fetch(hostUrl + "/api/v1/room/create", {
+      const roomResponse = await fetch(getHostUrl() + "/api/v1/room/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: formData.get(reqName) }),
+        body: JSON.stringify({ name: formData.get("roomName") }),
       });
       const roomResponseBody = await roomResponse.json();
 
@@ -54,18 +53,17 @@ const NewGame = ({ hostUrl, onSuccess, onError }: Props) => {
       }
 
       const playerResponse = await fetch(
-        hostUrl + "/api/v1/room/" + roomResponseBody.id + "/players",
+        getHostUrl() + "/api/v1/room/" + roomResponseBody.id + "/players",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + roomResponseBody.token,
           },
-          body: JSON.stringify({ name: formData.get(reqName) }),
+          body: JSON.stringify({ name: formData.get("roomName") }),
         }
       );
       const playerResponseBody = await playerResponse.json();
-      console.log(playerResponseBody, roomResponseBody);
 
       if (playerResponse.ok) {
         gameStateResponse.player = playerResponseBody;

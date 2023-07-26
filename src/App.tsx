@@ -4,13 +4,11 @@ import Game from "./components/Game";
 import Queue from "./components/Queue";
 import { useEffect } from "react";
 import getContext from "./utils/getContext";
-import Join from "./components/Join";
 import JoinQueue from "./components/JoinQueue";
 
 const App = () => {
-  // const hostUrl = "http://20.66.216.167";
-  const hostUrl = "http://localhost:8080";
-  const frontUrl = "http://localhost:8000";
+  const hostUrl : string = import.meta.env.VITE_API_URL || "http://localhost:8080";
+  const frontUrl : string =  import.meta.env.VITE_FRONT_URL || "http://localhost:80";
   window.sessionStorage.setItem("hostUrl", hostUrl);
   window.sessionStorage.setItem("frontUrl", frontUrl);
 

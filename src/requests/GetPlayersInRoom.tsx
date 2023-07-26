@@ -1,6 +1,6 @@
 import getHostUrl from "../utils/getHostUrl";
 
-const GetPlayersInRoom = async (roomId: string) => {
+const GetPlayersInRoom = async (roomId: string): Promise<Players> => {
   const r = await fetch(getHostUrl() + "/api/v1/room/" + roomId + "/players", {
     method: "GET",
     headers: {
@@ -10,7 +10,7 @@ const GetPlayersInRoom = async (roomId: string) => {
 
   if (r.ok) {
     const rb = await r.json();
-    return rb;
+    return rb as Players;
   } else {
     throw new Error("could not fetch queue." + JSON.stringify(r));
   }

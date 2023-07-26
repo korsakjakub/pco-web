@@ -1,23 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GetPlayersInQueue from "../requests/GetPlayersInQueue";
 import getContext from "../utils/getContext";
 import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
+import Spinner from "./Spinner";
 
 interface Props {
-  queueId: string;
+  onPlayerModified?: () => void;
   isAdmin: boolean;
 }
 
-const QueueList = ({ queueId, isAdmin }: Props) => {
+const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
   const ctx = getContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonIndexLoading, setButtonIndexLoading] = useState("");
   const [players, setPlayers] = useState<Players>({
     players: [],
   });
+  const prevPlayersLengthRef = useRef<number>(0);
+
   const fetchQueue = async () => {
     try {
-      const queueData = await GetPlayersInQueue(queueId);
+      const queueData = await GetPlayersInQueue(ctx.queueId);
       if (queueData === null) return;
+      if (
+        !isAdmin &&
+        queueData.players.length < prevPlayersLengthRef.current &&
+        players.players.filter((player) => player.id === ctx.playerId)
+          .length === 0
+      ) {
+        onPlayerModified?.();
+      }
+
       setPlayers(queueData);
+      prevPlayersLengthRef.current = queueData.players.length;
     } catch (error) {
       return error;
     }
@@ -37,13 +52,20 @@ const QueueList = ({ queueId, isAdmin }: Props) => {
   };
 
   useEffect(() => {
+    setIsLoading(false);
+    setButtonIndexLoading("");
+  }, [players]);
+
+  useEffect(() => {
     fetchQueue();
-    const intervalId = setInterval(fetchQueue, 5000);
+    const intervalId = setInterval(fetchQueue, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
 
   const handleAddToRoom = (playerId: string) => {
+    setIsLoading(true);
+    setButtonIndexLoading(playerId);
     acceptPlayer(playerId);
   };
 
@@ -63,6 +85,7 @@ const QueueList = ({ queueId, isAdmin }: Props) => {
                 onClick={() => handleAddToRoom(player.id)}
                 className="btn btn-primary"
               >
+                {isLoading && buttonIndexLoading === player.id && <Spinner />}
                 Add
               </button>
             )}

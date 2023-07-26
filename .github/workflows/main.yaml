@@ -1,0 +1,41 @@
+on:
+  push:
+
+env:
+  IMAGE_NAME: korsakjakub/pco-web
+
+jobs:
+  infer:
+    name: Infer branches
+    runs-on: ubuntu-latest
+    outputs:
+      branchType: ${{ steps.infer.outputs.branchType }}
+    steps:
+     - uses: actions/github-script@v6
+       id: infer
+       with:
+         script: |
+           const childProcess = require("child_process");
+           const branchName = '${{ github.ref_name }}';
+           const branchType = branchName.split('-')[0];
+           core.setOutput('branchType', branchType);
+           console.table({ branchType });
+  build-and-push-image:
+    name: Build and push container image
+    runs-on: ubuntu-latest
+    needs: infer
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get short sha
+        id: short-sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Docker Login
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ secrets.ARTIFACTORY_USERNAME }}
+          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.short-sha.outputs.sha }}

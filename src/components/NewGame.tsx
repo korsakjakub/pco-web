@@ -14,7 +14,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     setIsLoading(true);
     event.preventDefault();
 
-    var gameStateResponse: GameState = {
+    let gameStateResponse: GameState = {
       player: {
         chips: 0,
         id: "",
@@ -44,9 +44,9 @@ const NewGame = ({ onSuccess, onError }: Props) => {
       if (roomResponse.ok) {
         gameStateResponse.room = {
           id: roomResponseBody.id,
+          token: roomResponseBody.token,
           name: roomResponseBody.name,
           queueId: roomResponseBody.queueId,
-          token: roomResponseBody.token,
         };
       } else {
         onError(JSON.stringify(roomResponse));
@@ -60,7 +60,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
             "Content-Type": "application/json",
             Authorization: "Bearer " + roomResponseBody.token,
           },
-          body: JSON.stringify({ name: formData.get("roomName") }),
+          body: JSON.stringify({ name: formData.get("playerName") }),
         }
       );
       const playerResponseBody = await playerResponse.json();
@@ -71,7 +71,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
         onError(JSON.stringify(playerResponse));
       }
     } catch (error) {
-      onError && onError("Could not create a new game");
+      onError("Could not create a new game");
     } finally {
       setIsLoading(false);
     }

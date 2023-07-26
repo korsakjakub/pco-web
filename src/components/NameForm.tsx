@@ -2,11 +2,12 @@ import Spinner from "./Spinner";
 
 interface Props {
   name: string;
+  button: string;
   isLoading: boolean;
   onSubmit: (event: any) => void;
 }
 
-function NameForm({ name, isLoading, onSubmit }: Props) {
+function NameNameForm({ name, button, isLoading, onSubmit }: Props) {
   return (
     <form onSubmit={onSubmit} className="input-group mb-3">
       <input
@@ -23,10 +24,10 @@ function NameForm({ name, isLoading, onSubmit }: Props) {
         id={"new-" + name + "-button"}
       >
         {isLoading && <Spinner />}
-        New {name}
+        {button}
       </button>
     </form>
   );
 }
 
-export default NameForm;
+export default NameNameForm;

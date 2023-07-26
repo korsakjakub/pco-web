@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import getContext from "../utils/getContext";
 import GetPlayersInRoom from "../requests/GetPlayersInRoom";
 
 interface Props {
@@ -7,7 +6,6 @@ interface Props {
 }
 
 const PlayersList = ({ roomId }: Props) => {
-  const ctx = getContext();
   const [players, setPlayers] = useState<Players>({
     players: [],
   });

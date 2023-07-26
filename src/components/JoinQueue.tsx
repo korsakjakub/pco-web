@@ -1,15 +1,19 @@
 import { useState } from "react";
-import NameNameForm from "./NameNameForm";
-import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
+import NameForm from "./NameForm";
 import CreatePlayer from "../requests/CreatePlayer";
+import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
-  onSuccess: (gameState: GameState) => void;
-  onError: (response: string) => void;
+  onReturnFromJoin: (r: GameState) => void;
 }
 
-const Join = ({ onSuccess, onError }: Props) => {
+function JoinQueue({ onReturnFromJoin }: Props) {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { queueId } = useParams();
+
+  const qId = queueId ?? '';
 
   const joinGame = async (event: any) => {
     setIsLoading(true);
@@ -33,40 +37,42 @@ const Join = ({ onSuccess, onError }: Props) => {
     const formData = new FormData(event.target);
 
     try {
-      const queueIdData = formData.get("queueName");
-      const queueId = queueIdData !== null ? queueIdData.toString() : "";
       const playerNameData = formData.get("playerName");
-      const playerName = playerNameData !== null ? playerNameData.toString() : "";
+      const playerName =
+        playerNameData !== null ? playerNameData.toString() : "";
 
-      const player = await CreatePlayer(queueId, playerName);
-      const roomId = await GetRoomIdInQueue(queueId);
+      const player = await CreatePlayer(qId, playerName);
+      const roomId = await GetRoomIdInQueue(qId);
 
+      console.log(player)
+      console.log(roomId)
       gameStateResponse.player = player;
       gameStateResponse.room = {
-        queueId: queueId,
+        queueId: qId,
         id: roomId,
         name: "",
         token: "",
       };
     } catch (error) {
-      onError("Could not join the queue" + error);
+        throw new Error(JSON.stringify(error));
     } finally {
       setIsLoading(false);
     }
-    onSuccess(gameStateResponse);
+    onReturnFromJoin(gameStateResponse);
+    navigate("/queue/" + qId);
   };
-
   return (
     <>
-      <NameNameForm
-        nameFirst={"queue"}
-        nameSecond={"player"}
-        button={"Join"}
+      <h1>pco</h1>
+      <h1>Join Room</h1>
+      <NameForm
+        button="Join"
         isLoading={isLoading}
+        name={"player"}
         onSubmit={joinGame}
       />
     </>
   );
-};
+}
 
-export default Join;
+export default JoinQueue;

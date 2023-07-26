@@ -6,6 +6,7 @@ import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 import QueueList from "./QueueList";
 import PlayersList from "./PlayersList";
+import getFrontUrl from "../utils/getFrontUrl";
 
 const Game = () => {
   const [player, setPlayer] = useState<Player>({
@@ -18,7 +19,7 @@ const Game = () => {
 
   const ctx = getContext();
 
-  const isAdmin = () => ctx.roomToken !== "";
+  const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
   const onError = () => {
     return <h1>Error</h1>;
@@ -50,8 +51,9 @@ const Game = () => {
       <p>Game State: {JSON.stringify(player)}</p>
       <p>Context: {JSON.stringify(ctx)}</p>
       <PlayersList roomId={ctx.roomId} />
-      <QueueList isAdmin={isAdmin()} queueId={ctx.queueId} />
-      <ShareUrlAlert url={getHostUrl()} queueId={ctx.queueId} />
+      <p>{JSON.stringify({isAdmin: isAdmin()})}</p>
+      <QueueList isAdmin={isAdmin()}/>
+      <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NameNameForm from "./NameNameForm";
 import getHostUrl from "../utils/getHostUrl";
+import GameState from "../interfaces/GameState";
 
 interface Props {
   onSuccess: (gameState: GameState) => void;

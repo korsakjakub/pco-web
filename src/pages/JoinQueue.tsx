@@ -1,8 +1,9 @@
 import { useState } from "react";
-import NameForm from "./NameForm";
+import NameForm from "../components/NameForm";
 import CreatePlayer from "../requests/CreatePlayer";
 import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
 import { useNavigate, useParams } from "react-router-dom";
+import GameState from "../interfaces/GameState";
 
 interface Props {
   onReturnFromJoin: (r: GameState) => void;

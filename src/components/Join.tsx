@@ -2,6 +2,7 @@ import { useState } from "react";
 import NameNameForm from "./NameNameForm";
 import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
 import CreatePlayer from "../requests/CreatePlayer";
+import GameState from "../interfaces/GameState";
 
 interface Props {
   onSuccess: (gameState: GameState) => void;

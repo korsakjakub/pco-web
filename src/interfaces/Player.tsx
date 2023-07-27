@@ -5,3 +5,5 @@ interface Player {
   stakedChips: number;
   token: string;
 }
+
+export default Player;

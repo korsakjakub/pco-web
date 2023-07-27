@@ -1,16 +1,19 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import Game from "./components/Game";
-import Queue from "./components/Queue";
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+import Queue from "./pages/Queue";
 import { useEffect } from "react";
 import getContext from "./utils/getContext";
-import JoinQueue from "./components/JoinQueue";
+import JoinQueue from "./pages/JoinQueue";
+import GameState from "./interfaces/GameState";
 
 const App = () => {
-  const hostUrl : string = import.meta.env.VITE_API_URL || "http://localhost:8080";
-  const frontUrl : string =  import.meta.env.VITE_FRONT_URL || "http://localhost:80";
+  const hostUrl : string = import.meta.env.VITE_API_URL || "VITE_API_URL";
+  const frontUrl : string =  import.meta.env.VITE_FRONT_URL || "VITE_FRONT_URL";
   window.sessionStorage.setItem("hostUrl", hostUrl);
   window.sessionStorage.setItem("frontUrl", frontUrl);
+  console.log(hostUrl)
+  console.log(frontUrl)
 
   const onReturn = (r: GameState) => {
     window.sessionStorage.setItem(

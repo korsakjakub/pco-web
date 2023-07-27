@@ -3,6 +3,7 @@ import GetPlayersInQueue from "../requests/GetPlayersInQueue";
 import getContext from "../utils/getContext";
 import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
 import Spinner from "./Spinner";
+import Player from "../interfaces/Player";
 
 interface Props {
   onPlayerModified?: () => void;
@@ -13,9 +14,7 @@ const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
   const ctx = getContext();
   const [isLoading, setIsLoading] = useState(false);
   const [buttonIndexLoading, setButtonIndexLoading] = useState("");
-  const [players, setPlayers] = useState<Players>({
-    players: [],
-  });
+  const [players, setPlayers] = useState<Player[]>([]);
   const prevPlayersLengthRef = useRef<number>(0);
 
   const fetchQueue = async () => {
@@ -24,17 +23,17 @@ const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
       if (queueData === null) return;
       if (
         !isAdmin &&
-        queueData.players.length < prevPlayersLengthRef.current &&
-        players.players.filter((player) => player.id === ctx.playerId)
+        queueData.length < prevPlayersLengthRef.current &&
+        players.filter((player) => player.id === ctx.playerId)
           .length === 0
       ) {
         onPlayerModified?.();
       }
 
       setPlayers(queueData);
-      prevPlayersLengthRef.current = queueData.players.length;
+      prevPlayersLengthRef.current = queueData.length;
     } catch (error) {
-      return error;
+      throw new Error("could not fetch queue: " + JSON.stringify(error));
     }
   };
 
@@ -73,10 +72,10 @@ const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
     <>
       <p>Queue:</p>
       <ul className="list-group">
-        {players.players.length === 0 && (
+        {players.length === 0 && (
           <li className="list-group-item">No players in queue</li>
         )}
-        {players.players.map((player) => (
+        {players.map((player) => (
           <li className="list-group-item" key={player.id}>
             <p>Name: {player.name}</p>
             <p>Id: {player.id}</p>

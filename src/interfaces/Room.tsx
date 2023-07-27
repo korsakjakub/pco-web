@@ -4,3 +4,5 @@ interface Room {
   token: string;
   queueId: string;
 }
+
+export default Room;

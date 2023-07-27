@@ -1,3 +1,4 @@
+import Player from "../interfaces/Player";
 import getHostUrl from "../utils/getHostUrl";
 
 const CreatePlayer = async (queueId: string, playerName: string) => {

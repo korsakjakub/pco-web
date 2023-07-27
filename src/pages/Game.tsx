@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import ShareUrlAlert from "./ShareUrlAlert";
+import ShareUrlAlert from "../components/ShareUrlAlert";
 import { useParams } from "react-router-dom";
 import GetPlayer from "../requests/GetPlayer";
 import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
-import QueueList from "./QueueList";
-import PlayersList from "./PlayersList";
+import QueueList from "../components/QueueList";
+import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
+import Player from "../interfaces/Player";
 
 const Game = () => {
   const [player, setPlayer] = useState<Player>({

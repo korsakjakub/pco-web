@@ -1,10 +1,12 @@
+import Player from "../interfaces/Player";
+
 const GetPlayer = async (
   hostUrl: string,
   roomId: string,
   playerId: string,
   playerToken: string
-) => {
-  const playerResponse = await fetch(
+): Promise<Player> => {
+  const r = await fetch(
     hostUrl + "/api/v1/player/" + playerId + "?roomId=" + roomId,
     {
       method: "GET",
@@ -15,11 +17,11 @@ const GetPlayer = async (
     }
   );
 
-  if (playerResponse.ok) {
-    const playerResponseBody = await playerResponse.json();
-    return playerResponseBody;
+  if (r.ok) {
+    const rb = await r.json();
+    return rb as Player;
   } else {
-    throw new Error("could not fetch player." + JSON.stringify(playerResponse));
+    throw new Error("could not fetch player." + JSON.stringify(r));
   }
 };
 

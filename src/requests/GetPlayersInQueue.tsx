@@ -1,6 +1,7 @@
+import Player from "../interfaces/Player";
 import getHostUrl from "../utils/getHostUrl";
 
-const GetPlayersInQueue = async (queueId: string) => {
+const GetPlayersInQueue = async (queueId: string): Promise<Player[]> => {
   const r = await fetch(
     getHostUrl() + "/api/v1/queue/" + queueId + "/players",
     {
@@ -13,7 +14,7 @@ const GetPlayersInQueue = async (queueId: string) => {
 
   if (r.ok) {
     const rb = await r.json();
-    return rb;
+    return rb.players as Player[];
   } else {
     throw new Error("could not fetch queue." + JSON.stringify(r));
   }

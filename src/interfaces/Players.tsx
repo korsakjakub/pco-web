@@ -1,3 +1,0 @@
-interface Players {
-  players: Player[];
-}

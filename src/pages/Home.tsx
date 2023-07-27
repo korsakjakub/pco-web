@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import NewGame from "./NewGame";
-import Join from "./Join";
+import NewGame from "../components/NewGame";
+import Join from "../components/Join";
+import GameState from "../interfaces/GameState";
 
 interface Props {
   onReturnFromHome: (r: GameState) => void;

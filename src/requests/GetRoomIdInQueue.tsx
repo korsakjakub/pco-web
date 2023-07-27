@@ -1,6 +1,6 @@
 import getHostUrl from "../utils/getHostUrl";
 
-const GetRoomIdInQueue = async (queueId: string) => {
+const GetRoomIdInQueue = async (queueId: string): Promise<string> => {
   const r = await fetch(
     getHostUrl() + "/api/v1/queue/" + queueId + "/roomid",
     {

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import GetPlayersInRoom from "../requests/GetPlayersInRoom";
+import Player from "../interfaces/Player";
 
 interface Props {
   roomId: string;
 }
 
 const PlayersList = ({ roomId }: Props) => {
-  const [players, setPlayers] = useState<Players>({
-    players: [],
-  });
+  const [players, setPlayers] = useState<Player[]>([]);
   const fetchPlayers = async () => {
     try {
       const playersData = await GetPlayersInRoom(roomId);
@@ -21,7 +20,7 @@ const PlayersList = ({ roomId }: Props) => {
 
   useEffect(() => {
     fetchPlayers();
-    const intervalId = setInterval(fetchPlayers, 5000);
+    const intervalId = setInterval(fetchPlayers, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -30,10 +29,10 @@ const PlayersList = ({ roomId }: Props) => {
     <>
       <p>players:</p>
       <ul className="list-group">
-        {players.players.length === 0 && (
+        {players.length === 0 && (
           <li className="list-group-item">No players in room</li>
         )}
-        {players.players.map((player) => (
+        {players.map((player) => (
           <li className="list-group-item" key={player.id}>
             <p>Name: {player.name}</p>
             <p>Id: {player.id}</p>

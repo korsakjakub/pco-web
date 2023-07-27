@@ -45,8 +45,6 @@ function JoinQueue({ onReturnFromJoin }: Props) {
       const player = await CreatePlayer(qId, playerName);
       const roomId = await GetRoomIdInQueue(qId);
 
-      console.log(player)
-      console.log(roomId)
       gameStateResponse.player = player;
       gameStateResponse.room = {
         queueId: qId,

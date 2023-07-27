@@ -1,8 +1,8 @@
 import { useState } from "react";
-import NameNameForm from "./NameNameForm";
 import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
 import CreatePlayer from "../requests/CreatePlayer";
 import GameState from "../interfaces/GameState";
+import TwoInputForm from "./TwoInputForm";
 
 interface Props {
   onSuccess: (gameState: GameState) => void;
@@ -34,10 +34,11 @@ const Join = ({ onSuccess, onError }: Props) => {
     const formData = new FormData(event.target);
 
     try {
-      const queueIdData = formData.get("queueName");
+      const queueIdData = formData.get("queueId");
       const queueId = queueIdData !== null ? queueIdData.toString() : "";
       const playerNameData = formData.get("playerName");
-      const playerName = playerNameData !== null ? playerNameData.toString() : "";
+      const playerName =
+        playerNameData !== null ? playerNameData.toString() : "";
 
       const player = await CreatePlayer(queueId, playerName);
       const roomId = await GetRoomIdInQueue(queueId);
@@ -59,9 +60,9 @@ const Join = ({ onSuccess, onError }: Props) => {
 
   return (
     <>
-      <NameNameForm
-        nameFirst={"queue"}
-        nameSecond={"player"}
+      <TwoInputForm
+        first={{ value: "queueId", hint: "queue id", isId: true }}
+        second={{ value: "playerName", hint: "player name", isId: false }}
         button={"Join"}
         isLoading={isLoading}
         onSubmit={joinGame}

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import GetPlayersInQueue from "../requests/GetPlayersInQueue";
 import getContext from "../utils/getContext";
 import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
-import Spinner from "./Spinner";
 import Player from "../interfaces/Player";
+import { Button, Col, ListGroup, ListGroupItem, Row, Spinner } from "react-bootstrap";
 
 interface Props {
   onPlayerModified?: () => void;
@@ -24,8 +24,7 @@ const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
       if (
         !isAdmin &&
         queueData.length < prevPlayersLengthRef.current &&
-        players.filter((player) => player.id === ctx.playerId)
-          .length === 0
+        players.filter((player) => player.id === ctx.playerId).length === 0
       ) {
         onPlayerModified?.();
       }
@@ -70,27 +69,28 @@ const QueueList = ({ onPlayerModified, isAdmin }: Props) => {
 
   return (
     <>
-      <p>Queue:</p>
-      <ul className="list-group">
+      <ListGroup>
         {players.length === 0 && (
-          <li className="list-group-item">No players in queue</li>
+          <ListGroupItem>No players in queue</ListGroupItem>
         )}
         {players.map((player) => (
-          <li className="list-group-item" key={player.id}>
-            <p>Name: {player.name}</p>
-            <p>Id: {player.id}</p>
+          <ListGroupItem key={player.id}>
+            <Row>
+              <Col>Name: {player.name}</Col>
+              <Col>Id: {player.id}</Col>
             {isAdmin && (
-              <button
-                onClick={() => handleAddToRoom(player.id)}
-                className="btn btn-primary"
-              >
-                {isLoading && buttonIndexLoading === player.id && <Spinner />}
-                Add
-              </button>
+              <Col>
+                <Button variant="outline-success" onClick={() => handleAddToRoom(player.id)}>
+                  {isLoading && buttonIndexLoading === player.id && <Spinner />}
+                  Add
+                </Button>
+                <Button variant="outline-danger">Kick out</Button>
+              </Col>
             )}
-          </li>
+            </Row>
+          </ListGroupItem>
         ))}
-      </ul>
+      </ListGroup>
     </>
   );
 };

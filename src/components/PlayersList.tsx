@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GetPlayersInRoom from "../requests/GetPlayersInRoom";
 import Player from "../interfaces/Player";
+import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 
 interface Props {
   roomId: string;
@@ -27,18 +28,22 @@ const PlayersList = ({ roomId }: Props) => {
 
   return (
     <>
-      <p>players:</p>
-      <ul className="list-group">
+      <ListGroup>
         {players.length === 0 && (
-          <li className="list-group-item">No players in room</li>
+          <ListGroupItem>No players in room</ListGroupItem>
         )}
+        {players.length  + " / 9"}
         {players.map((player) => (
-          <li className="list-group-item" key={player.id}>
-            <p>Name: {player.name}</p>
-            <p>Id: {player.id}</p>
-          </li>
+          <ListGroupItem key={player.id}>
+            <Container>
+              <Row>
+                <Col>Name: {player.name}</Col>
+                <Col>Id: {player.id}</Col>
+              </Row>
+            </Container>
+          </ListGroupItem>
         ))}
-      </ul>
+      </ListGroup>
     </>
   );
 };

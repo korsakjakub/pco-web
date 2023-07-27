@@ -8,6 +8,7 @@ import QueueList from "../components/QueueList";
 import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
+import { Col, Container, Row } from "react-bootstrap";
 
 const Game = () => {
   const [player, setPlayer] = useState<Player>({
@@ -47,15 +48,28 @@ const Game = () => {
   const { roomId } = useParams();
 
   return (
-    <>
-      <h1>Room {roomId}</h1>
-      <p>Game State: {JSON.stringify(player)}</p>
-      <p>Context: {JSON.stringify(ctx)}</p>
-      <PlayersList roomId={ctx.roomId} />
-      <p>{JSON.stringify({isAdmin: isAdmin()})}</p>
-      <QueueList isAdmin={isAdmin()}/>
-      <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
-    </>
+    <Container>
+      <Row>
+        <h1>Room {roomId}</h1>
+        <p>Game State: {JSON.stringify(player)}</p>
+        <p>Context: {JSON.stringify(ctx)}</p>
+        <p>{JSON.stringify({ isAdmin: isAdmin() })}</p>
+      </Row>
+      <Row>
+        <Col md>
+          <Row>
+            <PlayersList roomId={ctx.roomId} />
+          </Row>
+          <Row>
+            <QueueList isAdmin={isAdmin()} />
+          </Row>
+          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
+        </Col>
+        <Col md>
+          <h1>Game State</h1>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

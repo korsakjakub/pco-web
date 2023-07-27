@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NewGame from "../components/NewGame";
 import Join from "../components/Join";
 import GameState from "../interfaces/GameState";
+import { Col, Container, Row } from "react-bootstrap";
 
 interface Props {
   onReturnFromHome: (r: GameState) => void;
@@ -25,13 +26,19 @@ const Home = ({ onReturnFromHome }: Props) => {
   };
 
   return (
-    <>
+    <Container>
       <h1>pco</h1>
-      <h2>create a new room</h2>
-      <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
-      <h2>or join an existing room</h2>
-      <Join onError={handleError} onSuccess={handleJoinSuccess} />
-    </>
+      <Row>
+        <Col md>
+          <h2>create a new room</h2>
+          <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
+        </Col>
+        <Col md>
+          <h2>or join an existing room</h2>
+          <Join onError={handleError} onSuccess={handleJoinSuccess} />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

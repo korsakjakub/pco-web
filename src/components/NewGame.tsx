@@ -1,7 +1,7 @@
 import { useState } from "react";
-import NameNameForm from "./NameNameForm";
 import getHostUrl from "../utils/getHostUrl";
 import GameState from "../interfaces/GameState";
+import TwoInputForm from "./TwoInputForm";
 
 interface Props {
   onSuccess: (gameState: GameState) => void;
@@ -81,11 +81,11 @@ const NewGame = ({ onSuccess, onError }: Props) => {
 
   return (
     <>
-      <NameNameForm
-        isLoading={isLoading}
-        nameFirst="room"
-        nameSecond="player"
+      <TwoInputForm
+        first={{ value: "roomName", hint: "room name", isId: false }}
+        second={{ value: "playerName", hint: "player name", isId: false }}
         button="New game"
+        isLoading={isLoading}
         onSubmit={newGame}
       />
     </>

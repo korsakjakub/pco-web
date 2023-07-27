@@ -12,8 +12,6 @@ const App = () => {
   const frontUrl : string =  import.meta.env.VITE_FRONT_URL || "VITE_FRONT_URL";
   window.sessionStorage.setItem("hostUrl", hostUrl);
   window.sessionStorage.setItem("frontUrl", frontUrl);
-  console.log(hostUrl)
-  console.log(frontUrl)
 
   const onReturn = (r: GameState) => {
     window.sessionStorage.setItem(
@@ -27,9 +25,6 @@ const App = () => {
       })
     );
   };
-  useEffect(() => {
-    console.log(getContext())
-  }, [])
 
   return (
     <>

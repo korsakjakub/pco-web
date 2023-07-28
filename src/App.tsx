@@ -2,14 +2,13 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 import Queue from "./pages/Queue";
-import { useEffect } from "react";
-import getContext from "./utils/getContext";
 import JoinQueue from "./pages/JoinQueue";
 import GameState from "./interfaces/GameState";
+import Config from "../config/config.json";
 
 const App = () => {
-  const hostUrl : string = import.meta.env.VITE_API_URL || "VITE_API_URL";
-  const frontUrl : string =  import.meta.env.VITE_FRONT_URL || "VITE_FRONT_URL";
+  const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "http://localhost:8080";
+  const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "http://localhost";
   window.sessionStorage.setItem("hostUrl", hostUrl);
   window.sessionStorage.setItem("frontUrl", frontUrl);
 

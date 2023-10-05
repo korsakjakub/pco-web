@@ -5,6 +5,9 @@ import Queue from "./pages/Queue";
 import JoinQueue from "./pages/JoinQueue";
 import GameState from "./interfaces/GameState";
 import Config from "../config/config.json";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "http://localhost:8080";
@@ -26,14 +29,14 @@ const App = () => {
   };
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={<Home onReturnFromHome={onReturn} />} />
         <Route path={"/join/:queueId"} element={<JoinQueue onReturnFromJoin={onReturn} />} />
         <Route path={"/game/:roomId"} element={<Game />} />
         <Route path={"/queue/:queueId"} element={<Queue />} />
       </Routes>
-    </>
+    </QueryClientProvider>
   );
 };
 

@@ -6,6 +6,7 @@ import JoinQueue from "./pages/JoinQueue";
 import GameState from "./interfaces/GameState";
 import Config from "../config/config.json";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "./assets/index.css";
 
 const queryClient = new QueryClient();
 

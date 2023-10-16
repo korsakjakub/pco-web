@@ -1,7 +1,7 @@
 import { useState } from "react";
 import getHostUrl from "../utils/getHostUrl";
 import GameState from "../interfaces/GameState";
-import TwoInputForm from "./TwoInputForm";
+import NameForm from "./NameForm";
 
 interface Props {
   onSuccess: (gameState: GameState) => void;
@@ -62,7 +62,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
             Authorization: "Bearer " + roomResponseBody.token,
           },
           body: JSON.stringify({ name: formData.get("playerName") }),
-        }
+        },
       );
       const playerResponseBody = await playerResponse.json();
 
@@ -81,11 +81,10 @@ const NewGame = ({ onSuccess, onError }: Props) => {
 
   return (
     <>
-      <TwoInputForm
-        first={{ value: "roomName", hint: "room name", isId: false }}
-        second={{ value: "playerName", hint: "player name", isId: false }}
+      <NameForm
         button="New game"
         isLoading={isLoading}
+        name="player"
         onSubmit={newGame}
       />
     </>

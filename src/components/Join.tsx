@@ -1,11 +1,11 @@
 import { useState } from "react";
 import GetRoomIdInQueue from "../requests/GetRoomIdInQueue";
 import CreatePlayer from "../requests/CreatePlayer";
-import GameState from "../interfaces/GameState";
 import TwoInputForm from "./TwoInputForm";
+import Context from "../interfaces/Context";
 
 interface Props {
-  onSuccess: (gameState: GameState) => void;
+  onSuccess: (response: Context) => void;
   onError: (response: string) => void;
 }
 
@@ -16,21 +16,6 @@ const Join = ({ onSuccess, onError }: Props) => {
     setIsLoading(true);
     event.preventDefault();
 
-    let gameStateResponse: GameState = {
-      player: {
-        chips: 0,
-        id: "",
-        name: "",
-        stakedChips: 0,
-        token: "",
-      },
-      room: {
-        id: "",
-        name: "",
-        queueId: "",
-        token: "",
-      },
-    };
     const formData = new FormData(event.target);
 
     try {
@@ -43,19 +28,19 @@ const Join = ({ onSuccess, onError }: Props) => {
       const player = await CreatePlayer(queueId, playerName);
       const roomId = await GetRoomIdInQueue(queueId);
 
-      gameStateResponse.player = player;
-      gameStateResponse.room = {
+      onSuccess({
+        playerId: player.id,
+        playerToken: player.token,
         queueId: queueId,
-        id: roomId,
-        name: "",
-        token: "",
-      };
+        roomId: roomId,
+        roomName: '',
+        roomToken: '',
+      } as Context);
     } catch (error) {
       onError("Could not join the queue" + error);
     } finally {
       setIsLoading(false);
     }
-    onSuccess(gameStateResponse);
   };
 
   return (

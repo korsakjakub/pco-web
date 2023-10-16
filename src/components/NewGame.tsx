@@ -1,10 +1,10 @@
 import { useState } from "react";
 import getHostUrl from "../utils/getHostUrl";
-import GameState from "../interfaces/GameState";
 import NameForm from "./NameForm";
+import Context from "../interfaces/Context";
 
 interface Props {
-  onSuccess: (gameState: GameState) => void;
+  onSuccess: (response: Context) => void;
   onError: (response: string) => void;
 }
 
@@ -15,21 +15,6 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     setIsLoading(true);
     event.preventDefault();
 
-    let gameStateResponse: GameState = {
-      player: {
-        chips: 0,
-        id: "",
-        name: "",
-        stakedChips: 0,
-        token: "",
-      },
-      room: {
-        id: "",
-        name: "",
-        queueId: "",
-        token: "",
-      },
-    };
     const formData = new FormData(event.target);
 
     try {
@@ -42,14 +27,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
       });
       const roomResponseBody = await roomResponse.json();
 
-      if (roomResponse.ok) {
-        gameStateResponse.room = {
-          id: roomResponseBody.id,
-          token: roomResponseBody.token,
-          name: roomResponseBody.name,
-          queueId: roomResponseBody.queueId,
-        };
-      } else {
+      if (!roomResponse.ok) {
         onError(JSON.stringify(roomResponse));
       }
 
@@ -66,28 +44,32 @@ const NewGame = ({ onSuccess, onError }: Props) => {
       );
       const playerResponseBody = await playerResponse.json();
 
-      if (playerResponse.ok) {
-        gameStateResponse.player = playerResponseBody;
-      } else {
+      if (!playerResponse.ok) {
         onError(JSON.stringify(playerResponse));
       }
+
+      onSuccess({
+        playerId: playerResponseBody.id,
+        playerToken: playerResponseBody.token,
+        queueId: roomResponseBody.queueId,
+        roomId: roomResponseBody.id,
+        roomName: roomResponseBody.name,
+        roomToken: roomResponseBody.token,
+      } as Context);
     } catch (error) {
       onError("Could not create a new game");
     } finally {
       setIsLoading(false);
     }
-    onSuccess(gameStateResponse);
   };
 
   return (
-    <>
-      <NameForm
-        button="New game"
-        isLoading={isLoading}
-        name="player"
-        onSubmit={newGame}
-      />
-    </>
+    <NameForm
+      button="New game"
+      isLoading={isLoading}
+      name="player"
+      onSubmit={newGame}
+    />
   );
 };
 

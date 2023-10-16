@@ -3,10 +3,10 @@ import Home from "./pages/Home";
 import Game from "./pages/Game";
 import Queue from "./pages/Queue";
 import JoinQueue from "./pages/JoinQueue";
-import GameState from "./interfaces/GameState";
 import Config from "../config/config.json";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./assets/index.css";
+import Context from "./interfaces/Context";
 
 const queryClient = new QueryClient();
 
@@ -16,15 +16,15 @@ const App = () => {
   window.sessionStorage.setItem("hostUrl", hostUrl);
   window.sessionStorage.setItem("frontUrl", frontUrl);
 
-  const onReturn = (r: GameState) => {
+  const onReturn = (r: Context) => {
     window.sessionStorage.setItem(
       "ctx",
       JSON.stringify({
-        playerId: r.player.id,
-        playerToken: r.player.token,
-        roomId: r.room.id,
-        queueId: r.room.queueId,
-        roomToken: r.room.token ? r.room.token : null,
+        playerId: r.playerId,
+        playerToken: r.playerToken,
+        roomId: r.roomId,
+        queueId: r.queueId,
+        roomToken: r.roomToken || null,
       })
     );
   };

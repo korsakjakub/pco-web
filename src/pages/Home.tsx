@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import NewGame from "../components/NewGame";
 import Join from "../components/Join";
-import GameState from "../interfaces/GameState";
 import { Col, Container, Row } from "react-bootstrap";
+import Context from "../interfaces/Context";
 
 interface Props {
-  onReturnFromHome: (r: GameState) => void;
+  onReturnFromHome: (r: Context) => void;
 }
 
 const Home = ({ onReturnFromHome }: Props) => {
@@ -15,14 +15,14 @@ const Home = ({ onReturnFromHome }: Props) => {
     throw new Error(responseBody);
   };
 
-  const handleNewGameSuccess = (gameState: GameState) => {
-    onReturnFromHome(gameState);
-    navigate("game/" + gameState.room.id);
+  const handleNewGameSuccess = (context: Context) => {
+    onReturnFromHome(context);
+    navigate("game/" + context.roomId);
   };
 
-  const handleJoinSuccess = (gameState: GameState) => {
-    onReturnFromHome(gameState);
-    navigate("queue/" + gameState.room.queueId);
+  const handleJoinSuccess = (context: Context) => {
+    onReturnFromHome(context);
+    navigate("queue/" + context.queueId);
   };
 
   return (

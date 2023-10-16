@@ -1,36 +1,56 @@
+.circular-table-wrapper {
+  position: relative;
+  min-height: 400px;
+}
 .circular-table {
-    position: relative;
-    min-height: 300px;
-    max-width: 60rem;
-    background-color: #35654d;
-    border: 2px solid #000;
-    border-radius: 50%;
-    margin: 0 auto;
-    margin-top: 10vh;
+  position: absolute;
+  height: 90%; /* keep within parent with space to spare*/
+  width: 90%;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  left: 50%; /* exact position */
+  top: 50%;
+  background-color: #35654d;
+  border: 3px solid var(--bs-dark-border-subtle);
+  border-radius: 50%;
+}
+
+.staked-chips {
+  position: absolute;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  left: 50%;
+  top: 50%;
+  color: #fff;
+}
+
+.player-chips {
+  position: absolute;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  min-width: 4rem;
+  min-height: 2rem;
+  border: 3px solid var(--bs-dark-border-subtle);
+  background-color: #fff;
+  border-radius: 40%;
+  text-align: center;
+  color: var(--bs-gray-900);
 }
 
 .player-frame {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 10rem;
-    /* width: 15vw;
-    height: 10vh; */
-    background-color: #fff;
-    border: 4px solid #000;
-    border-radius: 40px;
+  position: absolute;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  max-width: 10rem;
+  background-color: #fff;
+  border: 3px solid var(--bs-dark-border-subtle);
+  border-radius: 40%;
+  min-width: 8rem;
+  text-align: center;
 }
 
-.player-avatar img {
-    max-width: 3rem;
-    border-radius: 50%;
+.player-frame-name {
+  margin-top: 5px;
+  color: var(--bs-gray-900)
 }
 
-.player-info {
-    margin-top: 1vh;
-    line-height: 10pt;
-    min-width: 8rem;
-    text-align: center;
+.player-frame-chips {
+  margin-bottom: 5px;
+  color: var(--bs-gray-900)
 }

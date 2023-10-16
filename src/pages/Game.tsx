@@ -50,10 +50,10 @@ const Game = () => {
   const { roomId } = useParams();
 
   const players: Player[] = [
-    {name: "Jakub", chips: 1000, id: "1", stakedChips: 0, token: "token"},
-    {name: "Ola", chips: 500, id: "2", stakedChips: 0, token: "token"},
-    {name: "Eleonorka", chips: 200, id: "3", stakedChips: 0, token: "token"},
-    {name: "Rysiu", chips: 10, id: "4", stakedChips: 0, token: "token"},
+    {name: "Jakub", chips: 1000, id: "1", stakedChips: 100, token: "token"},
+    {name: "Ola", chips: 3890, id: "2", stakedChips: 50, token: "token"},
+    {name: "Eleonorka", chips: 1200, id: "3", stakedChips: 0, token: "token"},
+    {name: "Ryszard", chips: 1200, id: "4", stakedChips: 0, token: "token"},
     {name: "Franek", chips: 50, id: "5", stakedChips: 0, token: "token"},
   ]
 

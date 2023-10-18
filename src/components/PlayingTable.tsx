@@ -1,5 +1,6 @@
 import { Spinner } from "react-bootstrap";
 import Player from "../interfaces/Player";
+import getContext from "../utils/getContext";
 
 type Props = {
   players: Player[];
@@ -9,6 +10,18 @@ type Props = {
 };
 
 const PlayingTable = ({ players, stakedChips, isLoading, currentPlayer }: Props) => {
+  const ctx = getContext();
+
+  const shiftPlayers = (players: Player[]): Player[] => {
+    const length = players.length;
+    const positionsToShift = players.findIndex(player => player.id === ctx.playerId);
+    const shift = (length + positionsToShift) % length;
+
+    return players.map((_, index, array) => array[(index - shift + length) % length]);
+  }
+
+  const shiftedPlayers = shiftPlayers(players);
+
   const phi = (2 * Math.PI) / players.length;
 
   const coords = (i: number, radius: number) => {
@@ -30,7 +43,7 @@ const PlayingTable = ({ players, stakedChips, isLoading, currentPlayer }: Props)
       {isLoading && <Spinner />}
       {!isLoading &&
         players.length > 0 &&
-        players.map((player, index) => {
+        shiftedPlayers.map((player, index) => {
           return (
             <div key={player.id}>
               <div className={playerFrameCls(player)} style={coords(index, 40)}>

@@ -1,21 +1,11 @@
-import GetPlayersInRoom from "../requests/GetPlayersInRoom";
 import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
-import { useQuery } from "@tanstack/react-query";
+import Player from "../interfaces/Player";
 
 interface Props {
-  roomId: string;
+  players: Player[];
 }
 
-const PlayersList = ({ roomId }: Props) => {
-  const { data: players, isLoading } = useQuery({
-    queryFn: () => GetPlayersInRoom(roomId),
-    queryKey: ["players"],
-  });
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
-
+const PlayersList = ({ players }: Props) => {
   return (
     <>
       <ListGroup>

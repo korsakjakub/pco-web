@@ -43,7 +43,7 @@ const Game = () => {
       {game?.state === GameState.WAITING && 
       <>
           <Row>
-            <PlayersList roomId={ctx.roomId} />
+          <PlayersList players={playersInRoom || []} />
           </Row>
           <Row>
             <QueueList isAdmin={isAdmin()} />

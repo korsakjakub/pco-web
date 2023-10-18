@@ -6,7 +6,6 @@ import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
 import { Container, Row, Spinner } from "react-bootstrap";
 import PlayingTable from "../components/PlayingTable";
-import PlayerActions from "../components/PlayerActions";
 import { useQuery } from "@tanstack/react-query";
 import GetPlayersInRoom from "../requests/GetPlayersInRoom";
 import { GameState } from "../enums/GameState";
@@ -42,13 +41,13 @@ const Game = () => {
     <Container>
       {game?.state === GameState.WAITING && 
       <>
-          <Row>
+        <Row>
           <PlayersList players={playersInRoom || []} />
-          </Row>
-          <Row>
-            <QueueList isAdmin={isAdmin()} />
-          </Row>
-          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
+        </Row>
+        <Row>
+          <QueueList isAdmin={isAdmin()} />
+        </Row>
+        <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
       </>
       }
       <PlayingTable

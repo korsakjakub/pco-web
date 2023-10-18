@@ -1,7 +1,13 @@
+#root {
+  max-width: 900px;
+  margin-inline: auto;
+}
+
 .circular-table-wrapper {
   position: relative;
   min-height: 400px;
 }
+
 .circular-table {
   position: absolute;
   height: 90%; /* keep within parent with space to spare*/
@@ -39,10 +45,23 @@
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   max-width: 10rem;
   background-color: #fff;
-  border: 3px solid var(--bs-dark-border-subtle);
   border-radius: 40%;
   min-width: 8rem;
   text-align: center;
+  border: 3px solid var(--bs-dark-border-subtle);
+}
+
+.frame-active {
+  animation: glow 3s infinite alternate; /* Apply the glow animation */
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.7); /* Initial shadow with glow effect */
+  }
+  100% {
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5); /* Glowing shadow effect */
+  }
 }
 
 .player-frame-name {

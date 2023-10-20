@@ -6,14 +6,15 @@ interface Props {
 }
 
 const PlayersList = ({ players }: Props) => {
+
   return (
     <>
       <ListGroup>
-        {players?.length === 0 && (
+        {players.length === 0 && (
           <ListGroupItem>No players in room</ListGroupItem>
         )}
-        {players?.length  + " / 9"}
-        {players?.map((player) => (
+        {players.length  + " / 9"}
+        {players.map((player) => (
           <ListGroupItem key={player.id}>
             <Container>
               <Row>

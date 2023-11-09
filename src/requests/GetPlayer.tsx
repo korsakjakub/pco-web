@@ -1,18 +1,16 @@
 import Player from "../interfaces/Player";
+import getContext from "../utils/getContext";
+import getHostUrl from "../utils/getHostUrl";
 
-const GetPlayer = async (
-  hostUrl: string,
-  roomId: string,
-  playerId: string,
-  playerToken: string
-): Promise<Player> => {
+const GetPlayer = async (): Promise<Player> => {
+  const ctx = getContext();
   const r = await fetch(
-    hostUrl + "/api/v1/player/" + playerId + "?roomId=" + roomId,
+    getHostUrl() + "/api/v1/player/" + ctx.playerId + "?roomId=" + ctx.roomId,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + playerToken,
+        Authorization: "Bearer " + ctx.playerToken,
       },
     }
   );

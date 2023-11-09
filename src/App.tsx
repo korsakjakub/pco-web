@@ -11,34 +11,34 @@ import Context from "./interfaces/Context";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "http://localhost:8080";
-  const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "http://localhost";
-  window.sessionStorage.setItem("hostUrl", hostUrl);
-  window.sessionStorage.setItem("frontUrl", frontUrl);
+    const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "http://localhost:8080";
+    const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "http://localhost";
+    window.sessionStorage.setItem("hostUrl", hostUrl);
+    window.sessionStorage.setItem("frontUrl", frontUrl);
 
-  const onReturn = (r: Context) => {
-    window.sessionStorage.setItem(
-      "ctx",
-      JSON.stringify({
-        playerId: r.playerId,
-        playerToken: r.playerToken,
-        roomId: r.roomId,
-        queueId: r.queueId,
-        roomToken: r.roomToken || null,
-      })
+    const onReturn = (r: Context) => {
+        window.sessionStorage.setItem(
+            "ctx",
+            JSON.stringify({
+                playerId: r.playerId,
+                playerToken: r.playerToken,
+                roomId: r.roomId,
+                queueId: r.queueId,
+                roomToken: r.roomToken || null,
+            })
+        );
+    };
+
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Routes>
+                <Route path="/" element={<Home onReturnFromHome={onReturn} />} />
+                <Route path={"/join/:queueId"} element={<JoinQueue onReturnFromJoin={onReturn} />} />
+                <Route path={"/game/:roomId"} element={<Game />} />
+                <Route path={"/queue/:queueId"} element={<Queue />} />
+            </Routes>
+        </QueryClientProvider>
     );
-  };
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route path="/" element={<Home onReturnFromHome={onReturn} />} />
-        <Route path={"/join/:queueId"} element={<JoinQueue onReturnFromJoin={onReturn} />} />
-        <Route path={"/game/:roomId"} element={<Game />} />
-        <Route path={"/queue/:queueId"} element={<Queue />} />
-      </Routes>
-    </QueryClientProvider>
-  );
 };
 
 export default App;

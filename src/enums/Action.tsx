@@ -1,23 +1,23 @@
 export enum Action {
-    FOLD = "FOLD",
-    CHECK = "CHECK",
-    CALL = "CALL",
-    BET = "BET",
-    RAISE = "RAISE",
+    FOLD = "Fold",
+    CHECK = "Check",
+    CALL = "Call",
+    BET = "Bet",
+    RAISE = "Raise",
     EMPTY = "",
 };
 
 export const action = (s: string) => {
     switch (s) {
-        case "FOLD":
+        case "Fold":
             return Action.FOLD;
-        case "CHECK":
+        case "Check":
             return Action.CHECK;
-        case "CALL":
+        case "Call":
             return Action.CHECK;
-        case "BET":
+        case "Bet":
             return Action.BET;
-        case "RAISE":
+        case "Raise":
             return Action.RAISE;
     }
     return Action.EMPTY;

@@ -1,13 +1,15 @@
+import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 
-const StartGame = async (roomId: string, roomToken: string): Promise<boolean> => {
+const StartGame = async (): Promise<boolean> => {
+  const ctx = getContext();
   const r = await fetch(
-    getHostUrl() + "/api/v1/game/start?roomId=" + roomId,
+    getHostUrl() + "/api/v1/game/start?roomId=" + ctx.roomId,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + roomToken,
+        "Authorization": "Bearer " + ctx.roomToken,
       },
     }
   );

@@ -1,9 +1,11 @@
 import Player from "../interfaces/Player";
+import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 
-const GetPlayersInQueue = async (queueId: string): Promise<Player[]> => {
+const GetPlayersInQueue = async (): Promise<Player[]> => {
+  const ctx = getContext();
   const r = await fetch(
-    getHostUrl() + "/api/v1/queue/" + queueId + "/players",
+    getHostUrl() + "/api/v1/queue/" + ctx.queueId + "/players",
     {
       method: "GET",
       headers: {

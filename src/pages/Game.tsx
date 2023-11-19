@@ -14,35 +14,51 @@ import GetPlayer from "../requests/GetPlayer";
 import StartGame from "../requests/StartGame";
 import PlayerActions from "../components/PlayerActions";
 import GetPlayersInQueue from "../requests/GetPlayersInQueue";
+import GetGameResponse from "../interfaces/GetGameResponse";
+import { useEffect, useState } from "react";
+import getHostUrl from "../utils/getHostUrl";
+
+interface Stream {
+    getGameResponse: GetGameResponse;
+    getPlayersResponse: {players: Player[]};
+}
 
 const Game = () => {
     const ctx = getContext();
 
-    const { data: playersInRoom, isLoading: isPIRLoading, refetch: playersRefetch } = useQuery({
-        queryFn: () => GetPlayersInRoom(ctx.roomId),
-        queryKey: ["playersInRoom"],
-    });
+    const [stream, setStream] = useState<Stream| null>(null);
+    useEffect(() => {
+        const eventSource = new EventSource(getHostUrl() + `/api/v1/game/stream?roomId=${ctx.roomId}`);
 
-    const {data: game, isLoading } = useQuery({
-        queryFn: () => GetGame(ctx.roomId),
-        queryKey: ["game"],
-    });
+        eventSource.addEventListener('message', (event) => {
+            const updatedGame = JSON.parse(event.data);
+            console.log(updatedGame);
+            setStream(updatedGame);
+        });
+
+        return () => {
+            eventSource.close();
+        };
+    }, []);
 
     const { data: playersInQueue, refetch: queueRefetch } = useQuery({
         queryFn: () => GetPlayersInQueue(),
         queryKey: ["playersInQueue"],
         refetchInterval: 2000,
-        enabled: game?.state === GameState.WAITING,
+        enabled: stream?.getGameResponse.state === GameState.WAITING,
     });
 
     const {data: myPlayer, isLoading: isMyPlayerLoading } = useQuery({
         queryFn: () => GetPlayer(),
         queryKey: ["myPlayer"],
     });
+    const game = stream?.getGameResponse;
+    const playersInRoom = stream?.getPlayersResponse.players;
+
 
     return (
         <Container>
-            {isLoading && 
+            {false&&//isLoading && 
                 <Spinner/>
             }
             {game?.state === GameState.WAITING && 
@@ -53,7 +69,7 @@ const Game = () => {
                     <Row>
                         <QueueList players={playersInQueue || []} onPlayerModified={
                             () => {
-                                playersRefetch(); 
+                                //playersRefetch(); 
                                 queueRefetch();
                             }}/>
                     </Row>
@@ -65,9 +81,10 @@ const Game = () => {
                 players={playersInRoom || ([] as Player[])}
                 currentPlayer={game?.currentTurnPlayerId || ''}
                 stakedChips={game?.stakedChips || 0}
-                isLoading={isPIRLoading}
+                isLoading={false}//isPIRLoading}
             />
-            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && <PlayerActions actions={myPlayer.actions} />}
+            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} />}
+            <div>{JSON.stringify(stream)}</div>
         </Container>
     );
 };

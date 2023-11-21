@@ -1,4 +1,3 @@
-import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import Player from "../interfaces/Player";
 
 interface Props {
@@ -7,24 +6,26 @@ interface Props {
 
 const PlayersList = ({ players }: Props) => {
   return (
-    <>
-      <ListGroup>
+    <table>
+      <thead>
+        <tr>
+        <th>
+          Players
+        </th>
+        </tr>
+      </thead>
+      <tbody>
         {players?.length === 0 && (
-          <ListGroupItem>No players in room</ListGroupItem>
+          <tr><td>No players in room</td></tr>
         )}
-        {players?.length  + " / 9"}
         {players?.map((player) => (
-          <ListGroupItem key={player.id}>
-            <Container>
-              <Row>
-                <Col>Name: {player.name}</Col>
-                <Col>Id: {player.id}</Col>
-              </Row>
-            </Container>
-          </ListGroupItem>
+          <tr key={player.id}>
+              <td>Name: {player.name}</td>
+              <td>Id: {player.id}</td>
+          </tr>
         ))}
-      </ListGroup>
-    </>
+      </tbody>
+    </table>
   );
 };
 

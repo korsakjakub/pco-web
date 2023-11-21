@@ -4,88 +4,72 @@ import QueueList from "../components/QueueList";
 import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
-import { Button, Container, Row, Spinner } from "react-bootstrap";
 import PlayingTable from "../components/PlayingTable";
 import { useQuery } from "@tanstack/react-query";
-import GetPlayersInRoom from "../requests/GetPlayersInRoom";
 import { GameState } from "../enums/GameState";
-import GetGame from "../requests/GetGame";
 import GetPlayer from "../requests/GetPlayer";
 import StartGame from "../requests/StartGame";
 import PlayerActions from "../components/PlayerActions";
-import GetPlayersInQueue from "../requests/GetPlayersInQueue";
 import GetGameResponse from "../interfaces/GetGameResponse";
-import { useEffect, useState } from "react";
 import getHostUrl from "../utils/getHostUrl";
+import useStream from "../hooks/useStream";
+import { useState } from "react";
 
-interface Stream {
-    getGameResponse: GetGameResponse;
-    getPlayersResponse: {players: Player[]};
-}
 
 const Game = () => {
     const ctx = getContext();
 
-    const [stream, setStream] = useState<Stream| null>(null);
-    useEffect(() => {
-        const eventSource = new EventSource(getHostUrl() + `/api/v1/game/stream?roomId=${ctx.roomId}`);
+    const game = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {
+        console.log("update game");
+        setIsStartGameLoading(false);
+        refetchMyPlayer();
+    }) as GetGameResponse | null;
 
-        eventSource.addEventListener('message', (event) => {
-            const updatedGame = JSON.parse(event.data);
-            console.log(updatedGame);
-            setStream(updatedGame);
-        });
+    const playersInRoomStream = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`) as {players: Player[]} | null;
+    const playersInQueueStream = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
 
-        return () => {
-            eventSource.close();
-        };
-    }, []);
+    const playersInRoom = playersInRoomStream?.players;
+    const playersInQueue = playersInQueueStream?.players;
 
-    const { data: playersInQueue, refetch: queueRefetch } = useQuery({
-        queryFn: () => GetPlayersInQueue(),
-        queryKey: ["playersInQueue"],
-        refetchInterval: 2000,
-        enabled: stream?.getGameResponse.state === GameState.WAITING,
-    });
-
-    const {data: myPlayer, isLoading: isMyPlayerLoading } = useQuery({
+    const {data: myPlayer, isLoading: isMyPlayerLoading, refetch: refetchMyPlayer } = useQuery({
         queryFn: () => GetPlayer(),
         queryKey: ["myPlayer"],
     });
-    const game = stream?.getGameResponse;
-    const playersInRoom = stream?.getPlayersResponse.players;
 
+    const [isStartGameLoading, setIsStartGameLoading] = useState(false);
+
+
+    if (!game) {
+        return <h1 aria-busy="true">Loading...</h1>
+    }
 
     return (
-        <Container>
-            {false&&//isLoading && 
-                <Spinner/>
-            }
+        <>
             {game?.state === GameState.WAITING && 
                 <>
-                    <Row>
-                        <PlayersList players={playersInRoom || []} />
-                    </Row>
-                    <Row>
-                        <QueueList players={playersInQueue || []} onPlayerModified={
-                            () => {
-                                //playersRefetch(); 
-                                queueRefetch();
-                            }}/>
-                    </Row>
+                    <PlayersList players={playersInRoom || []} />
+                    <QueueList players={playersInQueue || []} />
                     <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
-                    <Button onClick={() => StartGame()}>Start game</Button>
+                    <button aria-busy={isStartGameLoading} onClick={() => {
+                        setIsStartGameLoading(true);
+                        StartGame();
+                    }}>Start game</button>
                 </>
             }
-            <PlayingTable
-                players={playersInRoom || ([] as Player[])}
-                currentPlayer={game?.currentTurnPlayerId || ''}
-                stakedChips={game?.stakedChips || 0}
-                isLoading={false}//isPIRLoading}
-            />
+            {playersInRoom !== undefined &&
+                <PlayingTable
+                    players={playersInRoom || ([] as Player[])}
+                    currentPlayer={game?.currentTurnPlayerId || ''}
+                    stakedChips={game?.stakedChips || 0}
+                    isLoading={false}
+                />
+            }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} />}
-            <div>{JSON.stringify(stream)}</div>
-        </Container>
+            <>
+                {JSON.stringify(myPlayer)}
+                {JSON.stringify(game)}
+            </>
+        </>
     );
 };
 

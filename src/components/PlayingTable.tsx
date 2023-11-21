@@ -1,4 +1,3 @@
-import { Spinner } from "react-bootstrap";
 import Player from "../interfaces/Player";
 import getContext from "../utils/getContext";
 
@@ -37,12 +36,16 @@ const PlayingTable = ({ players, stakedChips, isLoading, currentPlayer }: Props)
     return "player-frame";
   }
 
+  if (isLoading) {
+    return (<div aria-busy="true" className="circular-table-wrapper">
+      Loading...
+    </div>);
+  }
+
   return (
     <div className="circular-table-wrapper">
       <div className="circular-table" />
-      {isLoading && <Spinner />}
-      {!isLoading &&
-        players.length > 0 &&
+      {players.length > 0 &&
         shiftedPlayers.map((player, index) => {
           return (
             <div key={player.id}>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import getContext from "../utils/getContext";
 import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
 import Player from "../interfaces/Player";
-import { Button, Col, ListGroup, ListGroupItem, Spinner } from "react-bootstrap";
 
 interface Props {
   players: Player[];
@@ -37,28 +36,34 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
   };
 
   return (
-    <>
-      <ListGroup>
+    <table>
+      <thead>
+        <tr>
+          <th>
+          Queue
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         {players.length === 0 && (
-          <ListGroupItem>No players in queue</ListGroupItem>
+          <tr><td>No players in queue</td></tr>
         )}
         {players.map((player) => (
-          <ListGroupItem key={player.id}>
-              <Col>Name: {player.name}</Col>
-              <Col>Id: {player.id}</Col>
+          <tr key={player.id}>
+            <td>Name: {player.name}</td>
+            <td>Id: {player.id}</td>
             {isAdmin() && (
-              <Col>
-                <Button variant="outline-success" onClick={() => handleAddToRoom(player.id)}>
-                  {isLoading && buttonIndexLoading === player.id && <Spinner />}
+              <td>
+                <button aria-busy={isLoading && buttonIndexLoading === player.id} onClick={() => handleAddToRoom(player.id)}>
                   Add
-                </Button>
-                <Button variant="outline-danger">Kick out</Button>
-              </Col>
+                </button>
+                <button>Kick out</button>
+              </td>
             )}
-          </ListGroupItem>
+          </tr>
         ))}
-      </ListGroup>
-    </>
+      </tbody>
+    </table>
   );
 };
 

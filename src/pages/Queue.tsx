@@ -1,49 +1,36 @@
 import QueueList from "../components/QueueList";
 import getContext from "../utils/getContext";
 import { useNavigate } from "react-router-dom";
-import GetPlayersInRoom from "../requests/GetPlayersInRoom";
-import { Container, Row } from "react-bootstrap";
-import GetPlayersInQueue from "../requests/GetPlayersInQueue";
-import { useQuery } from "@tanstack/react-query";
+import useStream from "../hooks/useStream";
+import getHostUrl from "../utils/getHostUrl";
+import Player from "../interfaces/Player";
 
 const Queue = () => {
   const ctx = getContext();
   const navigate = useNavigate();
 
-  const { data: playersInQueue } = useQuery({
-    queryFn: () => GetPlayersInQueue(),
-    queryKey: ["playersInQueue"],
-    refetchInterval: 2000,
-    onSuccess: (data) => {
-      const removedFromQueue = data.filter(player => player.id === ctx.playerId).length === 0;
-      if (removedFromQueue) {
-        navigate("/404");
-      }
-    },
+  const stream = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
 
-  });
+  useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`, (data) => {
+    if (data == null) {
+      return;
+    }
+    const { players } = data;
 
-  useQuery({
-    queryFn: () => GetPlayersInRoom(ctx.roomId),
-    queryKey: ["playersInRoom"],
-    refetchInterval: 2000,
-    onSuccess: (data) => {
-      const addedToRoom = data.filter(player => player.id === ctx.playerId).length > 0;
-      if (addedToRoom) {
-        navigate("/game/" + ctx.roomId);
-      }
-    },
-  });
+    if (!Array.isArray(players)) {
+      return;
+    }
+    const addedToRoom = players.filter(player => player.id === ctx.playerId).length > 0;
+    if (addedToRoom) {
+      navigate("/game/" + ctx.roomId);
+    }
+  }) as {players: Player[]} | null;
 
   return (
-    <Container>
-      <Row>
-        <h1>You are waiting in the queue {ctx.queueId}</h1>
-      </Row>
-      <Row>
-        <QueueList players={playersInQueue || []}/>
-      </Row>
-    </Container>
+    <div>
+      <h1>You are waiting in the queue {ctx.queueId}</h1>
+      <QueueList players={stream?.players || []}/>
+    </div>
   );
 }
 

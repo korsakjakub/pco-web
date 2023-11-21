@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import NewGame from "../components/NewGame";
 import Join from "../components/Join";
-import { Col, Container, Row } from "react-bootstrap";
 import Context from "../interfaces/Context";
 
 interface Props {
@@ -26,19 +25,17 @@ const Home = ({ onReturnFromHome }: Props) => {
   };
 
   return (
-    <Container>
+    <div>
       <h1>pco</h1>
-      <Row>
-        <Col md>
-          <h2>create a new room</h2>
-          <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
-        </Col>
-        <Col md>
-          <h2>or join an existing room</h2>
-          <Join onError={handleError} onSuccess={handleJoinSuccess} />
-        </Col>
-      </Row>
-    </Container>
+      <div>
+        <h2>create a new room</h2>
+        <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
+      </div>
+      <div>
+        <h2>or join an existing room</h2>
+        <Join onError={handleError} onSuccess={handleJoinSuccess} />
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
 import { Action } from "../enums/Action";
 import PerformAction from "../requests/PerformAction";
 import getContext from "../utils/getContext";
@@ -22,18 +21,17 @@ const PlayerActions = ({ actions, currentPlayerId }: Props) => {
     <>
       {
         actions.map((a, index) => (
-          <Button disabled={isNotMyTurn()} onClick={() => performAction(a)} key={index}>{a}</Button>
+          <button disabled={isNotMyTurn()} onClick={() => performAction(a)} key={index}>{a}</button>
         ))
       }
-      <InputGroup className="mb-3">
-        <InputGroup.Text>$</InputGroup.Text>
-        <Form.Control 
+      <form className="mb-3">
+        <input 
           type="number" 
           onChange={(e) => setBetSize(e.target.value)} 
           value={betSize} 
           placeholder="Bet size" 
           aria-label="Amount (to the nearest dollar)" />
-      </InputGroup>
+      </form>
     </>
   );
 };

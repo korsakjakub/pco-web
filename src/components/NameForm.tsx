@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Spinner } from "react-bootstrap";
 
 interface Props {
   name: string;
@@ -26,10 +25,9 @@ const NameForm = ({
   };
 
   return (
-    <form onSubmit={onSubmit} className="input-group mb-3">
+    <form onSubmit={onSubmit}>
       <input
         type="text"
-        className="form-control"
         name={name + "Name"}
         placeholder={`${name} name`}
         aria-label={`${name} name`}
@@ -38,13 +36,12 @@ const NameForm = ({
         onChange={handleInputChange}
       />
       <button
-        className="btn btn-outline-secondary"
+        aria-busy={isLoading}
         type="submit"
         id={`new-${name}-button`}
         disabled={isLoading || itemName.length < 2}
       >
-        {isLoading && <Spinner />}
-        {isLoading ? "Loading..." : button}
+        {button}
       </button>
     </form>
   );

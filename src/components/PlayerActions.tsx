@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Action } from "../enums/Action";
+import { GameStage } from "../enums/GameStage";
 import PerformAction from "../requests/PerformAction";
 import getContext from "../utils/getContext";
 
 type Props = {
   actions: Action[];
   currentPlayerId: String;
+  gameStage: GameStage;
   onActionPerformed: () => void;
 };
 
-const PlayerActions = ({ actions, currentPlayerId, onActionPerformed }: Props) => {
+const PlayerActions = ({ actions, currentPlayerId, gameStage, onActionPerformed }: Props) => {
   const ctx = getContext();
 
   const [betSize, setBetSize] = useState("");
@@ -19,13 +21,13 @@ const PlayerActions = ({ actions, currentPlayerId, onActionPerformed }: Props) =
     PerformAction(action, betSize);
   };
 
-  const isNotMyTurn = () => currentPlayerId !== ctx.playerId;
+  const areActionsDisabled = () => currentPlayerId !== ctx.playerId || gameStage === GameStage.SHOWDOWN;
 
   return (
     <>
       {
         actions.map((a, index) => (
-          <button disabled={isNotMyTurn()} onClick={() => performAction(a)} key={index}>{a}</button>
+          <button disabled={areActionsDisabled()} onClick={() => performAction(a)} key={index}>{a}</button>
         ))
       }
       <form className="mb-3">

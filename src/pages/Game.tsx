@@ -60,7 +60,7 @@ const Game = () => {
                 />
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
-                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} onActionPerformed={() => setIsGameLoading(true)}/>}
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} gameStage={game.stage} onActionPerformed={() => setIsGameLoading(true)}/>}
         </>
     );
 };

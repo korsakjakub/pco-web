@@ -1,5 +1,6 @@
 import { GameStage } from "../enums/GameStage";
 import Player from "../interfaces/Player";
+import DecideWinner from "../requests/DecideWinner";
 import getContext from "../utils/getContext";
 
 type Props = {
@@ -38,11 +39,15 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
     return "player-frame";
   }
 
-  if (isLoading) {
-    return (<div aria-busy="true" className="circular-table-wrapper">
-      Loading...
-    </div>);
-  }
+  const decideWinner = async (playerId: string) => {
+    if (gameStage !== GameStage.SHOWDOWN || ctx.roomToken === "" || ctx.roomToken === null) {
+      return;
+    }
+    console.log("TEST")
+
+    await DecideWinner(playerId);
+
+  };
 
   return (
     <div className="circular-table-wrapper">
@@ -50,7 +55,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
       {players.length > 0 &&
         shiftedPlayers.map((player, index) => {
           return (
-            <div key={player.id}>
+            <div key={player.id} onClick={() => decideWinner(player.id)}>
               <div className={playerFrameCls(player)} style={coords(index, 40)}>
                 <p className="player-frame-name">{player.name}</p>
                 <p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>

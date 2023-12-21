@@ -13,7 +13,6 @@ const GetCurrentPlayer = async (roomId: string): Promise<string> => {
 
   if (r.ok) {
     const rb = await r.json();
-    console.log(rb as string)
     return rb as string;
   } else {
     throw new Error("could not fetch current game state. " + JSON.stringify(r));

@@ -28,6 +28,14 @@
   color: #fff;
 }
 
+.game-stage {
+  position: absolute;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  left: 50%;
+  top: 55%;
+  color: #fff;
+}
+
 .player-chips {
   position: absolute;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */

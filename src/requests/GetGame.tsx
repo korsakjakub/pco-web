@@ -1,11 +1,11 @@
 import { gameStage } from "../enums/GameStage";
 import { gameState } from "../enums/GameState";
-import Game from "../interfaces/Game";
+import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 
 const GetGame = async (
   roomId: string,
-): Promise<Game> => {
+): Promise<GetGameResponse> => {
   const r = await fetch(getHostUrl() + "/api/v1/game?roomId=" + roomId, {
     method: "GET",
     headers: {
@@ -24,7 +24,7 @@ const GetGame = async (
       stage: gameStage(rb.stage),
       stakedChips: rb.stakedChips,
       state: gameState(rb.state),
-    } as Game;
+    } as GetGameResponse;
   } else {
     throw Error("could not fetch game.")
   }

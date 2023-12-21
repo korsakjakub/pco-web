@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useStream from "../hooks/useStream";
 import getHostUrl from "../utils/getHostUrl";
 import Player from "../interfaces/Player";
+import PlayersList from "../components/PlayersList";
 
 const Queue = () => {
   const ctx = getContext();
@@ -11,7 +12,7 @@ const Queue = () => {
 
   const stream = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
 
-  useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`, (data) => {
+  const playersStream = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`, (data) => {
     if (data == null) {
       return;
     }
@@ -30,6 +31,7 @@ const Queue = () => {
     <div>
       <h1>You are waiting in the queue {ctx.queueId}</h1>
       <QueueList players={stream?.players || []}/>
+      <PlayersList players={playersStream?.players || []}/>
     </div>
   );
 }

@@ -18,57 +18,49 @@ import { useState } from "react";
 
 const Game = () => {
     const ctx = getContext();
+    const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
     const game = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {
-        console.log("update game");
-        setIsStartGameLoading(false);
+        setIsGameLoading(false);
         refetchMyPlayer();
     }) as GetGameResponse | null;
 
-    const playersInRoomStream = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`) as {players: Player[]} | null;
-    const playersInQueueStream = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
-
-    const playersInRoom = playersInRoomStream?.players;
-    const playersInQueue = playersInQueueStream?.players;
+    const playersInRoom = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`) as {players: Player[]} | null;
+    const playersInQueue = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
 
     const {data: myPlayer, isLoading: isMyPlayerLoading, refetch: refetchMyPlayer } = useQuery({
         queryFn: () => GetPlayer(),
         queryKey: ["myPlayer"],
     });
 
-    const [isStartGameLoading, setIsStartGameLoading] = useState(false);
-
-
-    if (!game) {
-        return <h1 aria-busy="true">Loading...</h1>
-    }
+    const [isGameLoading, setIsGameLoading] = useState(false);
 
     return (
         <>
-            {game?.state === GameState.WAITING && 
+            {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
-                    <PlayersList players={playersInRoom || []} />
-                    <QueueList players={playersInQueue || []} />
+                    <PlayersList players={playersInRoom.players || []} />
+                    <QueueList players={playersInQueue.players || []} />
                     <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
-                    <button aria-busy={isStartGameLoading} onClick={() => {
-                        setIsStartGameLoading(true);
-                        StartGame();
-                    }}>Start game</button>
+                    { isAdmin() && playersInRoom.players.length > 1 &&
+                        <button aria-busy={isGameLoading} onClick={() => {
+                            setIsGameLoading(true);
+                            StartGame();
+                        }}>Start game</button>
+                    }
                 </>
             }
-            {playersInRoom !== undefined &&
+            {playersInRoom && game !== null &&
                 <PlayingTable
-                    players={playersInRoom || ([] as Player[])}
-                    currentPlayer={game?.currentTurnPlayerId || ''}
-                    stakedChips={game?.stakedChips || 0}
-                    isLoading={false}
+                    players={playersInRoom.players}
+                    currentPlayer={game.currentTurnPlayerId}
+                    stakedChips={game.stakedChips}
+                    gameStage={game.stage}
+                    isLoading={isGameLoading}
                 />
             }
-            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} />}
-            <>
-                {JSON.stringify(myPlayer)}
-                {JSON.stringify(game)}
-            </>
+            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} onActionPerformed={() => setIsGameLoading(true)}/>}
         </>
     );
 };

@@ -6,14 +6,18 @@ import getContext from "../utils/getContext";
 type Props = {
   actions: Action[];
   currentPlayerId: String;
+  onActionPerformed: () => void;
 };
 
-const PlayerActions = ({ actions, currentPlayerId }: Props) => {
+const PlayerActions = ({ actions, currentPlayerId, onActionPerformed }: Props) => {
   const ctx = getContext();
 
   const [betSize, setBetSize] = useState("");
 
-  const performAction = (action: Action) => PerformAction(action, betSize);
+  const performAction = (action: Action) => {
+    onActionPerformed();
+    PerformAction(action, betSize);
+  };
 
   const isNotMyTurn = () => currentPlayerId !== ctx.playerId;
 

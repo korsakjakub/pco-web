@@ -7,6 +7,7 @@ const useStream = (endpointUrl: string, onSuccess?: (stream: any) => void) => {
         const eventSource = new EventSource(endpointUrl);
 
         eventSource.addEventListener('message', (event) => {
+            console.log(endpointUrl, event.data);
             const updatedGame = JSON.parse(event.data);
             if (updatedGame !== null) {
                 setStream(updatedGame);

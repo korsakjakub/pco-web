@@ -1,14 +1,16 @@
+import { GameStage } from "../enums/GameStage";
 import Player from "../interfaces/Player";
 import getContext from "../utils/getContext";
 
 type Props = {
   players: Player[];
   stakedChips: number;
+  gameStage: GameStage;
   isLoading: boolean;
   currentPlayer: string;
 };
 
-const PlayingTable = ({ players, stakedChips, isLoading, currentPlayer }: Props) => {
+const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer }: Props) => {
   const ctx = getContext();
 
   const shiftPlayers = (players: Player[]): Player[] => {
@@ -51,15 +53,16 @@ const PlayingTable = ({ players, stakedChips, isLoading, currentPlayer }: Props)
             <div key={player.id}>
               <div className={playerFrameCls(player)} style={coords(index, 40)}>
                 <p className="player-frame-name">{player.name}</p>
-                <p className="player-frame-chips">${player.chips}</p>
+                <p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>
               </div>
-              <p className="player-chips" style={coords(index, 20)}>
+              <p aria-busy={isLoading} className="player-chips" style={coords(index, 20)}>
                 ${player.stakedChips}
               </p>
             </div>
           );
         })}
       <p className="staked-chips">Pot: ${stakedChips}</p>
+      <p className="game-stage">{gameStage}</p>
     </div>
   );
 };

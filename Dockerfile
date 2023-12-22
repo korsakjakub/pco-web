@@ -1,22 +1,38 @@
-FROM node AS build
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun:1 as base
+WORKDIR /usr/src/app
 
-RUN wget --no-check-certificate https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /tmp/jq-linux64 && cp /tmp/jq-linux64 /usr/bin/jq && chmod +x /usr/bin/jq
-WORKDIR /app
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
-RUN jq 'to_entries | map_values({ (.key) : ("$" + .key) }) | reduce .[] as $item ({}; . + $item)' ./config/config.json > ./config/config.tmp.json && mv ./config/config.tmp.json ./config/config.json
-RUN npm i && npm run build
 
-FROM nginx:alpine
-LABEL maintainer="Jakub Korsak jakub@korsak.xyz"
+# [optional] tests & build
+ENV NODE_ENV=production
+RUN bunx --bun vite build
 
-ENV API_URL="http://localhost:8080"
-ENV FRONT_URL="http://localhost"
-COPY config/start-nginx.sh /usr/bin/start-nginx.sh
-RUN rm -rf /etc/nginx/conf.d && chmod +x /usr/bin/start-nginx.sh
-COPY config/conf /etc/nginx
-WORKDIR /usr/share/nginx/html
-COPY --from=build /app/dist .
+# copy production dependencies and source code into final image
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/package.json .
+COPY --from=prerelease /usr/src/app/dist dist
+RUN bun i
 
-EXPOSE 80
-
-ENTRYPOINT [ "start-nginx.sh" ]
+# run the app
+USER bun
+EXPOSE 8000
+ENTRYPOINT [ "bun", "run", "preview", "--host", "0.0.0.0", "--port", "8000" ]

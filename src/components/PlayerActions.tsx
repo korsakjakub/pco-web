@@ -15,10 +15,17 @@ const PlayerActions = ({ actions, currentPlayerId, gameStage, onActionPerformed 
   const ctx = getContext();
 
   const [betSize, setBetSize] = useState("");
+  const [isBetSizeValid, setIsBetSizeValid] = useState(true);
 
   const performAction = (action: Action) => {
+    if (betSize === '' && [Action.RAISE, Action.BET].includes(action)) {
+      console.log('betsize is invalid');
+      setIsBetSizeValid(false);
+      return;
+    }
     onActionPerformed();
     PerformAction(action, betSize);
+    setIsBetSizeValid(true);
   };
 
   const areActionsDisabled = () => currentPlayerId !== ctx.playerId || gameStage === GameStage.SHOWDOWN;
@@ -36,7 +43,9 @@ const PlayerActions = ({ actions, currentPlayerId, gameStage, onActionPerformed 
           onChange={(e) => setBetSize(e.target.value)} 
           value={betSize} 
           placeholder="Bet size" 
-          aria-label="Amount (to the nearest dollar)" />
+          aria-label="Amount (to the nearest dollar)"
+          className={isBetSizeValid ? '' : 'invalid'}
+          />
       </form>
     </>
   );

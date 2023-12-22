@@ -11,8 +11,8 @@ import Context from "./interfaces/Context";
 const queryClient = new QueryClient();
 
 const App = () => {
-    const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "http://127.0.0.1:8080";
-    const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "http://127.0.0.1:8000";
+    const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "https://pco.korsak.xyz";
+    const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "https://poker.korsak.xyz";
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

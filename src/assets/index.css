@@ -81,3 +81,7 @@
   margin-bottom: 5px;
   color: var(--bs-gray-900)
 }
+
+.invalid {
+  border: 3px solid red;
+}

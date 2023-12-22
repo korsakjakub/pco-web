@@ -43,8 +43,6 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
     if (gameStage !== GameStage.SHOWDOWN || ctx.roomToken === "" || ctx.roomToken === null) {
       return;
     }
-    console.log("TEST")
-
     await DecideWinner(playerId);
 
   };
@@ -67,7 +65,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
           );
         })}
       <p className="staked-chips">Pot: ${stakedChips}</p>
-      <p className="game-stage">{gameStage}</p>
+      <p className="game-stage">stage: {gameStage}</p>
     </div>
   );
 };

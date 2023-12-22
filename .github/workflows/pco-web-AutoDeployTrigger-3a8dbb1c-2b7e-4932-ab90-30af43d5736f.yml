@@ -5,10 +5,7 @@ on:
   # Automatically trigger it when detected changes in repo
   push:
     branches: 
-      [ main ]
-    paths:
-    - '**'
-    - '.github/workflows/pco-web-AutoDeployTrigger-3a8dbb1c-2b7e-4932-ab90-30af43d5736f.yml'
+      [ tmp ]
 
   # Allow manual trigger 
   workflow_dispatch:

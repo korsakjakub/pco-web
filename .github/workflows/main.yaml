@@ -54,7 +54,7 @@ jobs:
       - name: Deploy to Azure
         uses: azure/container-apps-deploy-action@v2
         with:
-          containerAppName: pco
+          containerAppName: pco-web
           resourceGroup: pco
           imageToDeploy: ${{ env.IMAGE_NAME }}:${{ needs.build-and-push-image.outputs.sha }}
 

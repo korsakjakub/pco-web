@@ -21,19 +21,24 @@
 }
 
 .staked-chips {
+  color: #fff;
+  text-align: center;
+}
+
+.game-info {
   position: absolute;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   left: 50%;
   top: 50%;
-  color: #fff;
 }
 
 .game-stage {
-  position: absolute;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
-  left: 50%;
-  top: 55%;
   color: #fff;
+}
+
+.game-stage .table-card {
+  display: inline-block;
+  max-width: 6vw;
 }
 
 .player-chips {

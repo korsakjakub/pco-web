@@ -2,6 +2,7 @@ import { GameStage } from "../enums/GameStage";
 import Player from "../interfaces/Player";
 import DecideWinner from "../requests/DecideWinner";
 import getContext from "../utils/getContext";
+import getFrontUrl from "../utils/getFrontUrl";
 
 type Props = {
   players: Player[];
@@ -47,6 +48,18 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
 
   };
 
+  const showGameStage = (stage: GameStage) => {
+    if (stage === GameStage.PRE_FLOP)
+    return "PREFLOP";
+
+    const singleCard = <img src={getFrontUrl() + "/card-back.svg"}/>;
+    const cardsOnTable = stage === GameStage.FLOP ? 3 : stage === GameStage.TURN ? 4 : [GameStage.RIVER, GameStage.SHOWDOWN].includes(stage) ? 5 : 0;
+
+    return Array(cardsOnTable).fill(singleCard).map((card, index) => (
+      <div className="table-card" key={index}>{card}</div>
+    ));
+  };
+
   return (
     <div className="circular-table-wrapper">
       <div className="circular-table" />
@@ -64,8 +77,10 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
             </div>
           );
         })}
-      <p className="staked-chips">Pot: ${stakedChips}</p>
-      <p className="game-stage">stage: {gameStage}</p>
+      <div className="game-info">
+        <div className="staked-chips">Pot: ${stakedChips}</div>
+        <div className="game-stage">{showGameStage(gameStage)}</div>
+      </div>
     </div>
   );
 };

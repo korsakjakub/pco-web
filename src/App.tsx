@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Game from "./pages/Game";
 import Queue from "./pages/Queue";
 import JoinQueue from "./pages/JoinQueue";
-import Config from "../config/config.json";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./assets/index.css";
 import Context from "./interfaces/Context";
@@ -11,8 +10,8 @@ import Context from "./interfaces/Context";
 const queryClient = new QueryClient();
 
 const App = () => {
-    const hostUrl : string = Config.API_URL !== "$API_URL" ? Config.API_URL : "https://pco.korsak.xyz";
-    const frontUrl : string =  Config.FRONT_URL !== "$FRONT_URL" ? Config.FRONT_URL : "https://poker.korsak.xyz";
+    const hostUrl : string = "https://pco.korsak.xyz"; // "http://127.0.0.1:8080";
+    const frontUrl : string = "https://poker.korsak.xyz"; // "http://127.0.0.1:8000";
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

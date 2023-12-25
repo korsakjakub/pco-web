@@ -36,7 +36,7 @@ const Game = () => {
     const [isGameLoading, setIsGameLoading] = useState(false);
 
     return (
-        <>
+        <div className="game">
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
                     <PlayersList players={playersInRoom.players || []} />
@@ -60,8 +60,8 @@ const Game = () => {
                 />
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
-                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} gameStage={game.stage} onActionPerformed={() => setIsGameLoading(true)}/>}
-        </>
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} onActionPerformed={() => setIsGameLoading(true)}/>}
+        </div>
     );
 };
 

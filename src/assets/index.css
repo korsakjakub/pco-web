@@ -3,6 +3,13 @@
   margin-inline: auto;
 }
 
+.game {
+  display: grid;
+  margin-top: 3vh;
+  grid-auto-flow: row;
+  grid-row-gap: 5vh;
+}
+
 .circular-table-wrapper {
   position: relative;
   min-height: 400px;
@@ -90,3 +97,4 @@
 .invalid {
   border: 3px solid red;
 }
+

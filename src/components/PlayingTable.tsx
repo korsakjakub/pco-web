@@ -49,9 +49,6 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
   };
 
   const showGameStage = (stage: GameStage) => {
-    if (stage === GameStage.PRE_FLOP)
-    return "PREFLOP";
-
     const singleCard = <img src={getFrontUrl() + "/card-back.svg"}/>;
     const cardsOnTable = stage === GameStage.FLOP ? 3 : stage === GameStage.TURN ? 4 : [GameStage.RIVER, GameStage.SHOWDOWN].includes(stage) ? 5 : 0;
 

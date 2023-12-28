@@ -3,6 +3,7 @@ import Player from "../interfaces/Player";
 import DecideWinner from "../requests/DecideWinner";
 import getContext from "../utils/getContext";
 import getFrontUrl from "../utils/getFrontUrl";
+import PlayerInTable from "./PlayerInTable";
 
 type Props = {
   players: Player[];
@@ -34,11 +35,6 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
     };
   };
 
-  const playerFrameCls = (player: Player) => {
-    if (player.id === currentPlayer)
-      return "player-frame frame-active";
-    return "player-frame";
-  }
 
   const decideWinner = async (playerId: string) => {
     if (gameStage !== GameStage.SHOWDOWN || ctx.roomToken === "" || ctx.roomToken === null) {
@@ -61,19 +57,14 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
     <div className="circular-table-wrapper">
       <div className="circular-table" />
       {players.length > 0 &&
-        shiftedPlayers.map((player, index) => {
-          return (
-            <div key={player.id} onClick={() => decideWinner(player.id)}>
-              <div className={playerFrameCls(player)} style={coords(index, 40)}>
-                <p className="player-frame-name">{player.name}</p>
-                <p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>
-              </div>
-              <p aria-busy={isLoading} className="player-chips" style={coords(index, 20)}>
-                ${player.stakedChips}
-              </p>
-            </div>
-          );
-        })}
+        shiftedPlayers.map((player, index) => PlayerInTable({
+          player: player, 
+          active: player.id === currentPlayer, 
+          getCoords: (r: number) => coords(index, r), 
+          isLoading: isLoading, 
+          onClick: decideWinner
+        })
+        )}
       <div className="game-info">
         <div className="staked-chips">Pot: ${stakedChips}</div>
         <div className="game-stage">{showGameStage(gameStage)}</div>

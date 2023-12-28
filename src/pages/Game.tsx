@@ -14,6 +14,7 @@ import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
 import { useState } from "react";
+import SettingsMenu from "../components/SettingsMenu";
 
 
 const Game = () => {
@@ -49,6 +50,9 @@ const Game = () => {
                         }}>Start game</button>
                     }
                 </>
+            }
+            {game !== null && [GameState.IN_PROGRESS, GameState.WAITING].includes(game.state) &&
+                <SettingsMenu />
             }
             {playersInRoom && game !== null &&
                 <PlayingTable

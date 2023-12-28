@@ -46,7 +46,7 @@ jobs:
     needs: build-and-push-image
     steps:
       - name: Checkout to the branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Azure Login
         uses: azure/login@v1
         with:

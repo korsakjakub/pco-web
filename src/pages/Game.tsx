@@ -14,7 +14,8 @@ import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
 import { useState } from "react";
-import SettingsMenu from "../components/SettingsMenu";
+import GameSettingsMenu from "../components/GameSettingsMenu";
+import GetRules from "../requests/GetRules";
 
 
 const Game = () => {
@@ -34,6 +35,11 @@ const Game = () => {
         queryKey: ["myPlayer"],
     });
 
+    const {data: rules } = useQuery({
+        queryFn: () => GetRules(),
+        queryKey: ["rules"],
+    });
+
     const [isGameLoading, setIsGameLoading] = useState(false);
 
     return (
@@ -51,9 +57,7 @@ const Game = () => {
                     }
                 </>
             }
-            {game !== null && [GameState.IN_PROGRESS, GameState.WAITING].includes(game.state) &&
-                <SettingsMenu />
-            }
+            {game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
             {playersInRoom && game !== null &&
                 <PlayingTable
                     players={playersInRoom.players}

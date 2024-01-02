@@ -1,10 +1,10 @@
 import Rules from "../interfaces/Rules";
+import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 
-const GetRules = async (
-  roomId: string,
-): Promise<Rules> => {
-  const r = await fetch(getHostUrl() + "/api/v1/game/rules?roomId=" + roomId, {
+const GetRules = async (): Promise<Rules> => {
+  const ctx = getContext();
+  const r = await fetch(getHostUrl() + "/api/v1/game/rules?roomId=" + ctx.roomId, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"

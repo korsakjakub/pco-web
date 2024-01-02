@@ -11,8 +11,8 @@ const queryClient = new QueryClient();
 
 const App = () => {
     const env = "local";
-    const hostUrl = env === "debug" ? "https://pco.korsak.xyz" : "http://127.0.0.1:8080";
-    const frontUrl = env === "debug" ? "https://poker.korsak.xyz" : "http://127.0.0.1:8000";
+    const hostUrl = env === "prod" ? "https://pco.korsak.xyz" : "http://127.0.0.1:8080";
+    const frontUrl = env === "prod" ? "https://poker.korsak.xyz" : "http://127.0.0.1:8000";
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

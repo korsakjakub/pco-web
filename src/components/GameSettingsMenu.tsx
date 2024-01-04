@@ -49,13 +49,13 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
 
   return (
     <div className="settings">
-      <button className="pure-button settings-button" onClick={() => setMenuOpen(!menuOpen)}>
+      <button className="settings-button" onClick={() => setMenuOpen(!menuOpen)}>
         Settings
       </button>
 
       {menuOpen && (
         <div className="settings-dropdown">
-          <form className="pure-form">
+          <form>
             <fieldset>
               <legend>Game settings</legend>
               <label htmlFor="starting-chips">Starting chips</label>
@@ -94,7 +94,7 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 onChange={(e) => handleInputChange('bigBlind', e.target.valueAsNumber)}
                 readOnly={readOnly}
               />
-              <button aria-busy={isLoading} onClick={() => saveRules(formRules)} type="button" className={saveButtonInvalid ? "pure-button pure-button-primary invalid" : "pure-button pure-button-primary"}>
+              <button aria-busy={isLoading} onClick={() => saveRules(formRules)} type="button" aria-invalid={saveButtonInvalid}>
                 Save
               </button>
             </fieldset>

@@ -19,19 +19,12 @@
 .settings-dropdown {
   z-index: 999;
   position: fixed;
-  top: 60px; /* Adjust the top distance as needed */
+  top: 60px;
   right: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: Add a box shadow for a lifted effect */
-  animation: fadeIn 0.3s ease-out; /* Optional: Add a fade-in animation */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
 }
 
-.settings-dropdown p {
-  padding: 10px;
-  margin: 0;
-  border-bottom: 1px solid #ccc; /* Optional: Add a border between menu items */
-}
-
-/* Show the menu when the menuOpen state is true */
 .settings-dropdown.show {
   display: block;
 }
@@ -52,7 +45,7 @@
 
 .circular-table {
   position: absolute;
-  height: 90%; /* keep within parent with space to spare*/
+  height: 90%;
   width: 90%;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   left: 50%; /* exact position */
@@ -129,7 +122,8 @@
   color: var(--bs-gray-900)
 }
 
-.invalid {
-  border: 3px solid red;
-}
+.player-settings {
+  position: absolute;
+  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
 
+}

@@ -20,7 +20,7 @@ const AcceptPlayerInQueue = async (
     const rb = await r.json();
     return rb;
   } else {
-    throw new Error("could not fetch queue." + JSON.stringify(r));
+    throw new Error("could not accept player." + JSON.stringify(r));
   }
 };
 

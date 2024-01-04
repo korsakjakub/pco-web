@@ -62,7 +62,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
           active: player.id === currentPlayer, 
           getCoords: (r: number) => coords(index, r), 
           isLoading: isLoading, 
-          onClick: decideWinner
+          onPickWinner: decideWinner
         })
         )}
       <div className="game-info">

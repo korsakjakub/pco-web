@@ -14,8 +14,8 @@ import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
 import { useState } from "react";
-import GameSettingsMenu from "../components/GameSettingsMenu";
 import GetRules from "../requests/GetRules";
+import GameSettingsMenu from "../components/GameSettingsMenu";
 
 
 const Game = () => {

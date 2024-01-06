@@ -1,3 +1,5 @@
+import { faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 interface Props {
@@ -13,17 +15,17 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
   const [showShareLink, setShowShareLink] = useState(false);
 
   return (
-    <>
-      <button type="button" className="btn btn-primary" onClick={() => {
-        setShowShareLink(true);
+    <div className="share-url-alert">
+      <button type="button" onClick={() => {
+        setShowShareLink(!showShareLink);
         navigator.clipboard.writeText(getShareUrl());
       }}>
-        Share 
+        <FontAwesomeIcon icon={faShareNodes}/>
       </button>
       {showShareLink && 
         <a href={getShareUrl()}>link</a>
       }
-    </>
+    </div>
   );
 };
 

@@ -1,3 +1,5 @@
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import Rules from '../interfaces/Rules';
 import SetRules from '../requests/SetRules';
@@ -50,14 +52,13 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
   return (
     <div className="settings">
       <button className="settings-button" onClick={() => setMenuOpen(!menuOpen)}>
-        Settings
+        <FontAwesomeIcon icon={faGear} /> Settings
       </button>
 
       {menuOpen && (
         <div className="settings-dropdown">
           <form>
             <fieldset>
-              <legend>Game settings</legend>
               <label htmlFor="starting-chips">Starting chips</label>
               <input
                 id="starting-chips"

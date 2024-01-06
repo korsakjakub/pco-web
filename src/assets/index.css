@@ -12,6 +12,8 @@
 
 .settings-button {
   position: fixed;
+  max-width: 150px;
+  max-height: 50px;
   top: 10px;
   right: 10px;
 }
@@ -21,8 +23,11 @@
   position: fixed;
   top: 60px;
   right: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-out;
+  background-color: var(--form-element-background-color);
+  border-radius: 10px;
+  border-style: solid;
+  border-color: var(--form-element-border-color);
+  padding: 30px 10px 0px 10px;
 }
 
 .settings-dropdown.show {
@@ -126,4 +131,8 @@
   position: absolute;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
 
+}
+
+.share-url-alert {
+  max-width: 100px;
 }

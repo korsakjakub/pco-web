@@ -58,6 +58,7 @@ const Game = () => {
                 </>
             }
             {game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
+
             {playersInRoom && game !== null &&
                 <PlayingTable
                     players={playersInRoom.players}

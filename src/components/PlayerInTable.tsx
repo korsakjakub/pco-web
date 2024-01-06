@@ -29,8 +29,8 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
   };
 
   return (
-    <>
-      <div key={player.id} onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
+    <div key={player.id}>
+      <div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
         <div className={playerFrameCls(active)} style={getCoords(40)}>
           <p className="player-frame-name">{player.name}</p>
           <p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>
@@ -65,7 +65,7 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
         message={confirmationData.message} 
         onCancelled={() => setConfirmationData({...confirmationData, open: false})} 
         onConfirmed={confirmationData.onConfirmed}/>
-    </>
+    </div>
   )
 }
 

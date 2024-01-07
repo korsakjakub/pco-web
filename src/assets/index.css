@@ -1,13 +1,39 @@
 #root {
-  max-width: 900px;
-  margin-inline: auto;
+  width: 100%;
+  height: 130%;
+  background: linear-gradient(200deg, #0a1002 0%, #000a04 100%);
+  --primary: #1d5430;
+  --primary-hover: #336544;
+  --off-white: #f7f7e5;
+  --color: #f7f7e5;
+  --table-border: #3b1400;
+  --form-element-active-border-color: #C4B454;
+  --form-element-focus-color: #b3a343;
+}
+
+body {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+html {
+  height: 100%;
+  width: 100%;
 }
 
 .game {
   display: grid;
-  margin-top: 3vh;
+  padding-top: 8vh;
   grid-auto-flow: row;
   grid-row-gap: 5vh;
+}
+
+.player-lists {
+  background: var(--primary);
+  border-radius: 10px;
+  border-style: solid;
+  border-color: var(--form-element-border-color);
 }
 
 .settings-button {
@@ -55,14 +81,9 @@
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   left: 50%; /* exact position */
   top: 50%;
-  background-color: #35654d;
-  border: 3px solid var(--bs-dark-border-subtle);
+  background-color: var(--primary);
+  border: 10px solid var(--table-border);
   border-radius: 50%;
-}
-
-.staked-chips {
-  color: #fff;
-  text-align: center;
 }
 
 .game-info {
@@ -73,7 +94,7 @@
 }
 
 .game-stage {
-  color: #fff;
+  color: var(--off-white);
 }
 
 .game-stage .table-card {
@@ -86,22 +107,22 @@
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   min-width: 4rem;
   min-height: 2rem;
-  border: 3px solid var(--bs-dark-border-subtle);
-  background-color: #fff;
+  background-color: var(--off-white);
   border-radius: 40%;
   text-align: center;
-  color: var(--bs-gray-900);
+  color: var(--background-color);
 }
 
 .player-frame {
   position: absolute;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
   max-width: 10rem;
-  background-color: #fff;
+  background-color: var(--off-white);
   border-radius: 40%;
   min-width: 8rem;
   text-align: center;
   border: 3px solid var(--bs-dark-border-subtle);
+  cursor: pointer;
 }
 
 .frame-active {
@@ -119,18 +140,23 @@
 
 .player-frame-name {
   margin-top: 5px;
-  color: var(--bs-gray-900)
+  color: var(--background-color);
 }
 
 .player-frame-chips {
   margin-bottom: 5px;
-  color: var(--bs-gray-900)
+  color: var(--background-color);
 }
 
 .player-settings {
   position: absolute;
+  z-index: 999;
   transform: translate(-50%, -50%); /* offset by 50% of *own* size */
-
+  background-color: var(--form-element-background-color);
+  border-radius: 10px;
+  border-style: solid;
+  border-color: var(--form-element-border-color);
+  padding: 20px 10px 0px 10px;
 }
 
 .share-url-alert {

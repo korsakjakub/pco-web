@@ -1,6 +1,6 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Rules from '../interfaces/Rules';
 import SetRules from '../requests/SetRules';
 
@@ -10,10 +10,19 @@ type Props = {
 };
 
 const GameSettingsMenu = ({ rules, readOnly }: Props) => {
+  const gameSettingsMenuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [formRules, setFormRules] = useState<Rules>(rules);
   const [isLoading, setIsLoading] = useState(false);
   const [saveButtonInvalid, setSaveButtonInvalid] = useState(false);
+
+  const handleClickOutsideDropdown =(e:any)=>{
+      if(menuOpen && !gameSettingsMenuRef.current?.contains(e.target as Node)){
+          setMenuOpen(false)
+      }
+  }
+  window.addEventListener("click",handleClickOutsideDropdown)
+
 
   const saveRules = (r: Rules) => {
     setIsLoading(true);
@@ -50,7 +59,7 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
   };
 
   return (
-    <div className="settings">
+    <div className="settings" ref={gameSettingsMenuRef}>
       <button className="settings-button" onClick={() => setMenuOpen(!menuOpen)}>
         <FontAwesomeIcon icon={faGear} /> Settings
       </button>

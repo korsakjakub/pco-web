@@ -25,8 +25,10 @@ const Home = ({ onReturnFromHome }: Props) => {
   };
 
   return (
-    <div>
-      <h1>pco</h1>
+    <main className="container" >
+      <header>
+        <h1>ChipMate</h1>
+      </header>
       <div>
         <h2>create a new room</h2>
         <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
@@ -35,7 +37,7 @@ const Home = ({ onReturnFromHome }: Props) => {
         <h2>or join an existing room</h2>
         <Join onError={handleError} onSuccess={handleJoinSuccess} />
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -13,7 +13,7 @@ import PlayerActions from "../components/PlayerActions";
 import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import GetRules from "../requests/GetRules";
 import GameSettingsMenu from "../components/GameSettingsMenu";
 
@@ -43,11 +43,13 @@ const Game = () => {
     const [isGameLoading, setIsGameLoading] = useState(false);
 
     return (
-        <div className="game">
+        <main className="game container">
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
-                    <PlayersList players={playersInRoom.players || []} />
-                    <QueueList players={playersInQueue.players || []} />
+                    <section className="player-lists">
+                        <PlayersList players={playersInRoom.players || []} />
+                        <QueueList players={playersInQueue.players || []} />
+                    </section>
                     <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
                     { isAdmin() && playersInRoom.players.length > 1 &&
                         <button aria-busy={isGameLoading} onClick={() => {
@@ -70,7 +72,7 @@ const Game = () => {
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
                 <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} onActionPerformed={() => setIsGameLoading(true)}/>}
-        </div>
+        </main>
     );
 };
 

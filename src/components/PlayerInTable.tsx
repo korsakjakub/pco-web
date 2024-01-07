@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Player from '../interfaces/Player';
 import KickPlayerFromRoom from '../requests/KickPlayerFromRoom';
 import getContext from '../utils/getContext';
@@ -17,19 +17,28 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
   const [isPlayerSettingsVisible, setIsPlayerSettingsVisible] = useState(false);
+  const playerSettingsRef = useRef<HTMLDivElement>(null);
   const [confirmationData, setConfirmationData] = useState({
-    open: false,
+    openModal: false,
     id: "confirmation",
     message: "",
     onConfirmed: () => console.log("confirmed")
   });
+
+  const handleClickOutsideDropdown =(e:any)=>{
+      if(isPlayerSettingsVisible && !playerSettingsRef.current?.contains(e.target as Node)){
+          setIsPlayerSettingsVisible(false);
+      }
+  }
+  window.addEventListener("click",handleClickOutsideDropdown)
+
 
   const playerFrameCls = (isActive: boolean) => {
     return isActive ? "player-frame frame-active" : "player-frame";
   };
 
   return (
-    <div key={player.id}>
+    <div key={player.id} ref={playerSettingsRef}>
       <div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
         <div className={playerFrameCls(active)} style={getCoords(40)}>
           <p className="player-frame-name">{player.name}</p>
@@ -40,19 +49,19 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
         </p>
       </div>
       { isPlayerSettingsVisible && isAdmin() && 
-        <div className='player-settings' style={getCoords(20)}>
+        <div className='player-settings' style={getCoords(1)}>
           <button onClick={() => onPickWinner(player.id)}>Pick winner</button>
           <button onClick={() => setConfirmationData({
-            open: true,
+            openModal: true,
             id: "confirm-player-kick",
             message: "Do you really wish to kick " + player.name + "?",
             onConfirmed: () => {
               KickPlayerFromRoom(player.id);
-              setConfirmationData({...confirmationData, open: false});
+              setConfirmationData({...confirmationData, openModal: false});
             }
           })}>Kick out</button>
           <button onClick={() => setConfirmationData({
-            open: true,
+            openModal: true,
             id: "confirm-player-reset",
             message: "Do you really wish to reset " + player.name + "'s chips?",
             onConfirmed: () => console.log("reset")
@@ -60,10 +69,10 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
         </div>
       }
       <ConfirmationModal 
-        open={confirmationData.open} 
+        open={confirmationData.openModal} 
         id={confirmationData.id} 
         message={confirmationData.message} 
-        onCancelled={() => setConfirmationData({...confirmationData, open: false})} 
+        onCancelled={() => setConfirmationData({...confirmationData, openModal: false})} 
         onConfirmed={confirmationData.onConfirmed}/>
     </div>
   )

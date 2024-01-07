@@ -1,7 +1,7 @@
 import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 
-const KickPlayerFromQueue = async (
+const KickPlayerFromRoom = async (
   playerId: string,
 ) => {
   const ctx = getContext();
@@ -20,8 +20,8 @@ const KickPlayerFromQueue = async (
     const rb = await r.json();
     return rb;
   } else {
-    throw new Error("could not delete player." + JSON.stringify(r));
+    throw new Error("could not kick player from room." + JSON.stringify(r));
   }
 };
 
-export default KickPlayerFromQueue;
+export default KickPlayerFromRoom

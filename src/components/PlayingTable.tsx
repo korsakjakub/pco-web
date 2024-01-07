@@ -3,7 +3,7 @@ import Player from "../interfaces/Player";
 import DecideWinner from "../requests/DecideWinner";
 import getContext from "../utils/getContext";
 import getFrontUrl from "../utils/getFrontUrl";
-import PlayerInTable from "./PlayerInTable";
+import PlayerInTable from "../components/PlayerInTable";
 
 type Props = {
   players: Player[];
@@ -62,7 +62,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
           active: player.id === currentPlayer, 
           getCoords: (r: number) => coords(index, r), 
           isLoading: isLoading, 
-          onClick: decideWinner
+          onPickWinner: decideWinner
         })
         )}
       <div className="game-info">

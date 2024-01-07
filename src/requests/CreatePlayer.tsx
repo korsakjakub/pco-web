@@ -9,7 +9,7 @@ const CreatePlayer = async (queueId: string, playerName: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-        body: JSON.stringify({ name: playerName }),
+      body: JSON.stringify({ name: playerName }),
     }
   );
   if (!r.ok) {

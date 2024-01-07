@@ -16,7 +16,6 @@ const PerformAction = async (action: Action, chips?: string): Promise<boolean> =
   if (chips !== undefined) {
     opts.body = JSON.stringify({ chips: chips });
   }
-  console.log(chips, opts);
 
   const r = await fetch(getHostUrl() + "/api/v1/game/" + action.toLowerCase() + "?roomId=" + ctx.roomId, opts);
   return r.ok;

@@ -9,9 +9,9 @@ const PlayersList = ({ players }: Props) => {
     <table>
       <thead>
         <tr>
-        <th>
-          Players
-        </th>
+          <th>
+            Players
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -20,8 +20,7 @@ const PlayersList = ({ players }: Props) => {
         )}
         {players?.map((player) => (
           <tr key={player.id}>
-              <td>Name: {player.name}</td>
-              <td>Id: {player.id}</td>
+            <td>{player.name}</td>
           </tr>
         ))}
       </tbody>

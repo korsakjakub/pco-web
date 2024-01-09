@@ -2,7 +2,7 @@ import { Action } from '../enums/Action';
 import getContext from '../utils/getContext';
 import getHostUrl from '../utils/getHostUrl';
 
-const PerformAction = async (action: Action, chips?: string): Promise<boolean> => {
+const PerformAction = async (action: Action, chips?: number): Promise<boolean> => {
   const ctx = getContext();
 
   const opts: RequestInit = {

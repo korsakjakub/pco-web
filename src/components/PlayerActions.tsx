@@ -9,10 +9,11 @@ type Props = {
   currentPlayerId: String;
   currentPlayerStakedChips: number;
   gameStage: GameStage;
-  onActionPerformed: () => void;
+  currentBetSize: number;
+  validBetSize: (action: Action, betSize: number) => boolean;
 };
 
-const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gameStage, onActionPerformed }: Props) => {
+const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gameStage, validBetSize }: Props) => {
   const ctx = getContext();
 
   const [betSize, setBetSize] = useState("");
@@ -21,12 +22,16 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
   const performAction = (action: Action, event: any) => {
     event.preventDefault();
     if (betSize === '' && [Action.RAISE, Action.BET].includes(action)) {
+      console.log("r1")
       setIsBetSizeValid(false);
-      return;
+    } else if (!validBetSize(action, +betSize)) {
+      console.log("r2")
+      setIsBetSizeValid(false);
+    } else {
+      console.log("r3")
+      PerformAction(action, +betSize);
+      setIsBetSizeValid(true);
     }
-    onActionPerformed();
-    PerformAction(action, betSize);
-    setIsBetSizeValid(true);
   };
 
   const areActionsDisabled = () => currentPlayerId !== ctx.playerId || gameStage === GameStage.SHOWDOWN;
@@ -46,7 +51,7 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
           value={betSize} 
           placeholder={currentPlayerStakedChips.toString()}
           aria-label="Amount (to the nearest dollar)"
-          className={isBetSizeValid ? '' : 'invalid'}
+          aria-invalid={!isBetSizeValid}
           />
       </form>
     </div>

@@ -13,9 +13,11 @@ import PlayerActions from "../components/PlayerActions";
 import GetGameResponse from "../interfaces/GetGameResponse";
 import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import GetRules from "../requests/GetRules";
 import GameSettingsMenu from "../components/GameSettingsMenu";
+import PerformAction from "../requests/PerformAction";
+import { Action } from "../enums/Action";
 
 
 const Game = () => {
@@ -41,6 +43,24 @@ const Game = () => {
     });
 
     const [isGameLoading, setIsGameLoading] = useState(false);
+
+    const isBetSizeValid = (action: Action, betSize: number) => {
+        if (!rules || !game) {
+            return false;
+        }
+        console.log(action, betSize <= game?.currentBetSize, game?.currentBetSize, betSize < 2 * rules?.bigBlind);
+        if (action === Action.RAISE && 
+            (betSize <= game?.currentBetSize || betSize < 2 * rules?.bigBlind)) {
+            console.log("1");
+            return false;
+        } else if (action === Action.RAISE && game.currentBetSize === 0) {
+            console.log("2");
+            return false;
+        } else {
+            console.log("3");
+            return true;
+        }
+    };
 
     return (
         <main className="game container">
@@ -71,7 +91,7 @@ const Game = () => {
                 />
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
-                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} onActionPerformed={() => setIsGameLoading(true)}/>}
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
         </main>
     );
 };

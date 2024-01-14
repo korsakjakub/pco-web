@@ -11,26 +11,30 @@ type Props = {
   gameStage: GameStage;
   isLoading: boolean;
   currentPlayer: string;
+  dealerId: string;
+  sbId: string;
+  bbId: string;
 };
 
-const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer }: Props) => {
+const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer, dealerId, sbId, bbId }: Props) => {
   const ctx = getContext();
 
   const shiftPlayers = (players: Player[]): Player[] => {
     const length = players.length;
     const positionsToShift = players.findIndex(player => player.id === ctx.playerId);
-    const shift = (length + positionsToShift) % length;
+    const shift = (length - positionsToShift) % length;
 
     return players.map((_, index, array) => array[(index - shift + length) % length]);
   }
 
   const shiftedPlayers = shiftPlayers(players);
+  
 
   const phi = (2 * Math.PI) / players.length;
 
   const coords = (i: number, radius: number) => {
     return {
-      left: 50 + radius * Math.sin(phi * i) + "%",
+      left: 50 - radius * Math.sin(phi * i) + "%",
       top: 50 + radius * Math.cos(phi * i) + "%",
     };
   };
@@ -62,7 +66,8 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
           active: player.id === currentPlayer, 
           getCoords: (r: number) => coords(index, r), 
           isLoading: isLoading, 
-          onPickWinner: decideWinner
+          onPickWinner: decideWinner,
+          isDealer: dealerId === player.id
         })
         )}
       <div className="game-info">

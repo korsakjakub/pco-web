@@ -48,16 +48,12 @@ const Game = () => {
         if (!rules || !game) {
             return false;
         }
-        console.log(action, betSize <= game?.currentBetSize, game?.currentBetSize, betSize < 2 * rules?.bigBlind);
         if (action === Action.RAISE && 
             (betSize <= game?.currentBetSize || betSize < 2 * rules?.bigBlind)) {
-            console.log("1");
             return false;
         } else if (action === Action.RAISE && game.currentBetSize === 0) {
-            console.log("2");
             return false;
         } else {
-            console.log("3");
             return true;
         }
     };
@@ -87,11 +83,16 @@ const Game = () => {
                     currentPlayer={game.currentTurnPlayerId}
                     stakedChips={game.stakedChips}
                     gameStage={game.stage}
+                    dealerId={game.dealerPlayerId}
+                    sbId={game.smallBlindPlayerId}
+                    bbId={game.bigBlindPlayerId}
                     isLoading={isGameLoading}
                 />
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
                 <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
+            <pre>{JSON.stringify(game, null, 2)}</pre>
+            <pre>{JSON.stringify(playersInRoom, null, 2)}</pre>
         </main>
     );
 };

@@ -12,9 +12,9 @@ import { Action } from "./enums/Action";
 const queryClient = new QueryClient();
 
 const App = () => {
-    const env = "prod";
-    const hostUrl = env === "prod" ? "https://pco.korsak.xyz" : "http://127.0.0.1:8080";
-    const frontUrl = env === "prod" ? "https://poker.korsak.xyz" : "http://127.0.0.1:8000";
+    const env = "local";
+    const hostUrl = env === "prod" ? "https://pco.korsak.xyz" : "http://192.168.0.221:8080";
+    const frontUrl = env === "prod" ? "https://poker.korsak.xyz" : "http://192.168.0.221:8000";
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

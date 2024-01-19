@@ -51,7 +51,9 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
           aria-invalid={!isBetSizeValid}
           />
       </form>
-      <pre>{JSON.stringify({"currentPlayerId": currentPlayerId, "myPlayerId": ctx.playerId}, null, 2)}</pre>
+      {ctx.env === "local" &&
+        <pre>{JSON.stringify({"currentPlayerId": currentPlayerId, "myPlayerId": ctx.playerId}, null, 2)}</pre>
+      }
     </div>
   );
 };

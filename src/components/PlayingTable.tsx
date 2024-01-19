@@ -12,11 +12,9 @@ type Props = {
   isLoading: boolean;
   currentPlayer: string;
   dealerId: string;
-  sbId: string;
-  bbId: string;
 };
 
-const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer, dealerId, sbId, bbId }: Props) => {
+const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer, dealerId }: Props) => {
   const ctx = getContext();
 
   const shiftPlayers = (players: Player[]): Player[] => {

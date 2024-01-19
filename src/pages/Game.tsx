@@ -84,15 +84,17 @@ const Game = () => {
                     stakedChips={game.stakedChips}
                     gameStage={game.stage}
                     dealerId={game.dealerPlayerId}
-                    sbId={game.smallBlindPlayerId}
-                    bbId={game.bigBlindPlayerId}
                     isLoading={isGameLoading}
                 />
             }
             {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
                 <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
-            <pre>{JSON.stringify(game, null, 2)}</pre>
-            <pre>{JSON.stringify(playersInRoom, null, 2)}</pre>
+            {ctx.env === "local" &&
+                <>
+                    <pre>{JSON.stringify(game, null, 2)}</pre>
+                    <pre>{JSON.stringify(playersInRoom, null, 2)}</pre>
+                </>
+            }
         </main>
     );
 };

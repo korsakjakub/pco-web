@@ -5,6 +5,7 @@ interface Context {
   roomName: string;
   roomToken: string | null;
   queueId: string | null;
+  env: string | null;
 }
 
 export default Context;

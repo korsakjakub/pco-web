@@ -8,11 +8,12 @@ type Props = {
   player: Player;
   active: boolean;
   isLoading: boolean;
+  isDealer: boolean;
   onPickWinner: (playerId: string) => void;
   getCoords: (radius: number) => any;
 }
 
-const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Props) => {
+const PlayerInTable = ({player, active, isLoading, isDealer, getCoords, onPickWinner}: Props) => {
   const ctx = getContext();
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
@@ -44,9 +45,10 @@ const PlayerInTable = ({player, active, isLoading, getCoords, onPickWinner}: Pro
           <p className="player-frame-name">{player.name}</p>
           <p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>
         </div>
-        <p aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
+        <div aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
           ${player.stakedChips}
-        </p>
+          {isDealer && <div>D</div>}
+        </div>
       </div>
       { isPlayerSettingsVisible && isAdmin() && 
         <div className='player-settings' style={getCoords(1)}>

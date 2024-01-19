@@ -22,13 +22,10 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
   const performAction = (action: Action, event: any) => {
     event.preventDefault();
     if (betSize === '' && [Action.RAISE, Action.BET].includes(action)) {
-      console.log("r1")
       setIsBetSizeValid(false);
     } else if (!validBetSize(action, +betSize)) {
-      console.log("r2")
       setIsBetSizeValid(false);
     } else {
-      console.log("r3")
       PerformAction(action, +betSize);
       setIsBetSizeValid(true);
     }
@@ -54,6 +51,9 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
           aria-invalid={!isBetSizeValid}
           />
       </form>
+      {ctx.env === "local" &&
+        <pre>{JSON.stringify({"currentPlayerId": currentPlayerId, "myPlayerId": ctx.playerId}, null, 2)}</pre>
+      }
     </div>
   );
 };

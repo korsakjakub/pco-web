@@ -28,11 +28,11 @@ const Queue = () => {
   }) as {players: Player[]} | null;
 
   return (
-    <div>
+    <main className="container">
       <h1>You are waiting in the queue {ctx.queueId}</h1>
       <QueueList players={stream?.players || []}/>
       <PlayersList players={playersStream?.players || []}/>
-    </div>
+    </main>
   );
 }
 

@@ -44,16 +44,17 @@ const JoinQueue = ({ onReturnFromJoin }: Props) => {
     }
   };
   return (
-    <>
-      <h1>pco</h1>
-      <h1>Join Room</h1>
+    <main className="container">
+      <header>
+        <h1>Join Room</h1>
+      </header>
       <NameForm
         button="Join"
         isLoading={isLoading}
         name={"player"}
         onSubmit={joinGame}
       />
-    </>
+    </main>
   );
 }
 

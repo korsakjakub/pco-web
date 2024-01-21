@@ -16,7 +16,6 @@ import useStream from "../hooks/useStream";
 import { useState } from "react";
 import GetRules from "../requests/GetRules";
 import GameSettingsMenu from "../components/GameSettingsMenu";
-import PerformAction from "../requests/PerformAction";
 import { Action } from "../enums/Action";
 
 
@@ -62,10 +61,13 @@ const Game = () => {
         <main className="game container">
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
-                    <section className="player-lists">
-                        <PlayersList players={playersInRoom.players || []} />
-                        <QueueList players={playersInQueue.players || []} />
-                    </section>
+                    <details>
+                      <summary>Admin Panel</summary>
+                        <section>
+                            <PlayersList players={playersInRoom.players || []} />
+                            <QueueList players={playersInQueue.players || []} />
+                        </section>
+                    </details>
                     <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
                     { isAdmin() && playersInRoom.players.length > 1 &&
                         <button aria-busy={isGameLoading} onClick={() => {

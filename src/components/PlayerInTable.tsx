@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Player from '../interfaces/Player';
 import KickPlayerFromRoom from '../requests/KickPlayerFromRoom';
 import getContext from '../utils/getContext';
@@ -26,12 +26,22 @@ const PlayerInTable = ({player, active, isLoading, isDealer, getCoords, onPickWi
     onConfirmed: () => console.log("confirmed")
   });
 
-  const handleClickOutsideDropdown =(e:any)=>{
-      if(isPlayerSettingsVisible && !playerSettingsRef.current?.contains(e.target as Node)){
-          setIsPlayerSettingsVisible(false);
+  useEffect(() => {
+    const handleClickOutsideDropdown = (e: any) => {
+      if (isPlayerSettingsVisible && !playerSettingsRef.current?.contains(e.target as Node)) {
+        setIsPlayerSettingsVisible(false);
       }
-  }
-  window.addEventListener("click",handleClickOutsideDropdown)
+    };
+    window.addEventListener("click", handleClickOutsideDropdown);
+    return () => {
+      window.removeEventListener("click", handleClickOutsideDropdown);
+    };
+  }, [isPlayerSettingsVisible]);
+
+  const handleKickPlayer = useCallback(() => {
+    KickPlayerFromRoom(player.id);
+    setConfirmationData({...confirmationData, openModal: false});
+  }, [player.id, confirmationData]);
 
 
   const playerFrameCls = (isActive: boolean) => {
@@ -57,10 +67,7 @@ const PlayerInTable = ({player, active, isLoading, isDealer, getCoords, onPickWi
             openModal: true,
             id: "confirm-player-kick",
             message: "Do you really wish to kick " + player.name + "?",
-            onConfirmed: () => {
-              KickPlayerFromRoom(player.id);
-              setConfirmationData({...confirmationData, openModal: false});
-            }
+            onConfirmed: () => handleKickPlayer
           })}>Kick out</button>
           <button onClick={() => setConfirmationData({
             openModal: true,

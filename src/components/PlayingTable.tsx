@@ -59,15 +59,18 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
     <div className="circular-table-wrapper">
       <div className="circular-table" />
       {players.length > 0 &&
-        shiftedPlayers.map((player, index) => PlayerInTable({
-          player: player, 
-          active: player.id === currentPlayer, 
-          getCoords: (r: number) => coords(index, r), 
-          isLoading: isLoading, 
-          onPickWinner: decideWinner,
-          isDealer: dealerId === player.id
-        })
-        )}
+        shiftedPlayers.map((player, index) => (
+          <PlayerInTable
+            key={player.id}  // Add a unique key prop
+            player={player} 
+            active={player.id === currentPlayer} 
+            getCoords={(r: number) => coords(index, r)} 
+            isLoading={isLoading} 
+            onPickWinner={decideWinner}
+            isDealer={dealerId === player.id}
+          />
+        ))
+      }
       <div className="game-info">
         <div className="staked-chips">Pot: ${stakedChips}</div>
         <div className="game-stage">{showGameStage(gameStage)}</div>

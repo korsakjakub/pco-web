@@ -69,8 +69,8 @@ const Game = () => {
                     isLoading={isGameLoading}
                 />
             }
-            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
-                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
+            {game?.state === GameState.IN_PROGRESS && rules && !isMyPlayerLoading && myPlayer && 
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} minBetSize={rules.bigBlind * 2} maxBetSize={myPlayer.chips} validBetSize={isBetSizeValid}/>}
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
                     <details>

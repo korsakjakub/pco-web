@@ -10,10 +10,12 @@ type Props = {
   currentPlayerStakedChips: number;
   gameStage: GameStage;
   currentBetSize: number;
+  minBetSize: number;
+  maxBetSize: number;
   validBetSize: (action: Action, betSize: number) => boolean;
 };
 
-const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gameStage, validBetSize }: Props) => {
+const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gameStage, minBetSize, maxBetSize, validBetSize }: Props) => {
   const ctx = getContext();
 
   const [betSize, setBetSize] = useState("");
@@ -50,6 +52,7 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
           aria-label="Amount (to the nearest dollar)"
           aria-invalid={!isBetSizeValid}
           />
+          <input type="range" min={minBetSize} max={maxBetSize} value={betSize} onChange={(e) => setBetSize(e.target.value)}/>
       </form>
       {ctx.env === "local" &&
         <pre>{JSON.stringify({"currentPlayerId": currentPlayerId, "myPlayerId": ctx.playerId}, null, 2)}</pre>

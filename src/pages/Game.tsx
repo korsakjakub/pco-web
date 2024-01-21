@@ -59,6 +59,18 @@ const Game = () => {
 
     return (
         <main className="game container">
+            {playersInRoom && game !== null &&
+                <PlayingTable
+                    players={playersInRoom.players}
+                    currentPlayer={game.currentTurnPlayerId}
+                    stakedChips={game.stakedChips}
+                    gameStage={game.stage}
+                    dealerId={game.dealerPlayerId}
+                    isLoading={isGameLoading}
+                />
+            }
+            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
+                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
                     <details>
@@ -77,20 +89,7 @@ const Game = () => {
                     }
                 </>
             }
-            {game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
-
-            {playersInRoom && game !== null &&
-                <PlayingTable
-                    players={playersInRoom.players}
-                    currentPlayer={game.currentTurnPlayerId}
-                    stakedChips={game.stakedChips}
-                    gameStage={game.stage}
-                    dealerId={game.dealerPlayerId}
-                    isLoading={isGameLoading}
-                />
-            }
-            {game?.state === GameState.IN_PROGRESS && !isMyPlayerLoading && myPlayer && 
-                <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} validBetSize={isBetSizeValid}/>}
+            {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
             {ctx.env === "local" &&
                 <>
                     <pre>{JSON.stringify(game, null, 2)}</pre>

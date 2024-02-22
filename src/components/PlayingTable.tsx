@@ -68,6 +68,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
             isLoading={isLoading} 
             onPickWinner={decideWinner}
             isDealer={dealerId === player.id}
+						gameStage={gameStage}
           />
         ))
       }

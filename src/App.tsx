@@ -10,7 +10,7 @@ import Context from "./interfaces/Context";
 const queryClient = new QueryClient();
 
 const App = () => {
-    const env = "prod";
+    const env = "local";
     const hostUrl = env === "prod" ? "https://pco.korsak.xyz" : "http://192.168.0.227:8080";
     const frontUrl = env === "prod" ? "https://poker.korsak.xyz" : "http://192.168.0.227:8000";
     window.sessionStorage.setItem("hostUrl", hostUrl);

@@ -1,10 +1,10 @@
-import gsap from 'gsap';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { GameStage } from '../enums/GameStage';
 import Player from '../interfaces/Player';
 import KickPlayerFromRoom from '../requests/KickPlayerFromRoom';
 import getContext from '../utils/getContext';
 import ConfirmationModal from './ConfirmationModal';
+import AnimateChips from '../animations/AnimateChips';
 
 type Props = {
 	player: Player;
@@ -43,27 +43,6 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 
 	const stakeRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		if (stakeRef.current) {
-			const initialValue = parseFloat(stakeRef.current.textContent || '0');
-
-			gsap.fromTo(
-				stakeRef.current,
-				{ value: initialValue },
-				{
-					value: player.stakedChips,
-					duration: 0.5,
-					ease: 'power2.inOut',
-					onUpdate: () => {
-						if (stakeRef.current) {
-							stakeRef.current.textContent = gsap.getProperty(stakeRef.current, 'value');
-						}
-					},
-				}
-			);
-		}
-	}, [player.stakedChips]);
-
 	const handleKickPlayer = useCallback(() => {
 		KickPlayerFromRoom(player.id);
 		setConfirmationData({...confirmationData, openModal: false});
@@ -79,11 +58,11 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 			<div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
 				<div className={playerFrameCls(active)} style={getCoords(40)}>
 					<p className="player-frame-name">{player.name}</p>
-					<p aria-busy={isLoading} className="player-frame-chips">${player.chips}</p>
+					<p aria-busy={isLoading} className="player-frame-chips">${AnimateChips(0, player.chips)}</p>
 				</div>
 				<div aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
 					<div ref={stakeRef}>
-						${player.stakedChips}
+            ${AnimateChips(0, player.stakedChips)}
 					</div>
 					{isDealer && <div>D</div>}
 				</div>

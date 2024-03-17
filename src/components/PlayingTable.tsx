@@ -4,6 +4,7 @@ import DecideWinner from "../requests/DecideWinner";
 import getContext from "../utils/getContext";
 import getFrontUrl from "../utils/getFrontUrl";
 import PlayerInTable from "../components/PlayerInTable";
+import AnimateChips from "../animations/AnimateChips";
 
 type Props = {
   players: Player[];
@@ -73,7 +74,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
         ))
       }
       <div className="game-info">
-        <div className="staked-chips">Pot: ${stakedChips}</div>
+        <div className="staked-chips">Pot: ${AnimateChips(0, stakedChips)}</div>
         <div className="game-stage">{showGameStage(gameStage)}</div>
       </div>
     </div>

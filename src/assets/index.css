@@ -39,6 +39,11 @@ html {
   right: 10px;
 }
 
+.button-danger {
+	background-color: red;
+	border-color: red;
+}
+
 .settings-dropdown {
   z-index: 999;
   position: fixed;

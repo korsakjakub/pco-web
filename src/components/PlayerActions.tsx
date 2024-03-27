@@ -37,7 +37,7 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
 
   return (
     <div className="player-actions">
-      {
+      {actions.length > 0 && 
         actions.map((a, index) => (
           <button className="player-action" disabled={areActionsDisabled()}
             onClick={(event) => performAction(a, event)} key={index}>{a}</button>

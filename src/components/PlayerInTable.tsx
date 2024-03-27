@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { GameStage } from '../enums/GameStage';
+import { PlayerState } from '../enums/PlayerState';
 import Player from '../interfaces/Player';
 import KickPlayerFromRoom from '../requests/KickPlayerFromRoom';
 import getContext from '../utils/getContext';
 import ConfirmationModal from './ConfirmationModal';
 import AnimateChips from '../animations/AnimateChips';
+import { GameStage } from '../enums/GameStage';
 
 type Props = {
 	player: Player;
@@ -69,9 +70,11 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 			</div>
 			{ isPlayerSettingsVisible && isAdmin() && 
 				<div className='player-settings' style={getCoords(1)}>
+          { player.state !== PlayerState.FOLDED &&
 					<button 
 						aria-disabled={gameStage !== GameStage.SHOWDOWN} 
 						onClick={() => onPickWinner(player.id)}>Pick winner</button>
+          }
 
 					<button 
 						aria-disabled={gameStage !== GameStage.SHOWDOWN} 

@@ -92,6 +92,7 @@ const Game = () => {
             {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
             {ctx.env === "local" &&
                 <>
+                    <pre>{JSON.stringify(myPlayer, null, 2)}</pre>
                     <pre>{JSON.stringify(game, null, 2)}</pre>
                     <pre>{JSON.stringify(playersInRoom, null, 2)}</pre>
                 </>

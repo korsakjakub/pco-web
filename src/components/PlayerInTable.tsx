@@ -6,6 +6,9 @@ import getContext from '../utils/getContext';
 import ConfirmationModal from './ConfirmationModal';
 import AnimateChips from '../animations/AnimateChips';
 import { GameStage } from '../enums/GameStage';
+import ResetChips from '../requests/ResetChips';
+import Rules from '../interfaces/Rules';
+import { GameState } from '../enums/GameState';
 
 type Props = {
 	player: Player;
@@ -15,9 +18,11 @@ type Props = {
 	onPickWinner: (playerId: string) => void;
 	getCoords: (radius: number) => any;
 	gameStage: GameStage;	
+	gameState: GameState;	
+  rules: Rules;
 }
 
-const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoords, onPickWinner}: Props) => {
+const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameState, rules, getCoords, onPickWinner}: Props) => {
 	const ctx = getContext();
 	const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
@@ -49,6 +54,11 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 		setConfirmationData({...confirmationData, openModal: false});
 	}, [player.id, confirmationData]);
 
+	const handleResetChips = useCallback(() => {
+		ResetChips(player.id, rules.startingChips)
+		setConfirmationData({...confirmationData, openModal: false});
+	}, [player.id, confirmationData]);
+
 
 	const playerFrameCls = (isActive: boolean) => {
 		return isActive ? "player-frame frame-active" : "player-frame";
@@ -77,13 +87,13 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
           }
 
 					<button 
-						aria-disabled={gameStage !== GameStage.SHOWDOWN} 
+						aria-disabled={gameState !== GameState.WAITING} 
 						className="button-danger" 
 						onClick={() => setConfirmationData({
 							openModal: true,
 							id: "confirm-player-reset",
 							message: "Do you really wish to reset " + player.name + "'s chips?",
-							onConfirmed: () => console.log("reset")
+							onConfirmed: () => handleResetChips()
 						})}>Reset Chips</button>
 
 					<button 
@@ -92,7 +102,7 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 							openModal: true,
 							id: "confirm-player-kick",
 							message: "Do you really wish to kick " + player.name + "?",
-							onConfirmed: () => handleKickPlayer
+							onConfirmed: () => handleKickPlayer()
 						})}>Kick out</button>
 				</div>
 			}

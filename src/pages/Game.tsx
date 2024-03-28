@@ -4,6 +4,7 @@ import QueueList from "../components/QueueList";
 import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
+import Rules from "../interfaces/Rules";
 import PlayingTable from "../components/PlayingTable";
 import { useQuery } from "@tanstack/react-query";
 import { GameState } from "../enums/GameState";
@@ -37,11 +38,17 @@ const Game = () => {
     });
 
     const {data: rules } = useQuery({
-        queryFn: () => GetRules(),
-        queryKey: ["rules"],
+      queryFn: () => GetRules(),
+      queryKey: ["rules"],
+      initialData: {
+        startingChips: 1000,
+        ante: 0,
+        smallBlind: 10,
+        bigBlind: 20,
+      } as Rules,
     });
 
-    const [isGameLoading, setIsGameLoading] = useState(false);
+  const [isGameLoading, setIsGameLoading] = useState(false);
 
     const isBetSizeValid = (action: Action, betSize: number) => {
         if (!rules || !game) {
@@ -65,8 +72,10 @@ const Game = () => {
                     currentPlayer={game.currentTurnPlayerId}
                     stakedChips={game.stakedChips}
                     gameStage={game.stage}
+                    gameState={game.state}
                     dealerId={game.dealerPlayerId}
                     isLoading={isGameLoading}
+                    rules={rules}
                 />
             }
             {game?.state === GameState.IN_PROGRESS && rules && !isMyPlayerLoading && myPlayer && 

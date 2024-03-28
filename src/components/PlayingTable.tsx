@@ -5,17 +5,21 @@ import getContext from "../utils/getContext";
 import getFrontUrl from "../utils/getFrontUrl";
 import PlayerInTable from "../components/PlayerInTable";
 import AnimateChips from "../animations/AnimateChips";
+import Rules from "../interfaces/Rules";
+import { GameState } from "../enums/GameState";
 
 type Props = {
   players: Player[];
   stakedChips: number;
   gameStage: GameStage;
+  gameState: GameState;
   isLoading: boolean;
   currentPlayer: string;
   dealerId: string;
+  rules: Rules;
 };
 
-const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlayer, dealerId }: Props) => {
+const PlayingTable = ({ players, stakedChips, gameStage, gameState, isLoading, currentPlayer, dealerId, rules }: Props) => {
   const ctx = getContext();
 
   const shiftPlayers = (players: Player[]): Player[] => {
@@ -70,6 +74,8 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
             onPickWinner={decideWinner}
             isDealer={dealerId === player.id}
 						gameStage={gameStage}
+						gameState={gameState}
+            rules={rules}
           />
         ))
       }

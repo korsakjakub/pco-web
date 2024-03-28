@@ -10,9 +10,9 @@ import Context from "./interfaces/Context";
 const queryClient = new QueryClient();
 
 const App = () => {
-    const env = "prod";
-    const hostUrl = env === "prod" ? "https://pco.korsak.xyz" : "http://192.168.0.227:8080";
-    const frontUrl = env === "prod" ? "https://poker.korsak.xyz" : "http://192.168.0.227:8000";
+    const hostUrl = import.meta.env.VITE_HOST_URL;
+    const frontUrl = import.meta.env.VITE_FRONT_URL;
+    const env = import.meta.env.VITE_ENV;
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

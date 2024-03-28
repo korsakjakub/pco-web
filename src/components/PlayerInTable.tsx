@@ -59,11 +59,11 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, getCoord
 			<div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
 				<div className={playerFrameCls(active)} style={getCoords(40)}>
 					<p className="player-frame-name">{player.name}</p>
-					<p aria-busy={isLoading} className="player-frame-chips">${AnimateChips(0, player.chips)}</p>
+					<div aria-busy={isLoading} className="player-frame-chips">{AnimateChips(0, player.chips)}</div>
 				</div>
 				<div aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
 					<div ref={stakeRef}>
-            ${AnimateChips(0, player.stakedChips)}
+            {AnimateChips(0, player.stakedChips)}
 					</div>
 					{isDealer && <div>D</div>}
 				</div>

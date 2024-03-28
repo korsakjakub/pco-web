@@ -74,7 +74,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, isLoading, currentPlaye
         ))
       }
       <div className="game-info">
-        <div className="staked-chips">Pot: ${AnimateChips(0, stakedChips)}</div>
+        <div className="staked-chips">Pot: {AnimateChips(0, stakedChips)}</div>
         <div className="game-stage">{showGameStage(gameStage)}</div>
       </div>
     </div>

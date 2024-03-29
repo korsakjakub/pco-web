@@ -82,6 +82,12 @@ const Game = () => {
                 <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} minBetSize={rules.bigBlind * 2} maxBetSize={myPlayer.chips} validBetSize={isBetSizeValid}/>}
             {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
                 <>
+                    { isAdmin() && playersInRoom.players.length > 1 &&
+                        <button aria-busy={isGameLoading} onClick={() => {
+                            setIsGameLoading(true);
+                            StartGame();
+                        }}>Start game</button>
+                    }
                     <details>
                       <summary>Admin Panel</summary>
                         <section>
@@ -90,16 +96,10 @@ const Game = () => {
                         </section>
                     </details>
                     <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
-                    { isAdmin() && playersInRoom.players.length > 1 &&
-                        <button aria-busy={isGameLoading} onClick={() => {
-                            setIsGameLoading(true);
-                            StartGame();
-                        }}>Start game</button>
-                    }
                 </>
             }
             {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
-            {ctx.env === "local" &&
+            {ctx.env === "development" &&
                 <>
                     <pre>{JSON.stringify(myPlayer, null, 2)}</pre>
                     <pre>{JSON.stringify(game, null, 2)}</pre>

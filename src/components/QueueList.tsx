@@ -2,6 +2,7 @@ import { useState } from "react";
 import getContext from "../utils/getContext";
 import AcceptPlayerInQueue from "../requests/AcceptPlayerInQueue";
 import Player from "../interfaces/Player";
+import KickPlayerFromQueue from "../requests/KickPlayerFromQueue";
 
 interface Props {
   players: Player[];
@@ -35,6 +36,12 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
     acceptPlayer(playerId);
   };
 
+  const handleKickFromQueue = (playerId: string) => {
+    setIsLoading(true);
+    setButtonIndexLoading(playerId);
+    KickPlayerFromQueue(playerId);
+  }
+
   return (
     <table>
       <thead>
@@ -57,7 +64,7 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
                 <button aria-busy={isLoading && buttonIndexLoading === player.id} onClick={() => handleAddToRoom(player.id)}>
                   Add
                 </button>
-                <button>Kick out</button>
+                <button onClick={() => handleKickFromQueue(player.id)}>Kick out</button>
               </td>
             )}
           </tr>

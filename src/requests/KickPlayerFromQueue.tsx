@@ -6,7 +6,7 @@ const KickPlayerFromQueue = async (
 ) => {
   const ctx = getContext();
   const r = await fetch(
-    getHostUrl() + "/api/v1/room/" + ctx.roomId + "/players/" + playerId,
+    getHostUrl() + "/api/v1/queue/" + ctx.queueId + "/players/" + playerId,
     {
       method: "DELETE",
       headers: {

@@ -1,14 +1,14 @@
 #root {
   width: 100%;
   min-height: 100%;
-  background: rgb(12,19,10);
-  background: linear-gradient(200deg, rgba(12,19,10,1) 0%, rgba(23,31,40,1) 49%, rgba(23,9,32,1) 100%);
+  background: rgb(12, 19, 10);
+  background: linear-gradient(200deg, rgba(12, 19, 10, 1) 0%, rgba(23, 31, 40, 1) 49%, rgba(23, 9, 32, 1) 100%);
   --primary: #1d5430;
   --primary-hover: #336544;
   --off-white: #f7f7e5;
   --color: #f7f7e5;
   --table-border: #3b1400;
-  --settings-background-color: rgb(12,19,10);
+  --settings-background-color: rgb(12, 19, 10);
   --form-element-active-border-color: #C4B454;
   --form-element-focus-color: #b3a343;
 }
@@ -40,8 +40,8 @@ html {
 }
 
 .button-danger {
-	background-color: red;
-	border-color: red;
+  background-color: red;
+  border-color: red;
 }
 
 .settings-dropdown {
@@ -64,6 +64,7 @@ html {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -78,17 +79,23 @@ html {
   position: absolute;
   height: 90%;
   width: 90%;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
-  left: 50%; /* exact position */
+  transform: translate(-50%, -50%);
+  /* offset by 50% of *own* size */
+  left: 50%;
+  /* exact position */
   top: 50%;
   background-color: var(--primary);
   border: 10px solid var(--table-border);
   border-radius: 50%;
+  background-image: url(/table-background.jpg);
+  background-size: cover;
+  background-repeat: repeat;
 }
 
 .game-info {
   position: absolute;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  transform: translate(-50%, -50%);
+  /* offset by 50% of *own* size */
   left: 50%;
   top: 50%;
 }
@@ -104,7 +111,8 @@ html {
 
 .player-chips {
   position: absolute;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  transform: translate(-50%, -50%);
+  /* offset by 50% of *own* size */
   min-width: 4rem;
   min-height: 2rem;
   background-color: var(--off-white);
@@ -115,7 +123,8 @@ html {
 
 .player-frame {
   position: absolute;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  transform: translate(-50%, -50%);
+  /* offset by 50% of *own* size */
   max-width: 10rem;
   background-color: var(--off-white);
   border-radius: 40%;
@@ -126,15 +135,19 @@ html {
 }
 
 .frame-active {
-  animation: glow 3s infinite alternate; /* Apply the glow animation */
+  animation: glow 3s infinite alternate;
+  /* Apply the glow animation */
 }
 
 @keyframes glow {
   0% {
-    box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.7); /* Initial shadow with glow effect */
+    box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.7);
+    /* Initial shadow with glow effect */
   }
+
   100% {
-    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5); /* Glowing shadow effect */
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5);
+    /* Glowing shadow effect */
   }
 }
 
@@ -151,7 +164,8 @@ html {
 .player-settings {
   position: absolute;
   z-index: 999;
-  transform: translate(-50%, -50%); /* offset by 50% of *own* size */
+  transform: translate(-50%, -50%);
+  /* offset by 50% of *own* size */
   background-color: var(--form-element-background-color);
   border-radius: 10px;
   border-style: solid;

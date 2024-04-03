@@ -7,4 +7,4 @@
 or check out API's swagger [https://pco.korsak.xyz](https://pco.korsak.xyz/swagger-ui/index.html)
 
 ## Quick start
-`npm run dev` for local server
+`bun run dev` for local server

@@ -176,3 +176,14 @@ html {
 .share-url-alert {
   max-width: 100px;
 }
+
+.qr-dialog {
+  text-align: center;
+}
+
+.qr-code-container {
+  border: 4px dashed var(--form-element-border-color); /* Example fun border */
+  display: inline-block;
+  padding: 10px;
+  margin-top: 10px;
+}

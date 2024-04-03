@@ -17,8 +17,7 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
       if (navigator.share) {
         await navigator.share({
           title: 'Żetony',
-          text: 'Check out this link!',
-          url
+          url: link
         });
       } else {
         setShowQR(!showQR);

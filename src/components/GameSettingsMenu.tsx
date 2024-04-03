@@ -77,15 +77,6 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 onChange={(e) => handleInputChange('startingChips', e.target.valueAsNumber)}
                 readOnly={readOnly}
               />
-              <label htmlFor="ante">Ante</label>
-              <input
-                id="ante"
-                type="number"
-                placeholder={JSON.stringify(rules.ante)}
-                value={formRules.ante}
-                onChange={(e) => handleInputChange('ante', e.target.valueAsNumber)}
-                readOnly={readOnly}
-              />
               <label htmlFor="small-blind">Small blind</label>
               <input
                 id="small-blind"

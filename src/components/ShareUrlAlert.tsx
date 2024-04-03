@@ -1,4 +1,4 @@
-import { faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import QRCode from 'qrcode.react';
@@ -16,11 +16,12 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: 'Żetony',
+          title: 'jetons',
           url: link
         });
       } else {
-        setShowQR(!showQR);
+        navigator.clipboard.writeText(link)
+        alert('Link is copied to clipboard');
       }
     } catch (error) {
       console.error('Error sharing:', error);
@@ -28,16 +29,22 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
   };
 
   return (
-    <div className="share-url-alert">
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          shareLink();
-        }}
-      >
-        <FontAwesomeIcon icon={faShareNodes} />
-      </button>
+    <>
+      <nav>
+        <ul>
+          <li>
+            <button type="button" onClick={() => shareLink()} >
+              <FontAwesomeIcon icon={faShareNodes} />
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={() => setShowQR(!showQR)}>
+              <FontAwesomeIcon icon={faQrcode} />
+            </button>
+          </li>
+        </ul>
+      </nav>
+
       {showQR && (
         <dialog open id="qr-code">
           <article className="qr-dialog">
@@ -58,7 +65,7 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
           </article>
         </dialog>
       )}
-    </div>
+    </>
   );
 };
 

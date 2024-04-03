@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 const App = () => {
     const hostUrl = import.meta.env.VITE_HOST_URL;
     const frontUrl = import.meta.env.VITE_FRONT_URL;
-    const env = import.meta.env.VITE_ENV;
+    const env = import.meta.env.MODE;
     window.sessionStorage.setItem("hostUrl", hostUrl);
     window.sessionStorage.setItem("frontUrl", frontUrl);
 

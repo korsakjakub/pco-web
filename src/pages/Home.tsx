@@ -21,12 +21,21 @@ const Home = ({ onReturnFromHome }: Props) => {
   return (
     <main className="container" >
       <header>
-        <h1>ChipMate</h1>
+        <h1>jetons</h1>
       </header>
       <div>
         <h2>create a new room</h2>
         <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
       </div>
+      <footer>
+        <nav>
+          <ul>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/assets">Assets</a></li>
+          </ul>
+        </nav>
+      </footer>
     </main>
   );
 };

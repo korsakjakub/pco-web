@@ -6,6 +6,7 @@ import JoinQueue from "./pages/JoinQueue";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./assets/index.css";
 import Context from "./interfaces/Context";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <Routes>
+                <Route path="*" element={<NotFound />} />
                 <Route path="/" element={<Home onReturnFromHome={onReturn} />} />
                 <Route path={"/join/:queueId"} element={<JoinQueue onReturnFromJoin={onReturn} />} />
                 <Route path={"/game/:roomId"} element={<Game />} />

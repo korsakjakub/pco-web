@@ -5,6 +5,7 @@ import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
 import Rules from "../interfaces/Rules";
+import Context from "../interfaces/Context";
 import PlayingTable from "../components/PlayingTable";
 import { useQuery } from "@tanstack/react-query";
 import { GameState } from "../enums/GameState";
@@ -18,10 +19,17 @@ import { useState } from "react";
 import GetRules from "../requests/GetRules";
 import GameSettingsMenu from "../components/GameSettingsMenu";
 import { Action } from "../enums/Action";
+import NotFound from "./NotFound";
 
 
 const Game = () => {
-  const ctx = getContext();
+  let ctx: Context;
+  try {
+    ctx = getContext();
+  } catch(e) {
+    return <NotFound />;
+  }
+
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
   const game = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {

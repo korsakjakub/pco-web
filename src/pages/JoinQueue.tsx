@@ -38,7 +38,8 @@ const JoinQueue = ({ onReturnFromJoin }: Props) => {
       } as Context);
       navigate("/queue/" + queueId);
     } catch (error) {
-      throw new Error(JSON.stringify(error));
+      alert("Could not join game: " + error);
+      navigate("/");
     } finally {
       setIsLoading(false);
     }

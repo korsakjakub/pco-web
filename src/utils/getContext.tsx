@@ -1,6 +1,6 @@
 const getContext = () => {
   const ctxJSON = window.sessionStorage.getItem("ctx");
-  if (ctxJSON === null) return;
+  if (ctxJSON === null) throw new Error("Context not found in session storage")
   return JSON.parse(ctxJSON);
 };
 

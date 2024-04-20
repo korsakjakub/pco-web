@@ -69,8 +69,10 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
 			<div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
 				<div className={playerFrameCls(active)} style={getCoords(40)}>
           <img src="/avatars/sugar.svg" className="player-avatar"/>
-          <p className="player-frame-name">{player.name}</p>
-          <div aria-busy={isLoading} className="player-frame-chips">{AnimateChips(0, player.chips)}</div>
+          <div>
+            <p className="player-frame-name">{player.name}</p>
+            <div aria-busy={isLoading} className="player-frame-chips">{AnimateChips(0, player.chips)}</div>
+          </div>
 				</div>
 				<div aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
 					<div ref={stakeRef}>

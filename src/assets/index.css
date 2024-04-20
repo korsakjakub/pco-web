@@ -114,6 +114,13 @@ html {
 }
 
 .player-avatar {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 0%;
+  top: 10%;
+  max-width: 50%;
+  background-color: var(--accent);
+  border-radius: 50%;
 }
 
 .player-chips {
@@ -130,6 +137,9 @@ html {
 
 .player-frame {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: translate(-50%, -50%);
   /* offset by 50% of *own* size */
   max-width: 10rem;
@@ -185,7 +195,8 @@ html {
 }
 
 .qr-code-container {
-  border: 4px dashed var(--form-element-border-color); /* Example fun border */
+  border: 4px dashed var(--form-element-border-color);
+  /* Example fun border */
   display: inline-block;
   padding: 10px;
   margin-top: 10px;

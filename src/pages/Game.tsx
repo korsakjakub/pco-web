@@ -32,13 +32,20 @@ const Game = () => {
 
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
-  const game = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {
+  const {stream: gameData, error: gameError} = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {
     setIsGameLoading(false);
     refetchMyPlayer();
-  }) as GetGameResponse | null;
+  });
 
-  const playersInRoom = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`) as {players: Player[]} | null;
-  const playersInQueue = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
+  const game = gameError ? null : gameData as GetGameResponse;
+
+  const {stream: playersInRoomData, error: playersInRoomError} = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`);
+
+  const playersInRoom = playersInRoomError ? null : playersInRoomData as {players: Player[]};
+
+  const {stream: playersInQueueData, error: playersInQueueError} = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`);
+
+  const playersInQueue = playersInQueueError ? null : playersInQueueData as {players: Player[]};
 
   const {data: myPlayer, isLoading: isMyPlayerLoading, refetch: refetchMyPlayer } = useQuery({
     queryFn: () => GetPlayer(),
@@ -105,7 +112,7 @@ const Game = () => {
               </section>
             </details>
           }
-          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
+          { ctx.queueId && <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} /> }
         </>
       }
       {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}

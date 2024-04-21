@@ -2,6 +2,8 @@ import { useState } from "react";
 import getHostUrl from "../utils/getHostUrl";
 import NameForm from "./NameForm";
 import Context from "../interfaces/Context";
+import CreateAvatar from "./CreateAvatar";
+import getRandomAvatarOptions from "../utils/getRandomAvatarOptions";
 
 interface Props {
   onSuccess: (response: Context) => void;
@@ -10,6 +12,19 @@ interface Props {
 
 const NewGame = ({ onSuccess, onError }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [avatar, setAvatar] = useState({
+    avatarStyle: 'Circle',
+    topType: 'ShortHairShortFlat',
+    accessoriesType: 'Blank',
+    hairColor: 'BrownDark',
+    facialHairType: 'Blank',
+    clotheType: 'Hoodie',
+    clotheColor: 'PastelBlue',
+    eyeType: 'Default',
+    eyebrowType: 'Default',
+    mouthType: 'Smile',
+    skinColor: 'Light'
+  });
 
   const newGame = async (event: any) => {
     setIsLoading(true);
@@ -63,13 +78,32 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     }
   };
 
+
+
   return (
-    <NameForm
-      button="New game"
-      isLoading={isLoading}
-      name="player"
-      onSubmit={newGame}
-    />
+    <div className="new-game-wrapper">
+      <CreateAvatar 
+        avatarStyle={avatar.avatarStyle}
+        topType={avatar.topType}
+        accessoriesType={avatar.accessoriesType}
+        hairColor={avatar.hairColor}
+        facialHairType={avatar.facialHairType}
+        clotheType={avatar.clotheType}
+        clotheColor={avatar.clotheColor}
+        eyeType={avatar.eyeType}
+        eyebrowType={avatar.eyebrowType}
+        mouthType={avatar.mouthType}
+        skinColor={avatar.skinColor}
+        onRandom={() => setAvatar(getRandomAvatarOptions())}
+      />
+      <NameForm
+        button="New game"
+        isLoading={isLoading}
+        name="player"
+        onSubmit={newGame}
+        className="new-game-form"
+      />
+    </div>
   );
 };
 

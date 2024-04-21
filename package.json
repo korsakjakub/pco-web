@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "latest",
     "@picocss/pico": "^1.5.10",
     "@tanstack/react-query": "^4.35.7",
+    "avataaars": "^2.0.0",
     "gsap": "^3.12.5",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",

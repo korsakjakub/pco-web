@@ -23,7 +23,7 @@ const Home = ({ onReturnFromHome }: Props) => {
       <header>
         <h1>jetons</h1>
       </header>
-      <div>
+      <div className="game">
         <h2>create a new room</h2>
         <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
       </div>

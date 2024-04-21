@@ -4,6 +4,7 @@ interface Props {
   name: string;
   button: string;
   isLoading: boolean;
+  className?: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
@@ -11,6 +12,7 @@ const NameForm = ({
   name = "DefaultName",
   button = "Submit",
   isLoading = false,
+  className = "",
   onSubmit,
 }: Props) => {
 
@@ -25,7 +27,7 @@ const NameForm = ({
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className={className}>
       <input
         type="text"
         name={name + "Name"}

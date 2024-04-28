@@ -1,23 +1,52 @@
+import { avataaars } from '@dicebear/collection';
 
 const randomizeValue = (array: string[]) => {
   const randomIndex = Math.floor(Math.random() * array.length);
   return array[randomIndex];
 };
 
+const properties = avataaars.schema.properties;
+
 const getRandomAvatarOptions = () => {
-  return {
-    avatarStyle: 'Circle',
-    topType: randomizeValue(['NoHair', 'Eyepatch', 'Hat', 'Hijab', 'Turban', 'WinterHat1', 'LongHairBigHair', 'ShortHairShortFlat']),
-    accessoriesType: randomizeValue(['Blank', 'Kurt', 'Prescription01', 'Prescription02', 'Round', 'Sunglasses', 'Wayfarers']),
-    hairColor: randomizeValue(['Auburn', 'Black', 'Blonde', 'BlondeGolden', 'Brown', 'BrownDark', 'PastelPink', 'Platinum', 'Red', 'SilverGray']),
-    facialHairType: randomizeValue(['BeardMedium', 'BeardLight', 'BeardMagestic', 'MoustacheFancy', 'MoustacheMagnum']),
-    clotheType: randomizeValue(['BlazerShirt', 'BlazerSweater', 'CollarSweater', 'Hoodie', 'Overall', 'ShirtCrewNeck', 'ShirtScoopNeck', 'ShirtVNeck']),
-    clotheColor: randomizeValue(['Black', 'Blue01', 'Blue02', 'Blue03', 'Gray01', 'Gray02', 'Heather', 'PastelBlue', 'PastelGreen', 'PastelOrange']),
-    eyeType: randomizeValue(['Close', 'Default', 'Cry', 'Dizzy', 'EyeRoll', 'Happy', 'Hearts', 'Side', 'Squint', 'Surprised', 'Wink', 'WinkWacky']),
-    eyebrowType: randomizeValue(['Angry', 'Default', 'DefaultNatural', 'FlatNatural', 'RaisedExcited', 'RaisedExcitedNatural', 'SadConcerned', 'SadConcernedNatural', 'UnibrowNatural', 'UpDown', 'UpDownNatural']),
-    mouthType: randomizeValue(['Concerned', 'Default', 'Disbelief', 'Eating', 'Grimace', 'Sad', 'ScreamOpen', 'Serious', 'Smile', 'Tongue', 'Twinkle', 'Vomit']),
-    skinColor: randomizeValue(['Tanned', 'Yellow', 'Pale', 'Light', 'Brown', 'DarkBrown', 'Black']),
-  };
+  if (!properties) {
+    return [];
+  }
+  let enumProps: any = {}
+  
+  for (var key in properties){
+    if ("items" in properties[key]) {
+      if ("enum" in properties[key]["items"]) {
+          enumProps[key] = randomizeValue(properties[key]["items"]["enum"]);
+      }
+    }
+    if (key.includes("Color")) {
+      enumProps[key] = randomizeValue(properties[key]["default"])
+    }
+    if (key.includes("Probability")) {
+      enumProps[key] = Math.random() >= 0.5 ? 100 : 0;
+    }
+  }
+  return enumProps;
 }
 
 export default getRandomAvatarOptions
+
+export interface AvatarOptions {
+    accessories: string;
+    accessoriesColor: string;
+    accessoriesProbability: number;
+    backgroundColor: string;
+    clothing: string;
+    clothesColor: string;
+    clothingGraphic: string;
+    eyebrows: string;
+    eyes: string;
+    hairColor: string;
+    facialHairColor: string;
+    facialHair: string;
+    mouth: string;
+    nose: string;
+    hatColor: string;
+    skinColor: string;
+    top: string;
+};

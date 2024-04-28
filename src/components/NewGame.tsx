@@ -3,7 +3,7 @@ import getHostUrl from "../utils/getHostUrl";
 import NameForm from "./NameForm";
 import Context from "../interfaces/Context";
 import CreateAvatar from "./CreateAvatar";
-import getRandomAvatarOptions from "../utils/getRandomAvatarOptions";
+import getRandomAvatarOptions, { AvatarOptions } from "../utils/getRandomAvatarOptions";
 
 interface Props {
   onSuccess: (response: Context) => void;
@@ -12,19 +12,8 @@ interface Props {
 
 const NewGame = ({ onSuccess, onError }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [avatar, setAvatar] = useState({
-    avatarStyle: 'Circle',
-    topType: 'ShortHairShortFlat',
-    accessoriesType: 'Blank',
-    hairColor: 'BrownDark',
-    facialHairType: 'Blank',
-    clotheType: 'Hoodie',
-    clotheColor: 'PastelBlue',
-    eyeType: 'Default',
-    eyebrowType: 'Default',
-    mouthType: 'Smile',
-    skinColor: 'Light'
-  });
+  const initialAvatar = getRandomAvatarOptions();
+  const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
 
   const newGame = async (event: any) => {
     setIsLoading(true);
@@ -38,7 +27,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: formData.get("roomName") }),
+        body: JSON.stringify({ name: formData.get("roomName")}),
       });
       const roomResponseBody = await roomResponse.json();
 
@@ -54,7 +43,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
             "Content-Type": "application/json",
             Authorization: "Bearer " + roomResponseBody.token,
           },
-          body: JSON.stringify({ name: formData.get("playerName") }),
+          body: JSON.stringify({ name: formData.get("playerName"), avatar: avatar }),
         },
       );
       const playerResponseBody = await playerResponse.json();
@@ -78,22 +67,10 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     }
   };
 
-
-
   return (
     <div className="new-game-wrapper">
       <CreateAvatar 
-        avatarStyle={avatar.avatarStyle}
-        topType={avatar.topType}
-        accessoriesType={avatar.accessoriesType}
-        hairColor={avatar.hairColor}
-        facialHairType={avatar.facialHairType}
-        clotheType={avatar.clotheType}
-        clotheColor={avatar.clotheColor}
-        eyeType={avatar.eyeType}
-        eyebrowType={avatar.eyebrowType}
-        mouthType={avatar.mouthType}
-        skinColor={avatar.skinColor}
+        avatarOptions={avatar}
         onRandom={() => setAvatar(getRandomAvatarOptions())}
       />
       <NameForm

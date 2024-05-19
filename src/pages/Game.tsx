@@ -109,7 +109,6 @@ const Game = () => {
         </>
       }
       {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
-      <pre>{JSON.stringify(playersInRoom)}</pre>
     </main>
   );
 };

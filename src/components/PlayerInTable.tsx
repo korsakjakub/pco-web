@@ -9,6 +9,7 @@ import { GameStage } from '../enums/GameStage';
 import ResetChips from '../requests/ResetChips';
 import Rules from '../interfaces/Rules';
 import { GameState } from '../enums/GameState';
+import { AvatarOptions } from '../utils/getRandomAvatarOptions';
 
 type Props = {
 	player: Player;
@@ -64,12 +65,28 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
 		return isActive ? "player-frame frame-active" : "player-frame";
 	};
 
+  const getAvatarImgSource = (avatar: AvatarOptions) => {
+    let params = "";
+
+    if (avatar === null) {
+      return 'https://api.dicebear.com/8.x/avataaars/jpg';
+    }
+
+    for (const [key, value] of Object.entries(avatar)) {
+      params += `&${key}=${value}`;
+    }
+    return `https://api.dicebear.com/8.x/avataaars/jpg?${params}`;
+  };
+
 	return (
 		<div key={player.id} ref={playerSettingsRef}>
 			<div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
 				<div className={playerFrameCls(active)} style={getCoords(40)}>
-					<p className="player-frame-name">{player.name}</p>
-					<div aria-busy={isLoading} className="player-frame-chips">{AnimateChips(0, player.chips)}</div>
+          <img src={getAvatarImgSource(player.avatar)} className="player-avatar"/>
+          <div>
+            <p className="player-frame-name">{player.name}</p>
+            <div aria-busy={isLoading} className="player-frame-chips">{AnimateChips(0, player.chips)}</div>
+          </div>
 				</div>
 				<div aria-busy={isLoading} className="player-chips" style={getCoords(20)}>
 					<div ref={stakeRef}>

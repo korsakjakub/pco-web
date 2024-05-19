@@ -3,11 +3,11 @@
   min-height: 100%;
   background: rgb(12, 19, 10);
   background: linear-gradient(200deg, rgba(12, 19, 10, 1) 0%, rgba(23, 31, 40, 1) 49%, rgba(23, 9, 32, 1) 100%);
-  --primary: #1d5430;
-  --primary-hover: #336544;
-  --off-white: #f7f7e5;
-  --color: #f7f7e5;
-  --table-border: #3b1400;
+  --primary: #0A591E;
+  --primary-hover: #4A7C57;
+  --accent: #f7f7e5;
+  --del-color-hover: #D15252;
+  --table-border: #261816;
   --settings-background-color: rgb(12, 19, 10);
   --form-element-active-border-color: #C4B454;
   --form-element-focus-color: #b3a343;
@@ -31,17 +31,29 @@ html {
   grid-row-gap: 5vh;
 }
 
+.new-game-wrapper {
+  display: flex;
+}
+
+.new-game-form {
+  width: 100%;
+}
+
 .settings-button {
   position: fixed;
   max-width: 150px;
-  max-height: 50px;
   top: 10px;
   right: 10px;
 }
 
 .button-danger {
-  background-color: red;
-  border-color: red;
+  background-color: var(--del-color);
+  border-color: var(--del-color);
+}
+
+.button-danger:hover {
+  background-color: var(--del-color-hover);
+  border-color: var(--del-color-hover);
 }
 
 .settings-dropdown {
@@ -101,12 +113,22 @@ html {
 }
 
 .game-stage {
-  color: var(--off-white);
+  color: var(--accent);
 }
 
 .game-stage .table-card {
   display: inline-block;
   max-width: 6vw;
+}
+
+.player-avatar {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 0%;
+  top: 10%;
+  max-width: 50%;
+  background-color: var(--accent);
+  border-radius: 50%;
 }
 
 .player-chips {
@@ -115,7 +137,7 @@ html {
   /* offset by 50% of *own* size */
   min-width: 4rem;
   min-height: 2rem;
-  background-color: var(--off-white);
+  background-color: var(--accent);
   border-radius: 40%;
   text-align: center;
   color: var(--background-color);
@@ -123,10 +145,13 @@ html {
 
 .player-frame {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: translate(-50%, -50%);
   /* offset by 50% of *own* size */
   max-width: 10rem;
-  background-color: var(--off-white);
+  background-color: var(--accent);
   border-radius: 40%;
   min-width: 8rem;
   text-align: center;
@@ -178,7 +203,8 @@ html {
 }
 
 .qr-code-container {
-  border: 4px dashed var(--form-element-border-color); /* Example fun border */
+  border: 4px dashed var(--form-element-border-color);
+  /* Example fun border */
   display: inline-block;
   padding: 10px;
   margin-top: 10px;

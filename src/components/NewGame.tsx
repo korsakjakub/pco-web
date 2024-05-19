@@ -2,6 +2,8 @@ import { useState } from "react";
 import getHostUrl from "../utils/getHostUrl";
 import NameForm from "./NameForm";
 import Context from "../interfaces/Context";
+import CreateAvatar from "./CreateAvatar";
+import getRandomAvatarOptions, { AvatarOptions } from "../utils/getRandomAvatarOptions";
 
 interface Props {
   onSuccess: (response: Context) => void;
@@ -10,6 +12,8 @@ interface Props {
 
 const NewGame = ({ onSuccess, onError }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const initialAvatar = getRandomAvatarOptions();
+  const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
 
   const newGame = async (event: any) => {
     setIsLoading(true);
@@ -23,7 +27,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: formData.get("roomName") }),
+        body: JSON.stringify({ name: formData.get("roomName")}),
       });
       const roomResponseBody = await roomResponse.json();
 
@@ -39,7 +43,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
             "Content-Type": "application/json",
             Authorization: "Bearer " + roomResponseBody.token,
           },
-          body: JSON.stringify({ name: formData.get("playerName") }),
+          body: JSON.stringify({ name: formData.get("playerName"), avatar: avatar }),
         },
       );
       const playerResponseBody = await playerResponse.json();
@@ -64,12 +68,19 @@ const NewGame = ({ onSuccess, onError }: Props) => {
   };
 
   return (
-    <NameForm
-      button="New game"
-      isLoading={isLoading}
-      name="player"
-      onSubmit={newGame}
-    />
+    <div className="new-game-wrapper">
+      <CreateAvatar 
+        avatarOptions={avatar}
+        onRandom={() => setAvatar(getRandomAvatarOptions())}
+      />
+      <NameForm
+        button="New game"
+        isLoading={isLoading}
+        name="player"
+        onSubmit={newGame}
+        className="new-game-form"
+      />
+    </div>
   );
 };
 

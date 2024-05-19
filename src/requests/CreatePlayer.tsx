@@ -1,7 +1,8 @@
 import Player from "../interfaces/Player";
 import getHostUrl from "../utils/getHostUrl";
+import { AvatarOptions } from "../utils/getRandomAvatarOptions";
 
-const CreatePlayer = async (queueId: string, playerName: string) => {
+const CreatePlayer = async (queueId: string, playerName: string, avatar: AvatarOptions) => {
   const r = await fetch(
     getHostUrl() + "/api/v1/player/create?queueId=" + queueId,
     {
@@ -9,7 +10,7 @@ const CreatePlayer = async (queueId: string, playerName: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: playerName }),
+      body: JSON.stringify({ name: playerName, avatar: avatar }),
     }
   );
   if (!r.ok) {

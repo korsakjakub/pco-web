@@ -14,7 +14,6 @@ const ResetChips = async(playerId: string, chips: number) => {
       body: JSON.stringify({ chips: chips }),
     },
   )
-  console.log(r)
 
   if (r.ok) {
     return true;

@@ -105,7 +105,7 @@ const Game = () => {
               </section>
             </details>
           }
-          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId} />
+          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId || ""} />
         </>
       }
       {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}

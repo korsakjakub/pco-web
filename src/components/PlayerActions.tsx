@@ -54,9 +54,6 @@ const PlayerActions = ({ actions, currentPlayerId, currentPlayerStakedChips, gam
           />
           <input type="range" min={minBetSize} max={maxBetSize} value={betSize} onChange={(e) => setBetSize(e.target.value)}/>
       </form>
-      {ctx.env === "local" &&
-        <pre>{JSON.stringify({"currentPlayerId": currentPlayerId, "myPlayerId": ctx.playerId}, null, 2)}</pre>
-      }
     </div>
   );
 };

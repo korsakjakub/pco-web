@@ -12,24 +12,25 @@ const CreateAvatar = ({avatarOptions, onRandom}: Props) => {
   const avatar = createAvatar(avataaars, { 
     size: 128, 
     radius: 50,
+    style: ["circle"],
     accessories: [avatarOptions.accessories as any],
     accessoriesColor: [avatarOptions.accessoriesColor as any],
     accessoriesProbability: avatarOptions.accessoriesProbability,
-    backgroundColor: [avatarOptions.backgroundColor],
-    clothing: [avatarOptions.clothing as any],
+    backgroundColor: ["ffdfbf"],
     clothesColor: [avatarOptions.clothesColor],
+    clothing: [avatarOptions.clothing as any],
     clothingGraphic: [avatarOptions.clothingGraphic as any],
     eyebrows: [avatarOptions.eyebrows as any],
     eyes: [avatarOptions.eyes as any],
-    facialHairColor: [avatarOptions.facialHairColor],
     facialHair: [avatarOptions.facialHair as any],
+    facialHairColor: [avatarOptions.facialHairColor],
+    facialHairProbability: avatarOptions.facialHairProbability,
     hairColor: [avatarOptions.hairColor],
-    mouth: [avatarOptions.mouth as any],
-    nose: [avatarOptions.nose as any],
-    style: ["circle"],
     hatColor: [avatarOptions.hatColor],
+    mouth: [avatarOptions.mouth as any],
     skinColor: [avatarOptions.skinColor],
-    top: [avatarOptions.top as any]
+    top: [avatarOptions.top as any],
+    topProbability: avatarOptions.topProbability
   }).toDataUriSync();
 
   return (

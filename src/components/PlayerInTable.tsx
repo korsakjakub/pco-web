@@ -66,13 +66,16 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
 	};
 
   const getAvatarImgSource = (avatar: AvatarOptions) => {
-    let params = "topProbability=100";
+    let params = "";
 
     if (avatar === null) {
       return 'https://api.dicebear.com/8.x/avataaars/jpg';
     }
 
     for (const [key, value] of Object.entries(avatar)) {
+      if (value === null || value === undefined) {
+        continue;
+      }
       params += `&${key}=${value}`;
     }
     return `https://api.dicebear.com/8.x/avataaars/jpg?${params}`;

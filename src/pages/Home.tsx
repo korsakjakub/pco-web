@@ -27,7 +27,6 @@ const Home = ({ onReturnFromHome }: Props) => {
         <h2>create a new room</h2>
         <NewGame onError={handleError} onSuccess={handleNewGameSuccess} />
       </div>
-      <pre>{JSON.stringify(import.meta.env.VITE_HOST_URL)}</pre>
       <footer>
         <nav>
           <ul>

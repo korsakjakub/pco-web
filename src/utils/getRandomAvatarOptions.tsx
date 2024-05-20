@@ -11,23 +11,36 @@ const getRandomAvatarOptions = () => {
   if (!properties) {
     return [];
   }
-  let enumProps: any = {}
+  let enumProps: any = {};
   
-  for (var key in properties){
-    if ("items" in properties[key]) {
-      if ("enum" in properties[key]["items"]) {
-          enumProps[key] = randomizeValue(properties[key]["items"]["enum"]);
+  for (const key in properties) {
+    const property = properties[key];
+
+    if (typeof property === 'object' && property !== null && 'items' in property) {
+      const items = property.items;
+      
+      if (typeof items === 'object' && items !== null && 'enum' in items) {
+        const enumArray = items.enum;
+        
+        if (Array.isArray(enumArray) && enumArray.every(item => typeof item === 'string')) {
+          enumProps[key] = randomizeValue(enumArray as string[]);
+        }
       }
     }
-    if (key.includes("Color")) {
-      enumProps[key] = randomizeValue(properties[key]["default"])
+
+    if (key.includes("Color") && typeof property === 'object' && property !== null) {
+      if ('default' in property && Array.isArray(property.default) && property.default.every(item => typeof item === 'string')) {
+        enumProps[key] = randomizeValue(property.default as string[]);
+      }
     }
+
     if (key.includes("Probability")) {
       enumProps[key] = Math.random() >= 0.5 ? 100 : 0;
     }
   }
+
   return enumProps;
-}
+};
 
 export default getRandomAvatarOptions
 
@@ -35,18 +48,18 @@ export interface AvatarOptions {
     accessories: string;
     accessoriesColor: string;
     accessoriesProbability: number;
-    backgroundColor: string;
-    clothing: string;
     clothesColor: string;
+    clothing: string;
     clothingGraphic: string;
     eyebrows: string;
     eyes: string;
-    hairColor: string;
-    facialHairColor: string;
     facialHair: string;
-    mouth: string;
-    nose: string;
+    facialHairColor: string;
+    facialHairProbability: number;
+    hairColor: string;
     hatColor: string;
+    mouth: string;
     skinColor: string;
     top: string;
+    topProbability: number;
 };

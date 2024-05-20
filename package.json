@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode development",
-    "staging": "vite --mode staging",
-    "build": "tsc && vite build",
+    "dev": "cp ./config/development .env && bunx --bun vite",
+    "staging": "cp ./config/staging .env && bunx --bun vite --mode staging",
+    "build": "cp ./config/production .env && tsc && vite build",
     "test": "vitest",
     "preview": "vite preview"
   },

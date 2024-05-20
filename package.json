@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
+    "dev": "vite --mode development",
+    "staging": "vite --mode staging",
     "build": "tsc && vite build",
     "test": "vitest",
     "preview": "vite preview"

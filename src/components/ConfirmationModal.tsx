@@ -14,7 +14,7 @@ const ConfirmationModal = ({ open, id, message, isLoading=false, onCancelled, on
           aria-label="Close"
           className="close"
           data-target={id}
-          onClick={() => onCancelled()}>
+          onMouseDown={() => onCancelled()}>
         </a>
         <p>
           {message}
@@ -24,14 +24,14 @@ const ConfirmationModal = ({ open, id, message, isLoading=false, onCancelled, on
             role="button"
             className="secondary"
             data-target={id}
-            onClick={() => onCancelled()}>
+            onMouseDown={() => onCancelled()}>
             No
           </a>
           <a href="#confirm"
             role="button"
             aria-busy={isLoading}
             data-target={id}
-            onClick={() => {
+            onMouseDown={() => {
               onConfirmed()
             }}>
             Yeah

@@ -61,10 +61,10 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
             <td>Id: {player.id}</td>
             {isAdmin() && (
               <td>
-                <button aria-busy={isLoading && buttonIndexLoading === player.id} onClick={() => handleAddToRoom(player.id)}>
+                <button aria-busy={isLoading && buttonIndexLoading === player.id} onMouseDown={() => handleAddToRoom(player.id)}>
                   Add
                 </button>
-                <button onClick={() => handleKickFromQueue(player.id)}>Kick out</button>
+                <button onMouseDown={() => handleKickFromQueue(player.id)}>Kick out</button>
               </td>
             )}
           </tr>

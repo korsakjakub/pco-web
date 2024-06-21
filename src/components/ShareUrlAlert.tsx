@@ -33,12 +33,12 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
       <nav>
         <ul>
           <li>
-            <button type="button" onClick={() => shareLink()} >
+            <button type="button" onMouseDown={() => shareLink()} >
               <FontAwesomeIcon icon={faShareNodes} />
             </button>
           </li>
           <li>
-            <button type="button" onClick={() => setShowQR(!showQR)}>
+            <button type="button" onMouseDown={() => setShowQR(!showQR)}>
               <FontAwesomeIcon icon={faQrcode} />
             </button>
           </li>
@@ -58,7 +58,7 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
                 role="button"
                 className="secondary"
                 data-target="qr-code"
-                onClick={() => setShowQR(false)}>
+                onMouseDown={() => setShowQR(false)}>
                 Close
               </a>
             </footer>

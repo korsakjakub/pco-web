@@ -83,7 +83,7 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
 
 	return (
 		<div key={player.id} ref={playerSettingsRef}>
-			<div onClick={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
+			<div onMouseDown={() => setIsPlayerSettingsVisible(!isPlayerSettingsVisible)}>
 				<div className={playerFrameCls(active)} style={getCoords(40)}>
           <img src={getAvatarImgSource(player.avatar)} className="player-avatar"/>
           <div>
@@ -103,13 +103,13 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
           { player.state !== PlayerState.FOLDED &&
 					<button 
 						aria-disabled={gameStage !== GameStage.SHOWDOWN} 
-						onClick={() => onPickWinner(player.id)}>Pick winner</button>
+						onMouseDown={() => onPickWinner(player.id)}>Pick winner</button>
           }
 
 					<button 
 						aria-disabled={gameState !== GameState.WAITING} 
 						className="button-danger" 
-						onClick={() => setConfirmationData({
+						onMouseDown={() => setConfirmationData({
 							openModal: true,
 							id: "confirm-player-reset",
 							message: "Do you really wish to reset " + player.name + "'s chips?",
@@ -118,7 +118,7 @@ const PlayerInTable = ({player, active, isLoading, isDealer, gameStage, gameStat
 
 					<button 
 						className="button-danger" 
-						onClick={() => setConfirmationData({
+						onMouseDown={() => setConfirmationData({
 							openModal: true,
 							id: "confirm-player-kick",
 							message: "Do you really wish to kick " + player.name + "?",

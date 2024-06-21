@@ -91,7 +91,7 @@ const Game = () => {
       {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
         <>
           { isAdmin() && playersInRoom.players.length > 1 && 
-            <button aria-busy={isGameLoading} onClick={() => {
+            <button aria-busy={isGameLoading} onMouseDown={() => {
               setIsGameLoading(true);
               StartGame();
             }}>Start game</button>

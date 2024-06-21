@@ -34,7 +34,7 @@ const CreateAvatar = ({avatarOptions, onRandom}: Props) => {
   }).toDataUriSync();
 
   return (
-    <div onClick={() => onRandom()} data-tooltip="Click me!">
+    <div onMouseDown={() => onRandom()} data-tooltip="Click me!">
       <img src={avatar} />
     </div>
   )

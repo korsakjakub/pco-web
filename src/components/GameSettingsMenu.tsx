@@ -60,7 +60,7 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
 
   return (
     <div className="settings" ref={gameSettingsMenuRef}>
-      <button className="settings-button" onClick={() => setMenuOpen(!menuOpen)}>
+      <button className="settings-button" onMouseDown={() => setMenuOpen(!menuOpen)}>
         <FontAwesomeIcon icon={faGear} /> Settings
       </button>
 
@@ -95,7 +95,7 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 onChange={(e) => handleInputChange('bigBlind', e.target.valueAsNumber)}
                 readOnly={readOnly}
               />
-              <button aria-busy={isLoading} onClick={() => saveRules(formRules)} type="button" aria-invalid={saveButtonInvalid}>
+              <button aria-busy={isLoading} onMouseDown={() => saveRules(formRules)} type="button" aria-invalid={saveButtonInvalid}>
                 Save
               </button>
             </fieldset>

@@ -1,16 +1,14 @@
-import { createAvatar } from '@dicebear/core';
-import { avataaars } from '@dicebear/collection';
-import { AvatarOptions } from '../utils/getRandomAvatarOptions';
+import { createAvatar } from "@dicebear/core";
+import { avataaars } from "@dicebear/collection";
+import { AvatarOptions } from "../utils/getRandomAvatarOptions";
 
 interface Props {
   avatarOptions: AvatarOptions;
-  onRandom: () => void;
 }
 
-const CreateAvatar = ({avatarOptions, onRandom}: Props) => {
-
-  const avatar = createAvatar(avataaars, { 
-    size: 128, 
+const CreateAvatar = ({ avatarOptions }: Props) => {
+  const avatar = createAvatar(avataaars, {
+    size: 128,
     radius: 50,
     style: ["circle"],
     accessories: [avatarOptions.accessories as any],
@@ -30,14 +28,10 @@ const CreateAvatar = ({avatarOptions, onRandom}: Props) => {
     mouth: [avatarOptions.mouth as any],
     skinColor: [avatarOptions.skinColor],
     top: [avatarOptions.top as any],
-    topProbability: avatarOptions.topProbability
+    topProbability: avatarOptions.topProbability,
   }).toDataUriSync();
 
-  return (
-    <div onMouseDown={() => onRandom()} data-tooltip="Click me!">
-      <img src={avatar} />
-    </div>
-  )
-}
+  return <img src={avatar} />;
+};
 
-export default CreateAvatar
+export default CreateAvatar;

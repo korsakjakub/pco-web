@@ -21,31 +21,41 @@ import GameSettingsMenu from "../components/GameSettingsMenu";
 import { Action } from "../enums/Action";
 import NotFound from "./NotFound";
 
-
 const Game = () => {
   let ctx: Context;
   try {
     ctx = getContext();
-  } catch(e) {
+  } catch (e) {
     return <NotFound />;
   }
 
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
-  const game = useStream(`${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`, () => {
-    setIsGameLoading(false);
-    refetchMyPlayer();
-  }) as GetGameResponse | null;
+  const game = useStream(
+    `${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`,
+    () => {
+      setIsGameLoading(false);
+      refetchMyPlayer();
+    },
+  ) as GetGameResponse | null;
 
-  const playersInRoom = useStream(`${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`) as {players: Player[]} | null;
-  const playersInQueue = useStream(`${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`) as {players: Player[]} | null;
+  const playersInRoom = useStream(
+    `${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`,
+  ) as { players: Player[] } | null;
+  const playersInQueue = useStream(
+    `${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`,
+  ) as { players: Player[] } | null;
 
-  const {data: myPlayer, isLoading: isMyPlayerLoading, refetch: refetchMyPlayer } = useQuery({
+  const {
+    data: myPlayer,
+    isLoading: isMyPlayerLoading,
+    refetch: refetchMyPlayer,
+  } = useQuery({
     queryFn: () => GetPlayer(),
     queryKey: ["myPlayer"],
   });
 
-  const {data: rules } = useQuery({
+  const { data: rules } = useQuery({
     queryFn: () => GetRules(),
     queryKey: ["rules"],
     initialData: {
@@ -62,8 +72,10 @@ const Game = () => {
     if (!rules || !game) {
       return false;
     }
-    if (action === Action.RAISE && 
-      (betSize <= game?.currentBetSize || betSize < 2 * rules?.bigBlind)) {
+    if (
+      action === Action.RAISE &&
+      (betSize <= game?.currentBetSize || betSize < 2 * rules?.bigBlind)
+    ) {
       return false;
     } else if (action === Action.RAISE && game.currentBetSize === 0) {
       return false;
@@ -72,9 +84,13 @@ const Game = () => {
     }
   };
 
+  const isEnoughPlayersToStartGame = (players: Player[]) => {
+    return players.filter((p) => p.chips != 0).length > 1;
+  };
+
   return (
     <main className="game container">
-      {playersInRoom && game !== null &&
+      {playersInRoom && game !== null && (
         <PlayingTable
           players={playersInRoom.players}
           currentPlayer={game.currentTurnPlayerId}
@@ -85,18 +101,37 @@ const Game = () => {
           isLoading={isGameLoading}
           rules={rules}
         />
-      }
-      {game?.state === GameState.IN_PROGRESS && rules && !isMyPlayerLoading && myPlayer && 
-        <PlayerActions actions={myPlayer.actions} currentPlayerId={game.currentTurnPlayerId} currentPlayerStakedChips={myPlayer.stakedChips} gameStage={game.stage} currentBetSize={game.currentBetSize} minBetSize={rules.bigBlind * 2} maxBetSize={myPlayer.chips} validBetSize={isBetSizeValid}/>}
-      {game?.state === GameState.WAITING && playersInRoom && playersInQueue && 
+      )}
+      {game?.state === GameState.IN_PROGRESS &&
+        rules &&
+        !isMyPlayerLoading &&
+        myPlayer && (
+          <PlayerActions
+            actions={myPlayer.actions}
+            currentPlayerId={game.currentTurnPlayerId}
+            currentPlayerStakedChips={myPlayer.stakedChips}
+            gameStage={game.stage}
+            currentBetSize={game.currentBetSize}
+            minBetSize={rules.bigBlind * 2}
+            maxBetSize={myPlayer.chips}
+            validBetSize={isBetSizeValid}
+          />
+        )}
+      {game?.state === GameState.WAITING && playersInRoom && playersInQueue && (
         <>
-          { isAdmin() && playersInRoom.players.length > 1 && 
-            <button aria-busy={isGameLoading} onMouseDown={() => {
-              setIsGameLoading(true);
-              StartGame();
-            }}>Start game</button>
-          }
-          { isAdmin() && 
+          {isAdmin() && (
+            <button
+              aria-busy={isGameLoading}
+              disabled={!isEnoughPlayersToStartGame(playersInRoom.players)}
+              onMouseDown={() => {
+                setIsGameLoading(true);
+                StartGame();
+              }}
+            >
+              Start game
+            </button>
+          )}
+          {isAdmin() && (
             <details>
               <summary>Admin Panel</summary>
               <section>
@@ -104,11 +139,13 @@ const Game = () => {
                 <QueueList players={playersInQueue.players || []} />
               </section>
             </details>
-          }
+          )}
           <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId || ""} />
         </>
-      }
-      {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && <GameSettingsMenu rules={rules} readOnly={isGameLoading} />}
+      )}
+      {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && (
+        <GameSettingsMenu rules={rules} readOnly={isGameLoading} />
+      )}
     </main>
   );
 };

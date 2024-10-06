@@ -1,5 +1,4 @@
 import { useState } from "react";
-import getHostUrl from "../utils/getHostUrl";
 import NameForm from "./NameForm";
 import Context from "../interfaces/Context";
 import CreateAvatar from "./CreateAvatar";
@@ -8,6 +7,7 @@ import getRandomAvatarOptions, {
 } from "../utils/getRandomAvatarOptions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
 
 interface Props {
   onSuccess: (response: Context) => void;
@@ -26,53 +26,31 @@ const NewGame = ({ onSuccess, onError }: Props) => {
 
     const formData = new FormData(event.target);
 
-    try {
-      const roomResponse = await fetch(getHostUrl() + "/api/v1/room/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: formData.get("roomName") }),
-      });
-      const roomResponseBody = await roomResponse.json();
-
-      if (!roomResponse.ok) {
-        onError(JSON.stringify(roomResponse));
-      }
-
-      const playerResponse = await fetch(
-        getHostUrl() + "/api/v1/room/" + roomResponseBody.id + "/players",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + roomResponseBody.token,
-          },
-          body: JSON.stringify({
-            name: formData.get("playerName"),
-            avatar: avatar,
-          }),
-        },
-      );
-      const playerResponseBody = await playerResponse.json();
-
-      if (!playerResponse.ok) {
-        onError(JSON.stringify(playerResponse));
-      }
-
-      onSuccess({
-        playerId: playerResponseBody.id,
-        playerToken: playerResponseBody.token,
-        queueId: roomResponseBody.queueId,
-        roomId: roomResponseBody.id,
-        roomName: roomResponseBody.name,
-        roomToken: roomResponseBody.token,
-      } as Context);
-    } catch (error) {
-      onError("Could not create a new game");
-    } finally {
-      setIsLoading(false);
+    const playerNameEntry = formData.get("playerName");
+    let playerName;
+    if (playerNameEntry) {
+      playerName = playerNameEntry.toString();
+    } else {
+      onError("Player name is required.");
+      return;
     }
+
+    CreateRoomWithAdmin(playerName, avatar)
+      .then(([playerId, playerToken, queueId, roomId, roomToken]) => {
+        onSuccess({
+          playerId: playerId,
+          playerToken: playerToken,
+          queueId: queueId,
+          roomId: roomId,
+          roomToken: roomToken,
+        } as Context);
+      })
+      .catch((error) => {
+        onError("Could not create a new game");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const setAvatarAndStorePrevious = (newAvatarOptions: AvatarOptions) => {
@@ -107,7 +85,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
         </div>
         <button
           onMouseDown={() => setAvatarToPrevious()}
-          disabled={previousAvatars.length == 0}
+          disabled={previousAvatars.length === 0}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>

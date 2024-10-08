@@ -2,14 +2,19 @@
   width: 100%;
   min-height: 100%;
   background: rgb(12, 19, 10);
-  background: linear-gradient(200deg, rgba(12, 19, 10, 1) 0%, rgba(23, 31, 40, 1) 49%, rgba(23, 9, 32, 1) 100%);
-  --primary: #0A591E;
-  --primary-hover: #4A7C57;
+  background: linear-gradient(
+    200deg,
+    rgba(12, 19, 10, 1) 0%,
+    rgba(23, 31, 40, 1) 49%,
+    rgba(23, 9, 32, 1) 100%
+  );
+  --primary: #0a591e;
+  --primary-hover: #4a7c57;
   --accent: #f7f7e5;
-  --del-color-hover: #D15252;
+  --del-color-hover: #d15252;
   --table-border: #261816;
   --settings-background-color: rgb(12, 19, 10);
-  --form-element-active-border-color: #C4B454;
+  --form-element-active-border-color: #c4b454;
   --form-element-focus-color: #b3a343;
 }
 
@@ -29,10 +34,6 @@ html {
   padding-top: 8vh;
   grid-auto-flow: row;
   grid-row-gap: 5vh;
-}
-
-.new-game-wrapper {
-  display: flex;
 }
 
 .new-game-form {

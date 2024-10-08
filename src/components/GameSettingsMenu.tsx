@@ -1,8 +1,8 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef, useState } from 'react';
-import Rules from '../interfaces/Rules';
-import SetRules from '../requests/SetRules';
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRef, useState } from "react";
+import Rules from "../interfaces/Rules";
+import SetRules from "../requests/SetRules";
 
 type Props = {
   rules: Rules;
@@ -16,13 +16,12 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [saveButtonInvalid, setSaveButtonInvalid] = useState(false);
 
-  const handleClickOutsideDropdown =(e:any)=>{
-      if(menuOpen && !gameSettingsMenuRef.current?.contains(e.target as Node)){
-          setMenuOpen(false)
-      }
-  }
-  window.addEventListener("click",handleClickOutsideDropdown)
-
+  const handleClickOutsideDropdown = (e: any) => {
+    if (menuOpen && !gameSettingsMenuRef.current?.contains(e.target as Node)) {
+      setMenuOpen(false);
+    }
+  };
+  window.addEventListener("click", handleClickOutsideDropdown);
 
   const saveRules = (r: Rules) => {
     setIsLoading(true);
@@ -33,24 +32,28 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
       setIsLoading(false);
       return;
     }
-    if (r.startingChips < r.bigBlind || r.startingChips < r.smallBlind || r.startingChips < r.ante) {
+    if (
+      r.startingChips < r.bigBlind ||
+      r.startingChips < r.smallBlind ||
+      r.startingChips < r.ante
+    ) {
       setSaveButtonInvalid(true);
       setIsLoading(false);
       return;
     }
     // end validation
-    
+
     SetRules(r).then(() => {
       setFormRules(r);
       setSaveButtonInvalid(false);
       setIsLoading(false);
     });
-  }
+  };
 
   const handleInputChange = (fieldName: keyof Rules, value: number) => {
     if (!value) {
       value = 0;
-    } 
+    }
 
     setFormRules((prevRules) => ({
       ...prevRules,
@@ -60,7 +63,10 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
 
   return (
     <div className="settings" ref={gameSettingsMenuRef}>
-      <button className="settings-button" onMouseDown={() => setMenuOpen(!menuOpen)}>
+      <button
+        className="settings-button"
+        onMouseDown={() => setMenuOpen(!menuOpen)}
+      >
         <FontAwesomeIcon icon={faGear} /> Settings
       </button>
 
@@ -74,7 +80,20 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 type="number"
                 placeholder={JSON.stringify(rules.startingChips)}
                 value={formRules.startingChips}
-                onChange={(e) => handleInputChange('startingChips', e.target.valueAsNumber)}
+                onChange={(e) =>
+                  handleInputChange("startingChips", e.target.valueAsNumber)
+                }
+                readOnly={readOnly}
+              />
+              <label htmlFor="ante">Ante</label>
+              <input
+                id="ante"
+                type="number"
+                placeholder={JSON.stringify(rules.ante)}
+                value={formRules.ante}
+                onChange={(e) =>
+                  handleInputChange("ante", e.target.valueAsNumber)
+                }
                 readOnly={readOnly}
               />
               <label htmlFor="small-blind">Small blind</label>
@@ -83,7 +102,9 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 type="number"
                 placeholder={JSON.stringify(rules.smallBlind)}
                 value={formRules.smallBlind}
-                onChange={(e) => handleInputChange('smallBlind', e.target.valueAsNumber)}
+                onChange={(e) =>
+                  handleInputChange("smallBlind", e.target.valueAsNumber)
+                }
                 readOnly={readOnly}
               />
               <label htmlFor="big-blind">Big blind</label>
@@ -92,10 +113,17 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 type="number"
                 placeholder={JSON.stringify(rules.bigBlind)}
                 value={formRules.bigBlind}
-                onChange={(e) => handleInputChange('bigBlind', e.target.valueAsNumber)}
+                onChange={(e) =>
+                  handleInputChange("bigBlind", e.target.valueAsNumber)
+                }
                 readOnly={readOnly}
               />
-              <button aria-busy={isLoading} onMouseDown={() => saveRules(formRules)} type="button" aria-invalid={saveButtonInvalid}>
+              <button
+                aria-busy={isLoading}
+                onMouseDown={() => saveRules(formRules)}
+                type="button"
+                aria-invalid={saveButtonInvalid}
+              >
                 Save
               </button>
             </fieldset>
@@ -107,4 +135,3 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
 };
 
 export default GameSettingsMenu;
-

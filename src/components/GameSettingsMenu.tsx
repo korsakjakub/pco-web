@@ -1,6 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
+import { GameMode } from "../enums/GameMode";
 import Rules from "../interfaces/Rules";
 import SetRules from "../requests/SetRules";
 
@@ -85,17 +86,21 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 }
                 readOnly={readOnly}
               />
-              <label htmlFor="ante">Ante</label>
-              <input
-                id="ante"
-                type="number"
-                placeholder={JSON.stringify(rules.ante)}
-                value={formRules.ante}
-                onChange={(e) =>
-                  handleInputChange("ante", e.target.valueAsNumber)
-                }
-                readOnly={readOnly}
-              />
+              {rules.gameMode === GameMode.TOURNAMENT && (
+                <>
+                  <label htmlFor="ante">Ante</label>
+                  <input
+                    id="ante"
+                    type="number"
+                    placeholder={JSON.stringify(rules.ante)}
+                    value={formRules.ante}
+                    onChange={(e) =>
+                      handleInputChange("ante", e.target.valueAsNumber)
+                    }
+                    readOnly={readOnly}
+                  />
+                </>
+              )}
               <label htmlFor="small-blind">Small blind</label>
               <input
                 id="small-blind"

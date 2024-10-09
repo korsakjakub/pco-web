@@ -1,8 +1,11 @@
+import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
+import Rules from "../interfaces/Rules";
 import getHostUrl from "../utils/getHostUrl";
 import { AvatarOptions } from "../utils/getRandomAvatarOptions";
+import SetRules from "./SetRules";
 
 const CreateRoomWithAdmin = async (
-  playerName: string,
+  data: CreateRoomWithAdminData,
   avatar: AvatarOptions,
 ) => {
   const roomResponse = await fetch(getHostUrl() + "/api/v1/room/create", {
@@ -26,7 +29,7 @@ const CreateRoomWithAdmin = async (
         Authorization: "Bearer " + roomResponseBody.token,
       },
       body: JSON.stringify({
-        name: playerName,
+        name: data.playerName,
         avatar: avatar,
       }),
     },
@@ -36,6 +39,20 @@ const CreateRoomWithAdmin = async (
   if (!playerResponse.ok) {
     throw Error(JSON.stringify(playerResponse));
   }
+
+  await SetRules(
+    {
+      startingChips: data.startingChips,
+      ante: data.ante,
+      smallBlind: data.smallBlind,
+      bigBlind: data.bigBlind,
+      gameMode: data.gameMode,
+    } as Rules,
+    roomResponseBody.id,
+    roomResponseBody.token,
+  ).catch((error) => {
+    throw Error(JSON.stringify(error));
+  });
 
   return [
     playerResponseBody.id,

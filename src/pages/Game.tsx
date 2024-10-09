@@ -58,12 +58,6 @@ const Game = () => {
   const { data: rules } = useQuery({
     queryFn: () => GetRules(),
     queryKey: ["rules"],
-    initialData: {
-      startingChips: 1000,
-      ante: 0,
-      smallBlind: 10,
-      bigBlind: 20,
-    } as Rules,
   });
 
   const [isGameLoading, setIsGameLoading] = useState(false);
@@ -90,7 +84,7 @@ const Game = () => {
 
   return (
     <main className="game container">
-      {playersInRoom && game !== null && (
+      {playersInRoom && game !== null && rules && (
         <PlayingTable
           players={playersInRoom.players}
           currentPlayer={game.currentTurnPlayerId}

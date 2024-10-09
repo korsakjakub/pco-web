@@ -1,7 +1,7 @@
 import { faQrcode, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import QRCode from 'qrcode.react';
+import QRCode from "qrcode.react";
 
 interface Props {
   url: string;
@@ -10,21 +10,21 @@ interface Props {
 
 const ShareUrlAlert = ({ url, queueId }: Props) => {
   const [showQR, setShowQR] = useState(false);
-  const link = url + "/join/" + queueId;
+  const link = window.location.host + "/join/" + queueId;
 
   const shareLink = async () => {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: 'jetons',
-          url: link
+          title: "jetons",
+          url: link,
         });
       } else {
-        navigator.clipboard.writeText(link)
-        alert('Link is copied to clipboard');
+        navigator.clipboard.writeText(link);
+        alert("Link is copied to clipboard");
       }
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
     }
   };
 
@@ -33,7 +33,7 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
       <nav>
         <ul>
           <li>
-            <button type="button" onMouseDown={() => shareLink()} >
+            <button type="button" onMouseDown={() => shareLink()}>
               <FontAwesomeIcon icon={faShareNodes} />
             </button>
           </li>
@@ -58,7 +58,8 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
                 role="button"
                 className="secondary"
                 data-target="qr-code"
-                onMouseDown={() => setShowQR(false)}>
+                onMouseDown={() => setShowQR(false)}
+              >
                 Close
               </a>
             </footer>

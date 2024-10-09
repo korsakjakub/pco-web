@@ -7,9 +7,10 @@ import getRandomAvatarOptions, {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
-import { GameMode } from "../enums/GameMode";
+import { gameMode, GameMode } from "../enums/GameMode";
 import SetRules from "../requests/SetRules";
 import Rules from "../interfaces/Rules";
+import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
 
 interface NewGameFormData {
   playerName: string;
@@ -39,15 +40,15 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     ante: 0,
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const toggleAdvanced = () => {
+  const toggleAdvanced = (event: any) => {
+    event.preventDefault();
     setShowAdvanced((prev) => !prev);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (fieldName: keyof NewGameFormData, value: any) => {
     setData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [fieldName]: value,
     }));
   };
 
@@ -55,19 +56,16 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     setIsLoading(true);
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-
     const dataToSubmit = {
-      name: formData.get("playerName")?.toString() || data.playerName,
-      gameMode: formData.get("gameMode")?.toString() || data.gameMode,
-      startingChips:
-        formData.get("startingChips")?.toString() || data.startingChips,
-      smallBlind: formData.get("smallBlind")?.toString() || data.smallBlind,
-      bigBlind: formData.get("bigBlind")?.toString() || data.bigBlind,
-      ante: formData.get("ante")?.toString() || data.ante,
-    };
+      playerName: data.playerName,
+      gameMode: data.gameMode,
+      startingChips: data.startingChips,
+      smallBlind: data.smallBlind,
+      bigBlind: data.bigBlind,
+      ante: data.ante,
+    } as CreateRoomWithAdminData;
 
-    await CreateRoomWithAdmin(dataToSubmit.name, avatar)
+    await CreateRoomWithAdmin(dataToSubmit, avatar)
       .then(([playerId, playerToken, queueId, roomId, roomToken]) => {
         onSuccess({
           playerId: playerId,
@@ -78,17 +76,11 @@ const NewGame = ({ onSuccess, onError }: Props) => {
         } as Context);
       })
       .catch((error) => {
-        onError("Could not create a new game");
+        onError("Could not create a new game. " + error);
       })
       .finally(() => {
         setIsLoading(false);
       });
-    await SetRules({
-      startingChips: dataToSubmit.startingChips,
-      ante: dataToSubmit.ante,
-      smallBlind: dataToSubmit.smallBlind,
-      bigBlind: dataToSubmit.bigBlind,
-    } as Rules);
   };
 
   const setAvatarAndStorePrevious = (newAvatarOptions: AvatarOptions) => {
@@ -132,11 +124,15 @@ const NewGame = ({ onSuccess, onError }: Props) => {
           aria-label="player name"
           aria-describedby="new-player-input"
           value={data.playerName}
-          onChange={handleChange}
+          onChange={(e) => handleChange("playerName", e.target.value)}
           required
         />
         <label>
-          <select name="gameMode" onChange={() => handleChange} required>
+          <select
+            name="gameMode"
+            onChange={(e) => handleChange("gameMode", gameMode(e.target.value))}
+            required
+          >
             <option>Cash Game</option>
             <option>Tournament</option>
           </select>
@@ -151,10 +147,11 @@ const NewGame = ({ onSuccess, onError }: Props) => {
               <input
                 type="number"
                 name="startingChips"
-                placeholder="1000"
                 aria-label="starting chips"
                 value={data.startingChips}
-                onChange={handleChange}
+                onChange={(e) =>
+                  handleChange("startingChips", e.target.valueAsNumber)
+                }
               />
             </label>
             <label>
@@ -164,7 +161,9 @@ const NewGame = ({ onSuccess, onError }: Props) => {
                 name="smallBlind"
                 aria-label="small blind"
                 value={data.smallBlind}
-                onChange={handleChange}
+                onChange={(e) =>
+                  handleChange("smallBlind", e.target.valueAsNumber)
+                }
               />
             </label>
             <label>
@@ -174,19 +173,23 @@ const NewGame = ({ onSuccess, onError }: Props) => {
                 name="bigBlind"
                 aria-label="big blind"
                 value={data.bigBlind}
-                onChange={handleChange}
+                onChange={(e) =>
+                  handleChange("bigBlind", e.target.valueAsNumber)
+                }
               />
             </label>
-            <label>
-              Ante
-              <input
-                type="number"
-                name="ante"
-                aria-label="ante"
-                value={data.ante}
-                onChange={handleChange}
-              />
-            </label>
+            {data.gameMode === GameMode.TOURNAMENT && (
+              <label>
+                Ante
+                <input
+                  type="number"
+                  name="ante"
+                  aria-label="ante"
+                  value={data.ante}
+                  onChange={(e) => handleChange("ante", e.target.valueAsNumber)}
+                />
+              </label>
+            )}
           </>
         )}
         <button

@@ -11,15 +11,15 @@ jobs:
     outputs:
       branchType: ${{ steps.infer.outputs.branchType }}
     steps:
-     - uses: actions/github-script@v6
-       id: infer
-       with:
-         script: |
-           const childProcess = require("child_process");
-           const branchName = '${{ github.ref_name }}';
-           const branchType = branchName.split('-')[0];
-           core.setOutput('branchType', branchType);
-           console.table({ branchType });
+      - uses: actions/github-script@v6
+        id: infer
+        with:
+          script: |
+            const childProcess = require("child_process");
+            const branchName = '${{ github.ref_name }}';
+            const branchType = branchName.split('-')[0];
+            core.setOutput('branchType', branchType);
+            console.table({ branchType });
   build-and-push-image:
     name: Build and push container image
     runs-on: ubuntu-latest
@@ -42,6 +42,7 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ steps.short-sha.outputs.sha }}
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     needs: build-and-push-image
     if: github.ref == 'refs/heads/main'
@@ -58,4 +59,3 @@ jobs:
           containerAppName: pco-web
           resourceGroup: pco
           imageToDeploy: ${{ env.IMAGE_NAME }}:${{ needs.build-and-push-image.outputs.sha }}
-

@@ -2,6 +2,7 @@ import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
 import Rules from "../interfaces/Rules";
 import getHostUrl from "../utils/getHostUrl";
 import { AvatarOptions } from "../utils/getRandomAvatarOptions";
+import ResetChips from "./ResetChips";
 import SetRules from "./SetRules";
 
 const CreateRoomWithAdmin = async (
@@ -51,7 +52,16 @@ const CreateRoomWithAdmin = async (
     roomResponseBody.id,
     roomResponseBody.token,
   ).catch((error) => {
-    throw Error(JSON.stringify(error));
+    throw Error("Error while setting rules: " + JSON.stringify(error));
+  });
+
+  await ResetChips(
+    playerResponseBody.id,
+    data.startingChips,
+    roomResponseBody.id,
+    roomResponseBody.token,
+  ).catch((error) => {
+    throw Error("Error while resetting chips: " + JSON.stringify(error));
   });
 
   return [

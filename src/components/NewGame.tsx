@@ -1,16 +1,14 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { gameMode, GameMode } from "../enums/GameMode";
 import Context from "../interfaces/Context";
-import CreateAvatar from "./CreateAvatar";
+import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
+import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
 import getRandomAvatarOptions, {
   AvatarOptions,
 } from "../utils/getRandomAvatarOptions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
-import { gameMode, GameMode } from "../enums/GameMode";
-import SetRules from "../requests/SetRules";
-import Rules from "../interfaces/Rules";
-import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
+import CreateAvatar from "./CreateAvatar";
 
 interface NewGameFormData {
   playerName: string;

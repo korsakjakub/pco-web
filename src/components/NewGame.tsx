@@ -29,6 +29,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
   const initialAvatar = getRandomAvatarOptions();
   const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
   const [previousAvatars, setPreviousAvatars] = useState<AvatarOptions[]>([]);
+  const [revertedAvatars, setRevertedAvatars] = useState<AvatarOptions[]>([]);
   const [data, setData] = useState<NewGameFormData>({
     playerName: "",
     gameMode: GameMode.CASH,
@@ -91,6 +92,10 @@ const NewGame = ({ onSuccess, onError }: Props) => {
 
   const setAvatarToPrevious = () => {
     const lastAvatar = previousAvatars[previousAvatars.length - 1];
+    setRevertedAvatars((revAvatars) => {
+      const updatedAvatars = [...revAvatars, avatar];
+      return updatedAvatars.slice(-10);
+    });
     setAvatar(lastAvatar);
     setPreviousAvatars((prevAvatars) => {
       if (prevAvatars.length === 0) {
@@ -100,10 +105,21 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     });
   };
 
+  const getNextAvatarOptions = () => {
+    if (revertedAvatars.length == 0) {
+      return getRandomAvatarOptions();
+    }
+    const nextAvatar = revertedAvatars[0];
+    setRevertedAvatars((prevAvatars) => {
+      return prevAvatars.slice(1);
+    });
+    return nextAvatar;
+  };
+
   return (
     <>
       <div
-        onMouseDown={() => setAvatarAndStorePrevious(getRandomAvatarOptions())}
+        onMouseDown={() => setAvatarAndStorePrevious(getNextAvatarOptions())}
         data-tooltip="Click me!"
       >
         <CreateAvatar avatarOptions={avatar} />

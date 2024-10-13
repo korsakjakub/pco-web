@@ -4,7 +4,6 @@ import QueueList from "../components/QueueList";
 import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
-import Rules from "../interfaces/Rules";
 import Context from "../interfaces/Context";
 import PlayingTable from "../components/PlayingTable";
 import { useQuery } from "@tanstack/react-query";
@@ -20,6 +19,8 @@ import GetRules from "../requests/GetRules";
 import GameSettingsMenu from "../components/GameSettingsMenu";
 import { Action } from "../enums/Action";
 import NotFound from "./NotFound";
+import SittingOutSwitch from "../components/SittingOutSwitch";
+import { PlayerState } from "../enums/PlayerState";
 
 const Game = () => {
   let ctx: Context;
@@ -140,6 +141,9 @@ const Game = () => {
       {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && (
         <GameSettingsMenu rules={rules} readOnly={isGameLoading} />
       )}
+      <SittingOutSwitch
+        playerState={myPlayer?.state || PlayerState.SITTING_OUT}
+      />
     </main>
   );
 };

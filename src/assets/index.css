@@ -47,6 +47,13 @@ html {
   right: 10px;
 }
 
+.sitting-out-switch {
+  position: fixed;
+  max-width: 150px;
+  top: 10px;
+  left: 10px;
+}
+
 .button-danger {
   background-color: var(--del-color);
   border-color: var(--del-color);

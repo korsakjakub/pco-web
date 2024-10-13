@@ -1,13 +1,9 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { gameMode, GameMode } from "../enums/GameMode";
 import Context from "../interfaces/Context";
 import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
 import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
-import getRandomAvatarOptions, {
-  AvatarOptions,
-} from "../utils/getRandomAvatarOptions";
+import { AvatarOptions } from "../utils/getRandomAvatarOptions";
 import CreateAvatar from "./CreateAvatar";
 
 interface NewGameFormData {
@@ -26,9 +22,7 @@ interface Props {
 
 const NewGame = ({ onSuccess, onError }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const initialAvatar = getRandomAvatarOptions();
-  const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
-  const [previousAvatars, setPreviousAvatars] = useState<AvatarOptions[]>([]);
+  const [avatar, setAvatar] = useState<AvatarOptions>({} as AvatarOptions);
   const [data, setData] = useState<NewGameFormData>({
     playerName: "",
     gameMode: GameMode.CASH,
@@ -81,39 +75,9 @@ const NewGame = ({ onSuccess, onError }: Props) => {
       });
   };
 
-  const setAvatarAndStorePrevious = (newAvatarOptions: AvatarOptions) => {
-    setAvatar(newAvatarOptions);
-    setPreviousAvatars((prevAvatars) => {
-      const updatedAvatars = [...prevAvatars, avatar];
-      return updatedAvatars.slice(-10);
-    });
-  };
-
-  const setAvatarToPrevious = () => {
-    const lastAvatar = previousAvatars[previousAvatars.length - 1];
-    setAvatar(lastAvatar);
-    setPreviousAvatars((prevAvatars) => {
-      if (prevAvatars.length === 0) {
-        return prevAvatars;
-      }
-      return prevAvatars.slice(0, -1);
-    });
-  };
-
   return (
     <>
-      <div
-        onMouseDown={() => setAvatarAndStorePrevious(getRandomAvatarOptions())}
-        data-tooltip="Click me!"
-      >
-        <CreateAvatar avatarOptions={avatar} />
-      </div>
-      <button
-        onMouseDown={() => setAvatarToPrevious()}
-        disabled={previousAvatars.length === 0}
-      >
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </button>
+      <CreateAvatar onAvatarChanged={setAvatar} />
       <form onSubmit={newGame}>
         <input
           type="text"

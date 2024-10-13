@@ -20,7 +20,15 @@ const ShareUrlAlert = ({ url, queueId }: Props) => {
           url: link,
         });
       } else {
-        navigator.clipboard.writeText(link);
+        const clipboard = navigator.clipboard;
+        if (!clipboard) {
+          console.error("Clipboard API not available");
+          alert(
+            `Cannot copy link to clipboard. Try sharing the link manually. ${link}`,
+          );
+          return;
+        }
+        clipboard.writeText(link);
         alert("Link is copied to clipboard");
       }
     } catch (error) {

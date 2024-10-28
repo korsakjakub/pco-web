@@ -1,20 +1,20 @@
 import getContext from "../utils/getContext";
 import getHostUrl from "../utils/getHostUrl";
 
-const ToggleSittingOut = async () => {
+const ToggleSittingOut = async (): Promise<boolean> => {
   const ctx = getContext();
 
   const r = await fetch(
     getHostUrl() +
-      "/api/v1/player/sit-out?roomId=" +
-      ctx.roomId +
-      "?playerId=" +
-      ctx.playerId,
+      "/api/v1/player/" +
+      ctx.playerId +
+      "/sit-out?roomId=" +
+      ctx.roomId,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + ctx.playerToken,
+        Authorization: "Bearer " + ctx.roomToken,
       },
     },
   );

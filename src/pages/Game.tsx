@@ -142,6 +142,7 @@ const Game = () => {
         <GameSettingsMenu rules={rules} readOnly={isGameLoading} />
       )}
       <SittingOutSwitch
+        onClicked={refetchMyPlayer}
         playerState={myPlayer?.state || PlayerState.SITTING_OUT}
       />
     </main>

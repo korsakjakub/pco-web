@@ -9,9 +9,9 @@ const StartGame = async (): Promise<boolean> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + ctx.roomToken,
+        Authorization: "Bearer " + ctx.roomToken,
       },
-    }
+    },
   );
   return r.ok;
 };

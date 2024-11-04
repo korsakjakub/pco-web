@@ -25,13 +25,14 @@ const SittingOutSwitch = ({ playerState, onClicked }: Props) => {
 
   return (
     <>
-      <label className="sitting-out-switch" aria-busy={isLoading}>
+      <label className="sitting-out-switch">
         <input
           name="sitting-out"
           type="checkbox"
           role="switch"
           checked={playerState === PlayerState.SITTING_OUT}
           onChange={toggleSittingOut}
+          aria-busy={isLoading}
         />
         Sitting out
       </label>

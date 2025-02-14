@@ -1,7 +1,5 @@
 import ShareUrlAlert from "../components/ShareUrlAlert";
 import getContext from "../utils/getContext";
-import QueueList from "../components/QueueList";
-import PlayersList from "../components/PlayersList";
 import getFrontUrl from "../utils/getFrontUrl";
 import Player from "../interfaces/Player";
 import Context from "../interfaces/Context";
@@ -16,13 +14,11 @@ import getHostUrl from "../utils/getHostUrl";
 import useStream from "../hooks/useStream";
 import { useState } from "react";
 import GetRules from "../requests/GetRules";
-import GameSettingsMenu from "../components/GameSettingsMenu";
 import { Action } from "../enums/Action";
 import NotFound from "./NotFound";
 import SittingOutSwitch from "../components/SittingOutSwitch";
 import { PlayerState } from "../enums/PlayerState";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import AdminPanel from "../components/AdminPanel";
 
 const Game = () => {
   let ctx: Context;
@@ -116,40 +112,32 @@ const Game = () => {
         )}
       {game?.state === GameState.WAITING && playersInRoom && playersInQueue && (
         <>
-          {isAdmin() && (
-            <button
-              aria-busy={isGameLoading}
-              disabled={!isEnoughPlayersToStartGame(playersInRoom.players)}
-              onMouseDown={() => {
-                setIsGameLoading(true);
-                StartGame();
-              }}
-            >
-              Start game
-            </button>
+          <div>
+            {isAdmin() && (
+              <button
+                aria-busy={isGameLoading}
+                disabled={!isEnoughPlayersToStartGame(playersInRoom.players)}
+                onMouseDown={() => {
+                  setIsGameLoading(true);
+                  StartGame();
+                }}
+              >
+                Start game
+              </button>
+            )}
+            <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId || ""} />
+          </div>
+          {isAdmin() && rules && (
+            <>
+              <AdminPanel
+                playersInRoom={playersInRoom.players}
+                playersInQueue={playersInQueue.players}
+                rules={rules}
+                readOnly={isGameLoading}
+              />
+            </>
           )}
-          {isAdmin() && (
-            <details>
-              <summary>
-                Admin Panel{" "}
-                {playersInQueue.players.length > 0 && (
-                  <span data-tooltip="some players are waiting in the queue">
-                    <FontAwesomeIcon icon={faExclamationCircle} />{" "}
-                    {playersInQueue.players.length}
-                  </span>
-                )}
-              </summary>
-              <section>
-                <PlayersList players={playersInRoom.players || []} />
-                <QueueList players={playersInQueue.players || []} />
-              </section>
-            </details>
-          )}
-          <ShareUrlAlert url={getFrontUrl()} queueId={ctx.queueId || ""} />
         </>
-      )}
-      {isAdmin() && game?.state !== GameState.IN_PROGRESS && rules && (
-        <GameSettingsMenu rules={rules} readOnly={isGameLoading} />
       )}
       <SittingOutSwitch
         onClicked={refetchMyPlayer}

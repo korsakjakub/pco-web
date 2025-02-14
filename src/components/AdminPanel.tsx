@@ -1,29 +1,28 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { GameMode } from "../enums/GameMode";
+import Player from "../interfaces/Player";
 import Rules from "../interfaces/Rules";
 import SetRules from "../requests/SetRules";
+import PlayersList from "./PlayersList";
+import QueueList from "./QueueList";
 
 type Props = {
+  playersInRoom: Player[];
+  playersInQueue: Player[];
   rules: Rules;
   readOnly: boolean;
 };
-
-const GameSettingsMenu = ({ rules, readOnly }: Props) => {
-  const gameSettingsMenuRef = useRef<HTMLDivElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [formRules, setFormRules] = useState<Rules>(rules);
+const AdminPanel = ({
+  playersInRoom,
+  playersInQueue,
+  rules,
+  readOnly,
+}: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [saveButtonInvalid, setSaveButtonInvalid] = useState(false);
-
-  const handleClickOutsideDropdown = (e: any) => {
-    if (menuOpen && !gameSettingsMenuRef.current?.contains(e.target as Node)) {
-      setMenuOpen(false);
-    }
-  };
-  window.addEventListener("click", handleClickOutsideDropdown);
-
+  const [formRules, setFormRules] = useState<Rules>(rules);
   const saveRules = (r: Rules) => {
     setIsLoading(true);
 
@@ -63,21 +62,27 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
   };
 
   return (
-    <div className="settings" ref={gameSettingsMenuRef}>
-      <button
-        className="settings-button"
-        onMouseDown={() => setMenuOpen(!menuOpen)}
-      >
-        <FontAwesomeIcon icon={faGear} /> Settings
-      </button>
-
-      {menuOpen && (
-        <div className="settings-dropdown">
-          <form>
-            <fieldset>
-              <label htmlFor="starting-chips">Starting chips</label>
+    <details>
+      <summary>
+        Admin Panel{" "}
+        {playersInQueue.length > 0 && (
+          <span data-tooltip="some players are waiting in the queue">
+            <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+            {playersInQueue.length}
+          </span>
+        )}
+      </summary>
+      <section>
+        <PlayersList players={playersInRoom || []} />
+        <QueueList players={playersInQueue || []} />
+      </section>
+      <section>
+        <form>
+          <fieldset className="grid">
+            <label htmlFor="startingChips">
+              <span>Starting Chips</span>
               <input
-                id="starting-chips"
+                id="startingChips"
                 type="number"
                 placeholder={JSON.stringify(rules.startingChips)}
                 value={formRules.startingChips}
@@ -86,9 +91,11 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 }
                 readOnly={readOnly}
               />
-              {rules.gameMode === GameMode.TOURNAMENT && (
-                <>
-                  <label htmlFor="ante">Ante</label>
+            </label>
+            {rules.gameMode === GameMode.TOURNAMENT && (
+              <>
+                <label htmlFor="ante">
+                  <span>Ante</span>
                   <input
                     id="ante"
                     type="number"
@@ -99,12 +106,14 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                     }
                     readOnly={readOnly}
                   />
-                </>
-              )}
-              <label htmlFor="small-blind">Small blind</label>
+                </label>
+              </>
+            )}
+            <label htmlFor="smallBlind">
+              <span>Small Blind</span>
               <input
-                id="small-blind"
                 type="number"
+                id="smallBlind"
                 placeholder={JSON.stringify(rules.smallBlind)}
                 value={formRules.smallBlind}
                 onChange={(e) =>
@@ -112,10 +121,12 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 }
                 readOnly={readOnly}
               />
-              <label htmlFor="big-blind">Big blind</label>
+            </label>
+            <label htmlFor="bigBlind">
+              <span>Big Blind</span>
               <input
-                id="big-blind"
                 type="number"
+                id="bigBlind"
                 placeholder={JSON.stringify(rules.bigBlind)}
                 value={formRules.bigBlind}
                 onChange={(e) =>
@@ -123,20 +134,20 @@ const GameSettingsMenu = ({ rules, readOnly }: Props) => {
                 }
                 readOnly={readOnly}
               />
-              <button
-                aria-busy={isLoading}
-                onMouseDown={() => saveRules(formRules)}
-                type="button"
-                aria-invalid={saveButtonInvalid}
-              >
-                Save
-              </button>
-            </fieldset>
-          </form>
-        </div>
-      )}
-    </div>
+            </label>
+            <button
+              aria-busy={isLoading}
+              onMouseDown={() => saveRules(formRules)}
+              type="button"
+              aria-invalid={saveButtonInvalid}
+            >
+              Save rules
+            </button>
+          </fieldset>
+        </form>
+      </section>
+    </details>
   );
 };
 
-export default GameSettingsMenu;
+export default AdminPanel;

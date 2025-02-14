@@ -21,6 +21,8 @@ import { Action } from "../enums/Action";
 import NotFound from "./NotFound";
 import SittingOutSwitch from "../components/SittingOutSwitch";
 import { PlayerState } from "../enums/PlayerState";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Game = () => {
   let ctx: Context;
@@ -128,7 +130,15 @@ const Game = () => {
           )}
           {isAdmin() && (
             <details>
-              <summary>Admin Panel</summary>
+              <summary>
+                Admin Panel{" "}
+                {playersInQueue.players.length > 0 && (
+                  <span data-tooltip="some players are waiting in the queue">
+                    <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                    {playersInQueue.players.length}
+                  </span>
+                )}
+              </summary>
               <section>
                 <PlayersList players={playersInRoom.players || []} />
                 <QueueList players={playersInQueue.players || []} />

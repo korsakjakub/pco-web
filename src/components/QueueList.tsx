@@ -20,7 +20,7 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
       const playerData = await AcceptPlayerInQueue(
         ctx.roomId,
         playerId,
-        ctx.roomToken
+        ctx.roomToken,
       );
       if (playerData === null) return;
 
@@ -40,20 +40,20 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
     setIsLoading(true);
     setButtonIndexLoading(playerId);
     KickPlayerFromQueue(playerId);
-  }
+  };
 
   return (
     <table>
       <thead>
         <tr>
-          <th>
-          Queue
-          </th>
+          <th>Queue</th>
         </tr>
       </thead>
       <tbody>
         {players.length === 0 && (
-          <tr><td>No players in queue</td></tr>
+          <tr>
+            <td>No players in queue</td>
+          </tr>
         )}
         {players.map((player) => (
           <tr key={player.id}>
@@ -61,10 +61,15 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
             <td>Id: {player.id}</td>
             {isAdmin() && (
               <td>
-                <button aria-busy={isLoading && buttonIndexLoading === player.id} onMouseDown={() => handleAddToRoom(player.id)}>
+                <button
+                  aria-busy={isLoading && buttonIndexLoading === player.id}
+                  onMouseDown={() => handleAddToRoom(player.id)}
+                >
                   Add
                 </button>
-                <button onMouseDown={() => handleKickFromQueue(player.id)}>Kick out</button>
+                <button onMouseDown={() => handleKickFromQueue(player.id)}>
+                  Kick out
+                </button>
               </td>
             )}
           </tr>

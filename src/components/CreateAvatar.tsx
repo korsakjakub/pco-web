@@ -1,6 +1,6 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import getRandomAvatarOptions, {
   AvatarOptions,
 } from "../utils/getRandomAvatarOptions";
@@ -15,6 +15,11 @@ const CreateAvatar = ({ onAvatarChanged }: Props) => {
   const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
   const [previousAvatars, setPreviousAvatars] = useState<AvatarOptions[]>([]);
   const [revertedAvatars, setRevertedAvatars] = useState<AvatarOptions[]>([]);
+
+  // Notify parent component of initial avatar
+  useEffect(() => {
+    onAvatarChanged(initialAvatar);
+  }, []);
 
   const setAvatarAndStorePrevious = (newAvatarOptions: AvatarOptions) => {
     setAvatar(newAvatarOptions);

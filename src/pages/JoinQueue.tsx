@@ -7,7 +7,7 @@ import Context from "../interfaces/Context";
 import getRandomAvatarOptions, {
   AvatarOptions,
 } from "../utils/getRandomAvatarOptions";
-import CreateAvatar from "../components/CreateAvatar";
+import EnhancedAvatarBuilder from "../components/EnhancedAvatarBuilder";
 
 interface Props {
   onReturnFromJoin: (r: Context) => void;
@@ -17,8 +17,7 @@ const JoinQueue = ({ onReturnFromJoin }: Props) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { queueId } = useParams();
-  const initialAvatar = getRandomAvatarOptions();
-  const [avatar, setAvatar] = useState<AvatarOptions>(initialAvatar);
+  const [avatar, setAvatar] = useState<AvatarOptions>({} as AvatarOptions);
 
   const joinGame = async (event: any) => {
     setIsLoading(true);
@@ -62,7 +61,7 @@ const JoinQueue = ({ onReturnFromJoin }: Props) => {
       <header>
         <h1>Join Room</h1>
       </header>
-      <CreateAvatar onAvatarChanged={setAvatar} />
+      <EnhancedAvatarBuilder onAvatarChanged={setAvatar} />
       <NameForm
         button="Join"
         isLoading={isLoading}

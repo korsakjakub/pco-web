@@ -4,7 +4,8 @@ import Context from "../interfaces/Context";
 import CreateRoomWithAdminData from "../interfaces/CreateRoomWithAdminData";
 import CreateRoomWithAdmin from "../requests/CreateRoomWithAdmin";
 import { AvatarOptions } from "../utils/getRandomAvatarOptions";
-import CreateAvatar from "./CreateAvatar";
+import EnhancedAvatarBuilder from "./EnhancedAvatarBuilder";
+import { GAME_DEFAULTS } from "../constants/gameDefaults";
 
 interface NewGameFormData {
   playerName: string;
@@ -26,13 +27,13 @@ const NewGame = ({ onSuccess, onError }: Props) => {
   const [data, setData] = useState<NewGameFormData>({
     playerName: "",
     gameMode: GameMode.CASH,
-    startingChips: 1000,
-    smallBlind: 25,
-    bigBlind: 50,
-    ante: 0,
+    startingChips: GAME_DEFAULTS.STARTING_CHIPS,
+    smallBlind: GAME_DEFAULTS.SMALL_BLIND,
+    bigBlind: GAME_DEFAULTS.BIG_BLIND,
+    ante: GAME_DEFAULTS.ANTE,
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const toggleAdvanced = (event: any) => {
+  const toggleAdvanced = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setShowAdvanced((prev) => !prev);
   };
@@ -44,7 +45,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
     }));
   };
 
-  const newGame = async (event: any) => {
+  const newGame = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     event.preventDefault();
 
@@ -77,7 +78,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
 
   return (
     <>
-      <CreateAvatar onAvatarChanged={setAvatar} />
+      <EnhancedAvatarBuilder onAvatarChanged={setAvatar} />
       <form onSubmit={newGame}>
         <input
           type="text"
@@ -158,7 +159,7 @@ const NewGame = ({ onSuccess, onError }: Props) => {
           aria-busy={isLoading}
           type="submit"
           id="new-game-button"
-          disabled={isLoading || data.playerName.length < 2}
+          disabled={isLoading || data.playerName.length < GAME_DEFAULTS.MIN_PLAYER_NAME_LENGTH}
         >
           New game
         </button>

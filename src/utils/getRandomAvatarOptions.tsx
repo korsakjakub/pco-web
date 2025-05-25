@@ -1,4 +1,5 @@
 import { avataaars } from "@dicebear/collection";
+import { BASIC_SKIN_COLORS, HAIR_COMBINATIONS } from "./getAvatarPropertyOptions";
 
 const randomizeValue = (array: string[]) => {
   const randomIndex = Math.floor(Math.random() * array.length);
@@ -15,9 +16,22 @@ const getRandomAvatarOptions = () => {
   }
   let enumProps: any = {};
 
-  for (const key in properties) {
-    const property = properties[key];
+  // Select a random hair combination first
+  const randomHairCombo = HAIR_COMBINATIONS[Math.floor(Math.random() * HAIR_COMBINATIONS.length)];
+  enumProps["top"] = randomHairCombo.style;
+  enumProps["hairColor"] = randomHairCombo.color;
+  enumProps["topProbability"] = 100; // Always show hair
 
+  // Set fixed basic outfit
+  enumProps["clothing"] = "shirtCrewNeck";
+  enumProps["clothesColor"] = "e6e6e6"; // Light gray color
+
+  // Randomize only controllable properties
+  const controllableProperties = ["eyes", "eyebrows", "mouth"];
+  
+  for (const key of controllableProperties) {
+    const property = properties[key];
+    
     if (
       typeof property === "object" &&
       property !== null &&
@@ -39,29 +53,16 @@ const getRandomAvatarOptions = () => {
         }
       }
     }
-
-    if (
-      key.includes("Color") &&
-      typeof property === "object" &&
-      property !== null
-    ) {
-      if (
-        "default" in property &&
-        Array.isArray(property.default) &&
-        property.default.every((item) => typeof item === "string")
-      ) {
-        enumProps[key] = randomizeValue(property.default as string[]);
-      }
-    }
-
-    if (key.includes("Probability")) {
-      if (key.includes("facialHairProbability")) {
-        enumProps[key] = 0;
-      } else {
-        enumProps[key] = Math.random() >= 0.5 ? 100 : 0;
-      }
-    }
   }
+
+  // Set skin color
+  enumProps["skinColor"] = randomizeValue(BASIC_SKIN_COLORS);
+
+  // Set other fixed values for consistent appearance
+  enumProps["accessories"] = "";
+  enumProps["accessoriesProbability"] = 0;
+  enumProps["facialHair"] = "";
+  enumProps["facialHairProbability"] = 0;
 
   return enumProps;
 };

@@ -7,40 +7,54 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./assets/index.css";
 import Context from "./interfaces/Context";
 import NotFound from "./pages/NotFound";
+import { validateRequiredEnvVars, getEnvVar } from "./utils/validateEnv";
+import { StorageService } from "./services/storageService";
+import { UI_CONSTANTS, ROUTES } from "./constants/gameDefaults";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-const queryClient = new QueryClient();
+// Create QueryClient outside component to prevent recreation
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: UI_CONSTANTS.QUERY_STALE_TIME,
+            retry: UI_CONSTANTS.RETRY_ATTEMPTS,
+        },
+    },
+});
 
 const App = () => {
-    const hostUrl = import.meta.env.VITE_HOST_URL;
-    const frontUrl = import.meta.env.VITE_FRONT_URL;
+    // Validate environment variables on app start
+    validateRequiredEnvVars();
+    
+    const hostUrl = getEnvVar('VITE_HOST_URL');
+    const frontUrl = getEnvVar('VITE_FRONT_URL');
     const env = import.meta.env.MODE;
-    window.sessionStorage.setItem("hostUrl", hostUrl);
-    window.sessionStorage.setItem("frontUrl", frontUrl);
+    
+    // Use StorageService instead of direct sessionStorage access
+    StorageService.setHostUrl(hostUrl);
+    StorageService.setFrontUrl(frontUrl);
 
     const onReturn = (r: Context) => {
-        window.sessionStorage.setItem(
-            "ctx",
-            JSON.stringify({
-                playerId: r.playerId,
-                playerToken: r.playerToken,
-                roomId: r.roomId,
-                queueId: r.queueId,
-                roomToken: r.roomToken || null,
-                env: env,
-            })
-        );
+        const contextWithEnv: Context = {
+            ...r,
+            roomToken: r.roomToken || null,
+            env: env,
+        };
+        StorageService.setContext(contextWithEnv);
     };
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <Routes>
-                <Route path="*" element={<NotFound />} />
-                <Route path="/" element={<Home onReturnFromHome={onReturn} />} />
-                <Route path={"/join/:queueId"} element={<JoinQueue onReturnFromJoin={onReturn} />} />
-                <Route path={"/game/:roomId"} element={<Game />} />
-                <Route path={"/queue/:queueId"} element={<Queue />} />
-            </Routes>
-        </QueryClientProvider>
+        <ErrorBoundary>
+            <QueryClientProvider client={queryClient}>
+                <Routes>
+                    <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
+                    <Route path={ROUTES.HOME} element={<Home onReturnFromHome={onReturn} />} />
+                    <Route path={ROUTES.JOIN} element={<JoinQueue onReturnFromJoin={onReturn} />} />
+                    <Route path={ROUTES.GAME} element={<Game />} />
+                    <Route path={ROUTES.QUEUE} element={<Queue />} />
+                </Routes>
+            </QueryClientProvider>
+        </ErrorBoundary>
     );
 };
 

@@ -17,6 +17,9 @@ const QueueList = ({ players, onPlayerModified }: Props) => {
 
   const acceptPlayer = async (playerId: string) => {
     try {
+      if (!ctx.roomToken) {
+        throw new Error("No room token available");
+      }
       const playerData = await AcceptPlayerInQueue(
         ctx.roomId,
         playerId,

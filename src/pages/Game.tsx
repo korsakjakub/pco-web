@@ -30,20 +30,20 @@ const Game = () => {
 
   const isAdmin = () => ctx.roomToken !== "" && ctx.roomToken !== null;
 
-  const game = useStream(
+  const game = useStream<GetGameResponse>(
     `${getHostUrl()}/api/v1/game/stream?roomId=${ctx.roomId}`,
     () => {
       setIsGameLoading(false);
       refetchMyPlayer();
     },
-  ) as GetGameResponse | null;
+  );
 
-  const playersInRoom = useStream(
+  const playersInRoom = useStream<{ players: Player[] }>(
     `${getHostUrl()}/api/v1/player/stream?roomId=${ctx.roomId}`,
-  ) as { players: Player[] } | null;
-  const playersInQueue = useStream(
+  );
+  const playersInQueue = useStream<{ players: Player[] }>(
     `${getHostUrl()}/api/v1/queue/stream?queueId=${ctx.queueId}`,
-  ) as { players: Player[] } | null;
+  );
 
   const {
     data: myPlayer,

@@ -1,0 +1,24 @@
+services:
+  backend:
+    image: korsakjakub/pco-api:2099a7a
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_PASSWORD=
+      - SPRING_DATA_REDIS_SSL_ENABLED=false
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB_FILTER_COMMONSREQUESTLOGGINGFILTER=DEBUG
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+# frontend:
+#   image: korsakjakub/pco-web:40dcd16
+#   ports:
+#     - "8000:8000"
+#   depends_on:
+#     - backend

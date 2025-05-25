@@ -52,7 +52,7 @@ const PlayingTable = ({ players, stakedChips, gameStage, gameState, isLoading, c
   };
 
   const showGameStage = (stage: GameStage) => {
-    const singleCard = <img src={getFrontUrl() + "/card-back.svg"}/>;
+    const singleCard = <img src="/card-back.svg" alt="Playing card" />;
     const cardsOnTable = stage === GameStage.FLOP ? 3 : stage === GameStage.TURN ? 4 : [GameStage.RIVER, GameStage.SHOWDOWN].includes(stage) ? 5 : 0;
 
     return Array(cardsOnTable).fill(singleCard).map((card, index) => (

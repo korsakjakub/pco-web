@@ -9,17 +9,23 @@ const CreateRoomWithAdmin = async (
   data: CreateRoomWithAdminData,
   avatar: AvatarOptions,
 ) => {
-  const roomResponse = await fetch(getHostUrl() + "/api/v1/room/create", {
+  const hostUrl = getHostUrl();
+  console.log('Creating room with host URL:', hostUrl);
+  
+  const roomResponse = await fetch(hostUrl + "/api/v1/room/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
   });
-  const roomResponseBody = await roomResponse.json();
-
+  
   if (!roomResponse.ok) {
-    throw Error("Could not create a room");
+    const errorText = await roomResponse.text();
+    console.error('Room creation failed:', roomResponse.status, errorText);
+    throw new Error(`Could not create a room: ${roomResponse.status} ${errorText}`);
   }
+
+  const roomResponseBody = await roomResponse.json();
 
   const playerResponse = await fetch(
     getHostUrl() + "/api/v1/room/" + roomResponseBody.id + "/players",

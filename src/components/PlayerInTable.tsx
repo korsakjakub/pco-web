@@ -99,6 +99,19 @@ const PlayerInTable = ({
     return `https://api.dicebear.com/8.x/avataaars/jpg?${params}`;
   };
 
+  const getDealerButtonCoords = (radius: number) => {
+    // Get the base coordinates and apply a direct offset to position anticlockwise
+    const baseCoords = getCoords(radius);
+    const leftValue = parseFloat(baseCoords.left.replace('%', ''));
+    const topValue = parseFloat(baseCoords.top.replace('%', ''));
+    
+    // Simple offset: move left and slightly up for anticlockwise positioning
+    return {
+      left: (leftValue - 8) + "%",
+      top: (topValue - 4) + "%",
+    };
+  };
+
   return (
     <div key={player.id} ref={playerSettingsRef}>
       <div
@@ -112,21 +125,33 @@ const PlayerInTable = ({
             src={getAvatarImgSource(player.avatar)}
             className="player-avatar"
           />
-          <div>
-            <p className="player-frame-name">{player.name}</p>
-            <div aria-busy={isLoading} className="player-frame-chips">
-              {AnimateChips(0, player.chips)}
-            </div>
+          <div aria-busy={isLoading} className="player-frame-chips">
+            {AnimateChips(0, player.chips)}
           </div>
+        </div>
+        <div
+          className="player-name"
+          style={getCoords(48)}
+        >
+          {player.name}
         </div>
         <div
           aria-busy={isLoading}
           className="player-chips"
-          style={getCoords(20)}
+          style={getCoords(30)}
         >
           <div ref={stakeRef}>{AnimateChips(0, player.stakedChips)}</div>
-          {isDealer && <div>D</div>}
         </div>
+        {isDealer && (
+          <div
+            className="dealer-button"
+            style={getDealerButtonCoords(30)}
+          >
+            <div className="dealer-button-inner">
+              <span className="dealer-button-text">D</span>
+            </div>
+          </div>
+        )}
       </div>
       {isPlayerSettingsVisible && isAdmin() && (
         <div className="player-settings" style={getCoords(1)}>

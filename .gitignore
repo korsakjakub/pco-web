@@ -27,3 +27,10 @@ yarn-error.log*
 env-config.js
 .dockerignore
 dist/
+
+# e2e test results and artifacts
+/test-results/
+/playwright-report/
+/e2e-screenshots/
+*.png
+*.webm

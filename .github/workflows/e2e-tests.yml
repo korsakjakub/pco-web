@@ -24,11 +24,6 @@ jobs:
         image: korsakjakub/pco-api:2099a7a
         ports:
           - 8080:8080
-        options: >-
-          --health-cmd "curl -f http://localhost:8080/health"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout code

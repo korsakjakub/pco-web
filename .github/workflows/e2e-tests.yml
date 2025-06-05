@@ -31,11 +31,9 @@ jobs:
           bun-version: latest
 
       - name: Install frontend dependencies
-        working-directory: pco-web
         run: bun install
 
       - name: Install Playwright browsers
-        working-directory: pco-web
         run: bunx playwright install chromium
 
       - name: Start backend API container
@@ -45,7 +43,6 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:8080/actuator/health 2>/dev/null; do sleep 2; done'
 
       - name: Run E2E tests
-        working-directory: pco-web
         run: bun run test:e2e
         env:
           CI: true

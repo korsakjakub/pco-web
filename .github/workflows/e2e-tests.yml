@@ -25,23 +25,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
 
       - name: Install frontend dependencies
         working-directory: pco-web
@@ -51,15 +38,11 @@ jobs:
         working-directory: pco-web
         run: bunx playwright install chromium
 
-      - name: Start backend API
-        working-directory: pco-api
+      - name: Start backend API container
         run: |
-          mvn clean compile spring-boot:run &
-          echo $! > api.pid
+          docker run -d --name pco-api -p 8080:8080 -e REDIS_HOST=redis korsakjakub/pco-api:2099a7a
           # Wait for API to be ready
           timeout 60 bash -c 'until curl -f http://localhost:8080/actuator/health 2>/dev/null; do sleep 2; done'
-        env:
-          SPRING_PROFILES_ACTIVE: test
 
       - name: Run E2E tests
         working-directory: pco-web
@@ -85,9 +68,6 @@ jobs:
 
       - name: Stop backend API
         if: always()
-        working-directory: pco-api
         run: |
-          if [ -f api.pid ]; then
-            kill $(cat api.pid) || true
-            rm api.pid
-          fi
+          docker stop pco-api || true
+          docker rm pco-api || true

@@ -20,6 +20,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      pco-api:
+        image: korsakjakub/pco-api:2099a7a
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd "curl -f http://localhost:8080/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -35,12 +44,6 @@ jobs:
 
       - name: Install Playwright browsers
         run: bunx playwright install chromium
-
-      - name: Start backend API container
-        run: |
-          docker run -d --name pco-api -p 8080:8080 -e REDIS_HOST=redis korsakjakub/pco-api:2099a7a
-          # Wait for API to be ready
-          timeout 60 bash -c 'until curl -f http://localhost:8080/actuator/health 2>/dev/null; do sleep 2; done'
 
       - name: Run E2E tests
         run: bun run test:e2e

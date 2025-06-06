@@ -49,6 +49,8 @@ jobs:
         run: bun run test:e2e
         env:
           CI: true
+          VITE_HOST_URL: http://127.0.0.1:8080
+          VITE_FRONT_URL: http://127.0.0.1:8000
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -56,14 +58,6 @@ jobs:
         with:
           name: playwright-report
           path: pco-web/test-results/
-          retention-days: 7
-
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots
-          path: pco-web/e2e-screenshots/
           retention-days: 7
 
       - name: Stop backend API

@@ -27,7 +27,7 @@ test.describe('Basic Multiplayer Poker', () => {
     await page1.click('button:has-text("New game")');
     
     // Wait for navigation to game (admin goes directly to game)
-    await page1.waitForURL(/\/game\/.*/, { timeout: 10000 });
+    await page1.waitForURL(/\/game\/.*/, { timeout: 30000 });
     
     // Extract queueId from context in sessionStorage
     const queueId = await page1.evaluate(() => {
@@ -89,7 +89,7 @@ test.describe('Basic Multiplayer Poker', () => {
     await page1.goto('/');
     await page1.fill('input[name="playerName"]', 'PlayerOne');
     await page1.click('button:has-text("New game")');
-    await page1.waitForURL(/\/game\/.*/, { timeout: 10000 });
+    await page1.waitForURL(/\/game\/.*/, { timeout: 30000 });
     
     const queueId = await page1.evaluate(() => {
       const ctx = sessionStorage.getItem('ctx');

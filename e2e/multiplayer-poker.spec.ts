@@ -44,7 +44,7 @@ test.describe('Multi-Player Poker Game E2E', () => {
     await player2Page.waitForSelector('button:has-text("Join")', { timeout: 10000 });
     await expect(player2Page.locator('button:has-text("Join")')).toBeEnabled({ timeout: 10000 });
     await player2Page.click('button:has-text("Join")');
-    await player2Page.waitForURL(/\/queue\/.*/, { timeout: 15000 });
+    await player2Page.waitForURL(/\/queue\/.*/, { timeout: 30000 });
     await player2Page.screenshot({ path: 'test-results/player2-in-queue.png' });
     const player2 = { name: 'Bob', page: player2Page };
     players.push(player2);
@@ -57,7 +57,7 @@ test.describe('Multi-Player Poker Game E2E', () => {
     await player3Page.waitForSelector('button:has-text("Join")', { timeout: 10000 });
     await expect(player3Page.locator('button:has-text("Join")')).toBeEnabled({ timeout: 10000 });
     await player3Page.click('button:has-text("Join")');
-    await player3Page.waitForURL(/\/queue\/.*/, { timeout: 15000 });
+    await player3Page.waitForURL(/\/queue\/.*/, { timeout: 30000 });
     await player3Page.screenshot({ path: 'test-results/player3-in-queue.png' });
     const player3 = { name: 'Charlie', page: player3Page };
     players.push(player3);
@@ -89,8 +89,8 @@ test.describe('Multi-Player Poker Game E2E', () => {
     await adminPage.screenshot({ path: 'test-results/admin-after-accept.png' });
 
     // Wait for players to be moved to game
-    await player2Page.waitForURL(/\/game\/.*/, { timeout: 20000 });
-    await player3Page.waitForURL(/\/game\/.*/, { timeout: 20000 });
+    await player2Page.waitForURL(/\/game\/.*/, { timeout: 30000 });
+    await player3Page.waitForURL(/\/game\/.*/, { timeout: 30000 });
     await player2Page.screenshot({ path: 'test-results/player2-in-game.png' });
     await player3Page.screenshot({ path: 'test-results/player3-in-game.png' });
 

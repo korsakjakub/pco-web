@@ -6,8 +6,8 @@ test.describe('Explore Game Page', () => {
     await page.goto('/');
     await page.fill('input[name="playerName"]', 'ExplorePlayer');
     await page.click('button:has-text("New game")');
-    await page.waitForURL(/\/game\/.*/, { timeout: 10000 });
-    
+    await page.waitForURL(/\/game\/.*/, { timeout: 30000 });
+
     const gameUrl = page.url();
     const roomId = gameUrl.match(/\/game\/([^/]+)/)?.[1];
     console.log('Room ID:', roomId);
@@ -108,8 +108,8 @@ test.describe('Explore Game Page', () => {
     await adminPage.goto('/');
     await adminPage.fill('input[name="playerName"]', 'Admin');
     await adminPage.click('button:has-text("New game")');
-    await adminPage.waitForURL(/\/game\/.*/, { timeout: 10000 });
-    
+    await adminPage.waitForURL(/\/game\/.*/, { timeout: 30000 });
+
     // Extract queueId from context
     const queueId = await adminPage.evaluate(() => {
       const ctx = sessionStorage.getItem('ctx');

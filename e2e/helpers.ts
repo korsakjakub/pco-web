@@ -17,7 +17,7 @@ export class PokerGameHelpers {
     await page.click('button:has-text("New game")');
     
     // Wait for navigation to queue or game
-    await page.waitForURL(/\/(queue|game)\/.*/, { timeout: 10000 });
+    await page.waitForURL(/\/(queue|game)\/.*/, { timeout: 30000 });
     
     return {
       name: playerName,

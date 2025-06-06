@@ -49,7 +49,7 @@ jobs:
         run: bun run test:e2e
         env:
           CI: true
-          VITE_HOST_URL: http://127.0.0.1:8080
+          VITE_HOST_URL: http://pco-api:8080
           VITE_FRONT_URL: http://127.0.0.1:8000
 
       - name: Upload test results

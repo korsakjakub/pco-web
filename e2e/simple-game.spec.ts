@@ -73,8 +73,8 @@ test.describe('Simple Two-Player Game', () => {
       }
       
       // Step 11: Take final screenshots
-      await adminPage.screenshot({ path: 'simple-game-admin.png' });
-      await playerPage.screenshot({ path: 'simple-game-player.png' });
+      await adminPage.screenshot({ path: 'test-results/simple-game-admin.png' });
+      await playerPage.screenshot({ path: 'test-results/simple-game-player.png' });
       
       console.log('✅ Two-player game successfully created and started!');
       

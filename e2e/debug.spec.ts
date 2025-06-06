@@ -9,7 +9,7 @@ test.describe('Debug Navigation Flow', () => {
     console.log('Homepage URL:', page.url());
     
     // Take screenshot of homepage
-    await page.screenshot({ path: 'debug-homepage.png' });
+    await page.screenshot({ path: 'test-results/debug-homepage.png' });
     
     // Fill in player name
     await page.fill('input[name="playerName"]', 'DebugPlayer');
@@ -23,7 +23,7 @@ test.describe('Debug Navigation Flow', () => {
     console.log('After creating game URL:', page.url());
     
     // Take screenshot after navigation
-    await page.screenshot({ path: 'debug-after-create.png' });
+    await page.screenshot({ path: 'test-results/debug-after-create.png' });
     
     // Log page title and main content
     const title = await page.title();
@@ -99,7 +99,7 @@ test.describe('Debug Navigation Flow', () => {
     await page2.goto(`/join/${id}`);
     console.log('Join page URL:', page2.url());
     
-    await page2.screenshot({ path: 'debug-join-page.png' });
+    await page2.screenshot({ path: 'test-results/debug-join-page.png' });
     
     const joinPageContent = await page2.locator('h1').textContent();
     console.log('Join page content:', joinPageContent);

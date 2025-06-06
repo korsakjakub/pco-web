@@ -13,7 +13,7 @@ test.describe('Explore Game Page', () => {
     console.log('Room ID:', roomId);
     
     // Take screenshot
-    await page.screenshot({ path: 'explore-game-page.png' });
+    await page.screenshot({ path: 'test-results/explore-game-page.png' });
     
     // Check page content for any queue-related info
     const pageText = await page.textContent('body');
@@ -136,7 +136,7 @@ test.describe('Explore Game Page', () => {
         await playerPage.waitForTimeout(3000);
         console.log('After join URL:', playerPage.url());
         
-        await playerPage.screenshot({ path: 'explore-after-join.png' });
+        await playerPage.screenshot({ path: 'test-results/explore-after-join.png' });
       }
       
       await playerContext.close();

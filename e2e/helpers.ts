@@ -206,7 +206,7 @@ export class PokerGameHelpers {
 
   static async takeScreenshot(page: Page, name: string): Promise<void> {
     await page.screenshot({ 
-      path: `e2e-screenshots/${name}-${Date.now()}.png`,
+      path: `test-results/${name}-${Date.now()}.png`,
       fullPage: true 
     });
   }
